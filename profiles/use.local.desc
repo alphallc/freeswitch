@@ -1,0 +1,18 @@
+net-misc/freeswitch:cepstral		Cepstral swift commercial text-to-speech engine
+net-misc/freeswitch:iax			Inter-Asterisk-Exchange VoIP protocol
+net-misc/freeswitch:h26x		Pass-through support for H.261 and H.263 video
+net-misc/freeswitch:nosamples		Do not install sample configuration
+net-misc/freeswitch:openzap		OpenZAP (support for analog/isdn telephony cards)
+net-misc/freeswitch:resampler		Sound resampling (e.g. 16KHz -> 8KHz) support
+net-misc/freeswitch:sctp		SIP over SCTP (Stream-Control-Protocol) support
+net-misc/freeswitch-music:16k		16KHz sample rate (Wideband) On-Hold music
+net-misc/freeswitch-music:32k		32KHz sample rate (Ultra-Wideband) On-Hold music
+net-misc/freeswitch-music:48k		48KHz sample rate (Ultra-Wideband) On-Hold music
+net-misc/freeswitch-sounds:16k		16KHz sample rate (Wideband) sounds
+net-misc/freeswitch-sounds:32k		32KHz sample rate (Ultra-Wideband) sounds
+net-misc/freeswitch-sounds:48k		48KHz sample rate (Ultra-Wideband) sounds
+net-misc/freeswitch-svn:nosamples	Do not install sample configuration
+net-misc/freeswitch-svn:resampler	Sound resampling (e.g. 16KHz -> 8KHz) support
+net-misc/freeswitch-svn:sctp		SIP over SCTP (Stream-Control-Protocol) support
+net-libs/opal:celt			CELT ultra-low-delay 32KHz, 48KHz wideband audio codec support
+media-libs/celt:fixed-point-math	Enable fixed-point arithmetic

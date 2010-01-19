@@ -1,0 +1,259 @@
+Index: bootstrap.sh
+===================================================================
+--- bootstrap.sh	(revision 10965)
++++ bootstrap.sh	(working copy)
+@@ -87,7 +87,7 @@
+ # output is multiline from 1.5 onwards
+ 
+ # Require libtool 1.4 or newer
+-libtool=`${LIBDIR}/apr/build/PrintPath glibtool libtool libtool15 libtool14`
++libtool=${LIBTOOL:-`${LIBDIR}/apr/build/PrintPath glibtool libtool libtool15 libtool14`}
+ lt_pversion=`$libtool --version 2>/dev/null|sed -e 's/([^)]*)//g;s/^[^0-9]*//;s/[- ].*//g;q'`
+ if test -z "$lt_pversion"; then
+ echo "bootstrap: libtool not found."
+@@ -103,8 +103,11 @@
+ if test -z "$1"; then a=0 ; else a=$1;fi
+ if test -z "$2"; then b=0 ; else b=$2;fi
+ if test -z "$3"; then c=0 ; else c=$3;fi
++lt_major=$a
+ 
+-if test "$a" -lt "2"; then
++if test "$a" -eq "2"; then
++   lt_status="good"
++elif test "$a" -lt "2"; then
+    if test "$b" -lt "5" -o "$b" =  "5" -a "$c" -lt "14" ; then
+       lt_status="bad"
+    fi
+@@ -121,6 +124,43 @@
+ exit 1
+ fi
+ 
++# check libtoolize availability
++if [ -n "${LIBTOOL}" ]; then
++    libtoolize=${LIBTOOLIZE:-`dirname "${libtool}"`/libtoolize}
++else
++    libtoolize=${LIBTOOLIZE:-`${LIBDIR}/apr/build/PrintPath glibtoolize libtoolize15 libtoolize14 libtoolize`}
++fi
++if [ "x$libtoolize" = "x" ]; then
++    echo "libtoolize not found in path"
++    exit 1
++fi
++if [ ! -x "$libtoolize" ]; then
++    echo "$libtoolize does not exist or ist not executable"
++    exit 1
++fi
++
++# compare libtool and libtoolize version
++ltl_pversion=`$libtoolize --version 2>/dev/null|sed -e 's/([^)]*)//g;s/^[^0-9]*//;s/[- ].*//g;q'`
++ltl_version=`echo $ltl_pversion|sed -e 's/\([a-z]*\)$/.\1/'`
++IFS=.; set $ltl_version; IFS=' '
++
++if [ "x${lt_version}" != "x${ltl_version}" ]; then
++    echo "$libtool and $libtoolize have different versions"
++    exit 1
++fi
++
++
++#
++# Info output
++#
++echo "Bootstrapping using:"
++echo "  autoconf  : ${AUTOCONF:-`which autoconf`}"
++echo "  automake  : ${AUTOMAKE:-`which automake`}"
++echo "  aclocal   : ${ACLOCAL:-`which aclocal`}"
++echo "  libtool   : ${libtool} (${lt_version})"
++echo "  libtoolize: ${libtoolize}"
++echo
++
+ echo "Entering directory ${LIBDIR}/apr"
+ cd ${LIBDIR}/apr
+ 
+@@ -144,13 +184,6 @@
+ # bootstrap: Build the support scripts needed to compile from a
+ #            checked-out version of the source code.
+ 
+-
+-libtoolize=`build/PrintPath glibtoolize libtoolize15 libtoolize14 libtoolize`
+-if [ "x$libtoolize" = "x" ]; then
+-    echo "libtoolize not found in path"
+-    exit 1
+-fi
+-
+ # Create the libtool helper files
+ #
+ # Note: we copy (rather than link) them to simplify distribution.
+@@ -163,21 +196,30 @@
+ # and libtool 1.4 by simply rerunning the bootstrap script.
+ (cd build ; rm -f ltconfig ltmain.sh libtool.m4)
+ 
+-$libtoolize --copy --automake
++if ${libtoolize} -n --install &>/dev/null ; then
++  $libtoolize --force --copy --install
++else
++  $libtoolize --force --copy
++fi
+ 
+ if [ -f libtool.m4 ]; then 
+    ltfile=`pwd`/libtool.m4
+ else
+-   ltfindcmd="`sed -n \"/=[^\\\`]/p;/libtool_m4=/{s/.*=/echo /p;q;}\" \
+-                   < $libtoolize`"
+-   ltfile=${LIBTOOL_M4-`eval "$ltfindcmd"`}
++   if [ $lt_major -eq 2 ]; then
++       ltfindcmd="`sed -n \"/aclocaldir=/{s/.*=/echo /p;q;}\" < $libtoolize`"
++       ltfile=${LIBTOOL_M4-`eval "$ltfindcmd"`/libtool.m4}
++   else
++       ltfindcmd="`sed -n \"/=[^\\\`]/p;/libtool_m4=/{s/.*=/echo /p;q;}\" \
++                     < $libtoolize`"
++       ltfile=${LIBTOOL_M4-`eval "$ltfindcmd"`}
++   fi
+    # Expecting the code above to be very portable, but just in case...
+    if [ -z "$ltfile" -o ! -f "$ltfile" ]; then
+      ltpath=`dirname $libtoolize`
+      ltfile=`cd $ltpath/../share/aclocal ; pwd`/libtool.m4
+    fi
+ fi
+-  
++
+ if [ ! -f $ltfile ]; then
+     echo "$ltfile not found"
+     exit 1
+@@ -196,19 +238,6 @@
+ # Clean up any leftovers
+ rm -f aclocal.m4 libtool.m4
+ 
+-#
+-# Generate the autoconf header and ./configure
+-#
+-echo "Creating include/arch/unix/apr_private.h.in ..."
+-${AUTOHEADER:-autoheader}
+-
+-echo "Creating configure ..."
+-### do some work to toss config.cache?
+-${AUTOCONF:-autoconf}
+-
+-# Remove autoconf 2.5x's cache directory
+-rm -rf autom4te*.cache
+-
+ # fix for FreeBSD (at least):
+ # libtool.m4 is in share/aclocal, while e.g. aclocal19 only looks in share/aclocal19
+ # get aclocal's default directory and include the libtool.m4 directory via -I if
+@@ -220,6 +249,24 @@
+   ACLOCAL_OPTS="-I `dirname ${ltfile}`"
+ fi
+ 
++### run aclocal
++echo "Re-creating aclocal.m4 ..."
++${ACLOCAL:-aclocal} ${ACLOCAL_OPTS}
++
++### do some work to toss config.cache?
++echo "Creating configure ..."
++${AUTOCONF:-autoconf}
++
++#
++# Generate the autoconf header
++#
++echo "Creating include/arch/unix/apr_private.h.in ..."
++${AUTOHEADER:-autoheader}
++
++
++# Remove autoconf 2.5x's cache directory
++rm -rf autom4te*.cache
++
+ echo "Entering directory ${LIBDIR}/apr-util"
+ cd ${LIBDIR}/apr-util
+ ./buildconf
+@@ -256,7 +303,11 @@
+ #only run if AC_PROG_LIBTOOL is in configure.in/configure.ac
+       if [ ! -z "${LTTEST}" -o "${LTTEST2}" ] ; then
+           echo "Running libtoolize..."
+-          $libtoolize --force --copy ;
++          if ${libtoolize} -n --install &>/dev/null ; then
++             $libtoolize --force --copy --install
++          else
++             $libtoolize --force --copy
++          fi
+       fi
+ 
+       echo "Creating configure"
+Index: src/mod/formats/mod_shout/Makefile
+===================================================================
+--- src/mod/formats/mod_shout/Makefile	(revision 10965)
++++ src/mod/formats/mod_shout/Makefile	(working copy)
+@@ -30,7 +30,7 @@
+ 	$(GETLIB) $(MPG123).tar.gz
+ 
+ $(MPG123_DIR)/Makefile: $(MPG123_DIR)
+-	cd $(MPG123_DIR) && CFLAGS=$(AM_CFLAGS) ./configure --disable-shared --with-pic CPPFLAGS= LDFLAGS=
++	cd $(MPG123_DIR) && CFLAGS=$(AM_CFLAGS) CC=$(CC) CXX=$(CXX) ./configure --disable-shared --with-pic CPPFLAGS= LDFLAGS=
+ 	$(TOUCH_TARGET)
+ 
+ $(MPG123LA): $(MPG123_DIR)/Makefile
+Index: libs/apr/configure.in
+===================================================================
+--- libs/apr/configure.in	(revision 10965)
++++ libs/apr/configure.in	(working copy)
+@@ -200,8 +200,8 @@
+ 
+ if test "x$use_libtool" = "xyes"; then
+       lt_compile='$(LIBTOOL) $(LTFLAGS) --mode=compile $(COMPILE) -o $@ -c $< && touch $@'
+-      LT_VERSION="-version-info `$get_version libtool $version_hdr APR`"
+-      link="\$(LIBTOOL) \$(LTFLAGS) --mode=link \$(LT_LDFLAGS) \$(COMPILE) ${LT_VERSION} \$(ALL_LDFLAGS) -o \$@"
++      lt_version="-version-info `$get_version libtool $version_hdr APR`"
++      link="\$(LIBTOOL) \$(LTFLAGS) --mode=link \$(LT_LDFLAGS) \$(COMPILE) ${lt_version} \$(ALL_LDFLAGS) -o \$@"
+       so_ext='lo'
+       lib_target='-rpath $(libdir) $(OBJECTS)'
+       export_lib_target='-rpath \$(libdir) \$(OBJECTS)'
+Index: libs/apr-util/xml/expat/buildconf.sh
+===================================================================
+--- libs/apr-util/xml/expat/buildconf.sh	(revision 10965)
++++ libs/apr-util/xml/expat/buildconf.sh	(working copy)
+@@ -58,6 +58,8 @@
+ ${AUTOHEADER:-autoheader} 2>&1 | grep -v "$cross_compile_warning"
+ 
+ echo "Creating configure ..."
++${ACLOCAL:-aclocal}
++
+ ### do some work to toss config.cache?
+ ${AUTOCONF:-autoconf} 2>&1 | grep -v "$cross_compile_warning"
+ 
+Index: libs/libsndfile/configure.ac
+===================================================================
+--- libs/libsndfile/configure.ac	(revision 10965)
++++ libs/libsndfile/configure.ac	(working copy)
+@@ -32,6 +32,7 @@
+ 
+ AC_PROG_CC
+ AM_PROG_CC_C_O
++AC_PROG_CXX
+ AM_PROG_LIBTOOL
+ 
+ AC_CHECK_PROG(autogen, autogen, yes, no)
+Index: build/modmake.rules.in
+===================================================================
+--- build/modmake.rules.in	(revision 10965)
++++ build/modmake.rules.in	(working copy)
+@@ -29,7 +29,8 @@
+ DYLD_LIBRARY_PATH=@libdir@:$DYLD_LIBRARY_PATH
+ LD_LIBRARY_PATH=@libdir@:$LD_LIBRARY_PATH
+ OSARCH=`uname -s`
+-DYNAMIC_LIB_EXTEN = @DYNAMIC_LIB_EXTEN@
++DYNAMIC_LIB_EXTEN = la
++#DYNAMIC_LIB_EXTEN = @DYNAMIC_LIB_EXTEN@
+ SOLINK = @SOLINK@
+ 
+ LDFLAGS=@SWITCH_AM_LDFLAGS@ @LDFLAGS@ $(OUR_LDFLAGS)
+@@ -39,11 +40,11 @@
+ 
+ COMPILE      = $(CC) $(ALL_CFLAGS) $(DEFS)
+ LTCOMPILE = $(LIBTOOL) --mode=compile --tag=CC $(COMPILE)
+-LINK = $(LIBTOOL) --mode=link --tag=CC $(CCLD) $(ALL_CFLAGS) $(LDFLAGS) -o $@
++LINK = $(LIBTOOL) --mode=link --tag=CC $(CCLD) $(ALL_CFLAGS) $(LDFLAGS) -shared -module -avoid-version -rpath $(MODINSTDIR) -o $@
+ 
+ CXXCOMPILE = $(CXX) $(ALL_CXXFLAGS) $(DEFS)
+ LTCXXCOMPILE = $(LIBTOOL) --mode=compile --tag=CXX $(CXXCOMPILE)
+-CXXLINK = $(LIBTOOL) --mode=link --tag=CXX $(CXXLD) $(ALL_CXXFLAGS) $(LDFLAGS) -o $@
++CXXLINK = $(LIBTOOL) --mode=link --tag=CXX $(CXXLD) $(ALL_CXXFLAGS) $(LDFLAGS) -shared -module -avoid-version -rpath $(MODINSTDIR) -o $@
+ 
+ CSOURCEFILE=$(MODNAME).c
+ CXXSOURCEFILE=$(MODNAME).cpp
