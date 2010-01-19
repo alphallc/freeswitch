@@ -24,7 +24,7 @@ else
 fi
 
 LICENSE="MPL-1.1"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS=""
 SLOT="0"
 
 IUSE="esl +libedit nosamples odbc +resampler sctp"
