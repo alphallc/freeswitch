@@ -35,7 +35,7 @@ SLOT="0"
 
 KEYWORDS="~amd64 ~x86"
 
-DEPEND="|| ( net-misc/freeswitch net-misc/freeswitch-svn )"
+DEPEND="net-misc/freeswitch"
 
 RDEPEND="${DEPEND}"
 
