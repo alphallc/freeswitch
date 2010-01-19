@@ -13,7 +13,7 @@ inherit autotools flag-o-matic python
 DESCRIPTION="FreeSWITCH telephony platform SVN Trunk"
 HOMEPAGE="http://www.freeswitch.org/"
 
-if [ "${PN}" = "freeswitch-svn" ]; then
+if [ "${PV}" = "9999" ]; then
 	inherit subversion
 	ESVN_REPO_URI="http://svn.freeswitch.org/svn/freeswitch/trunk"
 	ESVN_PROJECT="freeswitch"
@@ -92,7 +92,6 @@ CORE_RDEPEND="
 #
 #
 RDEPEND="virtual/libc
-	 !net-misc/freeswitch
 	 ${CORE_RDEPEND}
 	 ${MODULES_RDEPEND}"
 
@@ -103,13 +102,6 @@ DEPEND="${RDEPEND}
 
 PDEPEND=">=net-misc/freeswitch-sounds-1.0.11
 	 >=net-misc/freeswitch-music-1.0.8"
-
-if [[ "${PN}" = "freeswitch-svn" ]]
-then
-	RDEPEND="${RDEPEND} !net-misc/freeswitch"
-else
-	RDEPEND="${RDEPEND} !net-misc/freeswitch-svn"
-fi
 
 ###
 # IUSE merging
@@ -583,7 +575,7 @@ fs_with() {
 
 fs_is_upgrade() {
 	# svn install is always an upgrade
-	[ "${PN/-svn}" != "${PN}" ] && return 0
+	[ "${PV}" = "9999" ] && return 0
 
 	# regular up/-downgrade
 	if has_version "${CATEGORY}/${PN}" && ! has_version "~${CATEGORY}/${P}"; then
@@ -672,7 +664,7 @@ esl_doperlmod() {
 #
 
 src_unpack() {
-	if [ "${PN}" = "freeswitch-svn" ]; then
+	if [ "${PV}" = "9999" ]; then
 		subversion_src_unpack
 	else
 		unpack ${A}
@@ -680,7 +672,7 @@ src_unpack() {
 }
 
 src_prepare() {
-	if [ "${PN}" = "freeswitch-svn" ]; then
+	if [ "${PV}" = "9999" ]; then
 		subversion_src_prepare
 	fi
 
@@ -815,7 +807,7 @@ src_install() {
 	# remove sample configuration if the user wishes so,
 	# but only if this isn't a fresh installation
 	if use nosamples; then
-		if ! has_version "net-misc/freeswitch" && ! has_version "net-misc/freeswitch-svn"; then
+		if ! has_version "net-misc/freeswitch"; then
 			einfo "No previous installation of FreeSWITCH found, installing sample configuration..."
 		else
 			einfo "Removing sample configuration files..."
@@ -933,7 +925,7 @@ pkg_preinst() {
 	# 2. preserve existing config files
 	#
 	if use nosamples; then
-		if has_version "net-misc/freeswitch" || has_version "net-misc/freeswitch-svn"; then
+		if has_version "net-misc/freeswitch"; then
 			einfo "Preserving existing configuration..."
 			rm -r "${D}/etc/freeswitch"
 			cp -dpR "${ROOT}/etc/freeswitch" "${D}/etc"
