@@ -11,7 +11,7 @@ ESVN_REPO_URI="https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/trunk"
 
 LICENSE="MPL-1.0"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86"
+KEYWORDS=""
 IUSE="debug doc java"
 
 S="${WORKDIR}/opal"

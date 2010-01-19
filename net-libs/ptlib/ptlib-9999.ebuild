@@ -12,7 +12,7 @@ ESVN_REPO_URI="https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/ptlib/trunk
 
 LICENSE="MPL-1.0"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~sparc ~x86"
+KEYWORDS=""
 # default enabled are features from 'minsize', the most used according to ptlib
 IUSE="alsa +asn +audio debug doc dtmf esd examples ffmpeg ftp http ieee1394 ipv6
 jabber ldap mail odbc oss pch qos remote sasl sdl serial shmvideo snmp soap
