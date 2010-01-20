@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2008 Stefan Knoblich <s.knoblich@axsentis.de>
+# Copyright (C) 2008-2010 Stefan Knoblich <s.knoblich@axsentis.de>
 #
 # Distributed under the terms of the GNU General Public License 2
 # see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt for
@@ -35,17 +35,11 @@ IUSE_MODULES="alsa amr amrwb bv +cdr_csv celt cepstral cidlookup cluechoo +conso
 distributor easyroute erlang_event fax file_string flite +g723_1 g729 h26x iax +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
 managed memcache nibblebill opal openzap perl pocketsphinx portaudio portaudio_stream python radius_cdr
 say_de +say_en say_es say_fr say_it say_nl say_ru say_zh shell_stream shout siren skypiax snapshot +sndfile +sofia +speex
-spidermonkey spidermonkey_curl spidermonkey_core_db spidermonkey_odbc spidermonkey_socket spidermonkey_teletone spy
-+syslog +tone_stream tts_commandline unimrcp valet_parking vmd +voipcodecs xml_cdr xml_curl xml_ldap xml_rpc yaml"
+spidermonkey spy +syslog +tone_stream tts_commandline unimrcp valet_parking vmd +voipcodecs
+xml_cdr xml_curl xml_ldap xml_rpc yaml"
 
 # inter-module dependencies
-INTER_MODULE_DEPENDS="
-	spidermonkey_socket:spidermonkey
-	spidermonkey_teletone:spidermonkey
-	spidermonkey_core_db:spidermonkey
-	spidermonkey_curl:spidermonkey
-	spidermonkey_odbc:spidermonkey
-"
+INTER_MODULE_DEPENDS=""
 
 # modules need these core functions
 CORE_MODULE_DEPENDS="
@@ -65,8 +59,6 @@ MODULES_RDEPEND="
 	freeswitch_modules_java? ( >=virtual/jdk-1.5 )
 	freeswitch_modules_opal? ( >=net-libs/opal-9999[h323,iax]
 				   >=net-libs/ptlib-9999 )
-	freeswitch_modules_spidermonkey_curl? ( net-misc/curl )
-	freeswitch_modules_spidermonkey_odbc? ( dev-db/unixODBC )
 	freeswitch_modules_python? ( >=dev-lang/python-2.4 )
 	freeswitch_modules_managed? ( >=dev-lang/mono-1.9 )
 	freeswitch_modules_nibblebill? ( dev-db/unixODBC )
