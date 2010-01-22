@@ -32,7 +32,7 @@ IUSE="esl +libedit nosamples odbc +resampler sctp"
 IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
 IUSE_MODULES="alsa amr amrwb bv +cdr_csv celt cepstral cidlookup cluechoo +console curl dialplan_asterisk dialplan_directory
-distributor easyroute erlang_event fax file_string flite +g723_1 g729 h26x iax +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
+distributor easyroute erlang_event fax file_string flite +g723_1 g729 h26x +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
 managed memcache nibblebill opal openzap perl pocketsphinx portaudio portaudio_stream python radius_cdr
 say_de +say_en say_es say_fr say_it say_nl say_ru say_zh shell_stream shout siren skypiax snapshot +sndfile +sofia +speex
 spidermonkey spy +syslog +tone_stream tts_commandline unimrcp valet_parking vmd +voipcodecs
