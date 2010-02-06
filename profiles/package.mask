@@ -1,0 +1,3 @@
+# libisdn + ozmod_isdn (file collision with FreeSWITCH's ozmod_isdn)
+net-libs/libisdn
+net-misc/ozmod_isdn
