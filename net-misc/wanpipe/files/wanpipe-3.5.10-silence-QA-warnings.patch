@@ -1,0 +1,10 @@
+--- wanpipe-3.5.10/api/lib/hdlc/wanpipe_hdlc.h.orig	2010-02-05 23:51:20.000000000 +0100
++++ wanpipe-3.5.10/api/lib/hdlc/wanpipe_hdlc.h	2010-02-05 23:51:28.000000000 +0100
+@@ -8,6 +8,7 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <ctype.h>
++#include <string.h>
+ 
+ #if defined(__WINDOWS__)
+ # define wan_inline __inline

@@ -1,0 +1,38 @@
+--- wanpipe-3.5.10/Makefile.orig	2010-02-05 23:26:55.000000000 +0100
++++ wanpipe-3.5.10/Makefile	2010-02-05 23:29:40.000000000 +0100
+@@ -168,10 +168,10 @@
+ 
+ 
+ #Build only kernel modules
+-all_kmod:  _checkzap _checksrc _cleanoldwanpipe _check_kver
++all_kmod:  _checkzap _checksrc _check_kver
+ 	$(MAKE) KBUILD_VERBOSE=$(KBUILD_VERBOSE) -C $(KDIR) SUBDIRS=$(WAN_DIR) EXTRA_FLAGS="$(EXTRA_CFLAGS) $(shell cat ./patches/kfeatures)" ZAPDIR=$(ZAPDIR_PRIV) ZAPHDLC=$(ZAPHDLC_PRIV) HOMEDIR=$(PWD) modules  
+ 
+-all_bin_kmod:  _checkzap _checksrc _cleanoldwanpipe _check_kver
++all_bin_kmod:  _checkzap _checksrc _check_kver
+ 	@if [ -e  $(PWD)/ast_build_dir ]; then \
+ 		rm -rf $(PWD)/ast_build_dir; \
+ 	fi
+@@ -181,7 +181,7 @@
+ 
+ 
+ #Clean utilites and kernel modules
+-clean: cleanup_local  clean_util _cleanoldwanpipe
++clean: cleanup_local  clean_util
+ 	$(MAKE) -C $(KDIR) SUBDIRS=$(WAN_DIR) clean
+ 	$(MAKE) -C api SUBDIRS=$(WAN_DIR) clean
+ 	@find patches/kdrivers -name '.*.cmd' | xargs rm -f
+@@ -294,12 +294,10 @@
+ 		echo "install -m 644 -D $(WAN_DIR)/wanpipe_lip.${MODTYPE} $(INSTALLPREFIX)/$(KINSTDIR)/net/wanrouter/wanpipe_lip.${MODTYPE}"; \
+ 		install -m 644 -D $(WAN_DIR)/wanpipe_lip.${MODTYPE} $(INSTALLPREFIX)/$(KINSTDIR)/net/wanrouter/wanpipe_lip.${MODTYPE}; \
+ 	fi
+-	@eval "./patches/rundepmod.sh"	
+-	
+ endif
+ 
+ #Compile utilities only
+-all_util:  install_inc
++all_util:
+ 	$(MAKE) -C util all EXTRA_FLAGS="$(EXTRA_UTIL_FLAGS)" SYSINC="$(PWD)/$(WINCLUDE) -I $(PWD)/api/libsangoma/include" CC=$(CC) \
+ 	PREFIX=$(INSTALLPREFIX) HOSTCFLAGS="$(EXTRA_UTIL_FLAGS)" ARCH=$(ARCH) 
+ 	$(MAKE) -C util all_wancfg EXTRA_FLAGS="$(EXTRA_UTIL_FLAGS)" SYSINC="$(PWD)/$(WINCLUDE) -I$(PWD)/api/libsangoma/include" CC=$(CC) \
