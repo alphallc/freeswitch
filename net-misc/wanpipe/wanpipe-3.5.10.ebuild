@@ -111,6 +111,9 @@ src_install() {
 	# remove bogus symlink
 	rm "${D}/usr/include/wanpipe/linux"
 
+	# remove trixbox setup script
+	rm -r "${D}/usr/local"
+
 	# fixup permissions
 	find "${D}/usr/include/wanpipe" -type f -exec chmod 644 {} \;
 }
