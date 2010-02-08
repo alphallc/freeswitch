@@ -1,0 +1,13 @@
+--- wanpipe-3.5.10/api/libstelephony/stel_tone/fsk.c.orig	2010-02-08 19:36:21.000000000 +0100
++++ wanpipe-3.5.10/api/libstelephony/stel_tone/fsk.c	2010-02-08 19:37:22.000000000 +0100
+@@ -237,8 +237,8 @@
+ 	}
+ 
+ 	if ((*handle)->attr.bytehandler) {
+-		dsp_uart_handle_t** dhandle = (dsp_uart_handle_t**)(&(*handle)->attr.bithandler_arg);
+-		dsp_uart_destroy(dhandle);
++		dsp_uart_handle_t* dhandle = (dsp_uart_handle_t*)((*handle)->attr.bithandler_arg);
++		dsp_uart_destroy(&dhandle);
+ 	}
+ 
+ 	free(*handle);

@@ -9,12 +9,12 @@ DESCRIPTION="Wanpipe driver for Sangoma PCI/PCIe Telephony Cards"
 HOMEPAGE="http://www.sangoma.com/"
 SRC_URI="ftp://ftp.sangoma.com/linux/current_wanpipe/${P}.tgz"
 
-IUSE=""
+IUSE="+dahdi"
 KEYWORDS="~x86"
 LICENSE=""
 SLOT="0"
 
-RDEPEND="net-misc/dahdi"
+RDEPEND="dahdi? ( net-misc/dahdi )"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/${P}"
@@ -29,7 +29,7 @@ src_prepare() {
 	###
 	# DAHDI: copy includes
 	#
-	if true; then
+	if use dahdi; then
 		mkdir -p "${S_DAHDI}"/{include,drivers/dahdi} || die "Failed to create directory for dahdi includes"
 		cp -R "${ROOT}/usr/include/dahdi" "${S_DAHDI}/include" || die "Failed to copy dahdi headers"
 
@@ -92,6 +92,9 @@ src_prepare() {
 	# Silence "jobserver unavailable" messages and QA warnings
 	epatch "${FILESDIR}/${P}-QA-fix-parallel-make.patch"
 
+	# Silence "stel_tone/fsk.c:240: warning: dereferencing type-punned pointer will break strict-aliasing rules"
+	epatch "${FILESDIR}/${P}-QA-fix-libstelephony.patch"
+
 #	# Remove some include paths
 #	sed -i -e "s:-I\$(INSTALLPREFIX)/include::; s:-I\$(INSTALLPREFIX)/usr/include::" \
 #		Makefile
@@ -102,11 +105,12 @@ src_compile() {
 	addread "${KERNEL_DIR}"
 
 	# Build everything
-	emake dahdi DAHDI_DIR="${S_DAHDI}" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || "Failed to build wanpipe"
+	emake all_src all_lib DAHDI_DIR="${S_DAHDI}" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || "Failed to build wanpipe"
 }
 
 src_install() {
-	emake install DESTDIR="${D}" || die "Failed to install wanpipe"
+	# install drivers, tools, headers and libs
+	emake install install_lib DESTDIR="${D}" || die "Failed to install wanpipe"
 
 	# remove bogus symlink
 	rm "${D}/usr/include/wanpipe/linux"
@@ -116,4 +120,27 @@ src_install() {
 
 	# fixup permissions
 	find "${D}/usr/include/wanpipe" -type f -exec chmod 644 {} \;
+
+	# empty, but used by wanpipe/-router scripts
+	keepdir /etc/wanpipe/{interfaces,scripts}
+
+	# remove duplicate wan_aftup binary from /etc/wanpipe...
+	# TODO: fixup Makefile
+	sed -i -e 's:\(\./\)\?wan_aftup:/usr/sbin/wan_aftup:g' \
+		"${D}/etc/wanpipe/util/wan_aftup/update_aft_firm.sh" || die "Failed to update update_aft_firm.sh"
+	rm "${D}/etc/wanpipe/util/wan_aftup/wan_aftup"
+
+	# find leftover files in /etc/wanpipe
+	find "${D}/etc/wanpipe" -type f -iname "Makefile" -exec rm {} \;
+
+	# clean up /etc/wanpipe/wancfg_zaptel
+	# (all these are already in /usr/sbin or useless)
+	for x in setup-sangoma wancfg_{zaptel,dahdi,tdmapi,openzap,fs,smg,hp_tdmapi} {clean,install,uninstall}.sh; do
+		rm "${D}/etc/wanpipe/wancfg_zaptel/${x}" || die "Failed to remove /etc/wanpipe/wancfg_zaptel/${x}"
+	done
+
+	# move samples to /usr/share/doc/...
+	dodir "/usr/share/doc/${PF}"
+	rm "${D}/etc/wanpipe/samples/clean.sh"
+	mv "${D}/etc/wanpipe/samples" "${D}/usr/share/doc/${PF}" || die "Failed to move samples to /usr/share/doc/${PF}"
 }
