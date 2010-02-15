@@ -981,7 +981,7 @@ pkg_config() {
 		#
 		# Fix permissions
 		#
-		fs_set_permissions "/"
+		fs_set_permissions "${ROOT:-/}"
 
 		einfo "Done"
 	else
