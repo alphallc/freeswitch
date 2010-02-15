@@ -649,6 +649,34 @@ esl_doperlmod() {
         ) || die "failed to install $@"
 }
 
+###
+# Set file and directory permissions
+#
+fs_set_permissions() {
+	local prefix="$1"
+
+	[ -z "${prefix}" ] && {
+		die "Usage: set_permissions <prefix>"
+	}
+
+	einfo "Setting file and directory permissions..."
+
+	# sysconfdir
+	chown -R root:freeswitch "${prefix}/etc/freeswitch"
+	chmod -R u=rwX,g=rX,o=   "${prefix}/etc/freeswitch"
+
+	# prefix
+	chown -R root:freeswitch "${prefix}/opt/freeswitch"
+	chmod -R u=rwX,g=rX,o=   "${prefix}/opt/freeswitch"
+	# allow read access for things like building external modules
+	chmod -R u=rwx,g=rx,o=rx "${prefix}/opt/freeswitch/"{lib*,bin,include}
+	chmod    u=rwx,g=rx,o=rx "${prefix}/opt/freeswitch"
+
+	# directories owned by the fs user
+	for x in db run log cores storage recordings; do
+		chown -R freeswitch:freeswitch "${prefix}/opt/freeswitch/${x}"
+	done
+}
 
 
 ###
@@ -875,26 +903,10 @@ src_install() {
 		doins libs/esl/libesl.a
 	fi
 
-
 	#
 	# 6. Fix permissions
 	#
-	einfo "Setting file and directory permissions..."
-
-	# sysconfdir
-	chown -R root:freeswitch "${D}/etc/freeswitch"
-	chmod -R u=rwX,g=rX,o=   "${D}/etc/freeswitch"
-
-	# prefix
-	chown -R root:freeswitch "${D}/opt/freeswitch"
-	chmod -R u=rwX,g=rX,o=   "${D}/opt/freeswitch"
-	# allow read access for things like building external modules
-	chmod -R u=rwx,g=rx,o=rx "${D}/opt/freeswitch/"{lib*,bin,include}
-	chmod    u=rwx,g=rx,o=rx "${D}/opt/freeswitch"
-
-	for x in db log cores storage recordings; do
-		chown -R freeswitch:freeswitch "${D}/opt/freeswitch/${x}"
-	done
+	fs_set_permissions "${D}"
 }
 
 pkg_preinst() {
@@ -969,22 +981,8 @@ pkg_config() {
 		#
 		# Fix permissions
 		#
-		einfo "Setting file and directory permissions..."
+		fs_set_permissions "/"
 
-		# sysconfdir
-		chown -R root:freeswitch "${ROOT}/etc/freeswitch"
-		chmod -R u=rwX,g=rX,o=   "${ROOT}/etc/freeswitch"
-
-		# prefix
-		chown -R root:freeswitch "${ROOT}/opt/freeswitch"
-		chmod -R u=rwX,g=rX,o=   "${ROOT}/opt/freeswitch"
-		# allow read access for things like building external modules
-		chmod -R u=rwx,g=rx,o=rx "${ROOT}/opt/freeswitch/"{lib*,bin,include}
-		chmod    u=rwx,g=rx,o=rx "${ROOT}/opt/freeswitch"
-
-		for x in db log cores storage recordings; do
-			chown -R freeswitch:freeswitch "${ROOT}/opt/freeswitch/${x}"
-		done
 		einfo "Done"
 	else
 		ewarn "Aborted"
