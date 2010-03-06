@@ -95,6 +95,11 @@ src_prepare() {
 	# Silence "stel_tone/fsk.c:240: warning: dereferencing type-punned pointer will break strict-aliasing rules"
 	epatch "${FILESDIR}/${P}-QA-fix-libstelephony.patch"
 
+#	# >=2.6.32
+#	if kernel_is -ge 2 6 32 ; then
+#		epatch "${FILESDIR}"/${P}-linux-2.6.32-hack.patch
+#	fi
+
 #	# Remove some include paths
 #	sed -i -e "s:-I\$(INSTALLPREFIX)/include::; s:-I\$(INSTALLPREFIX)/usr/include::" \
 #		Makefile
@@ -105,12 +110,12 @@ src_compile() {
 	addread "${KERNEL_DIR}"
 
 	# Build everything
-	emake all_src all_lib DAHDI_DIR="${S_DAHDI}" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || "Failed to build wanpipe"
+	emake all_src all_lib ARCH="$(tc-arch-kernel)" DAHDI_DIR="${S_DAHDI}" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || "Failed to build wanpipe"
 }
 
 src_install() {
 	# install drivers, tools, headers and libs
-	emake install install_lib DESTDIR="${D}" || die "Failed to install wanpipe"
+	emake install install_lib ARCH="$(tc-arch-kernel)" DESTDIR="${D}" || die "Failed to install wanpipe"
 
 	# remove bogus symlink
 	rm "${D}/usr/include/wanpipe/linux"

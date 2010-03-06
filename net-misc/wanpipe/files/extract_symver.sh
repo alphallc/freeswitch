@@ -32,8 +32,10 @@ esac
 
 find "$1" -type f -iname "*.ko" |\
 while read fn; do
+	elfclass="$(readelf -h "${fn}" | awk '/Class:/{ print $2 }')"
+
 	readelf -x __versions "$fn" |\
-	awk -v sym_module="${prefix}`basename ${fn/.ko}`" -v sym_license="${license}" '
+	awk -v sym_module="${prefix}`basename ${fn/.ko}`" -v sym_license="${license}" -v elf_class="${elfclass}" '
 		#
 		# sample readelf output:
 		#
@@ -60,8 +62,15 @@ while read fn; do
 		/0x[0-9a-f]+/{
 			sym_crc  = read_hex32($2);
 			sym_name = "";
-			line = substr($6, 5);
+			line = "";
 			off  = 1;
+
+			# 64bit has a different offset
+			if (elf_class == "ELF64") {
+				line = substr($6, 9);
+			} else {
+				line = substr($6, 5);
+			}
 
 			# filter (imported) symbols with emtpy crc
 			if (sym_crc == 0) {
