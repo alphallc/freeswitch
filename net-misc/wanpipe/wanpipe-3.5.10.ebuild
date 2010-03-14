@@ -95,6 +95,9 @@ src_prepare() {
 	# Silence "stel_tone/fsk.c:240: warning: dereferencing type-punned pointer will break strict-aliasing rules"
 	epatch "${FILESDIR}/${P}-QA-fix-libstelephony.patch"
 
+	# Silence gcc-4.4 "warning: format not a string literal and no format arguments"
+	epatch "${FILESDIR}/${P}-QA-fix-format-literal-warnings.patch"
+
 	# >=2.6.31
 	if kernel_is -ge 2 6 31 ; then
 		epatch "${FILESDIR}"/${P}-linux-2.6.31.patch
