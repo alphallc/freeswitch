@@ -1,0 +1,777 @@
+--- wanpipe-3.5.10/patches/kdrivers/src/wanrouter/af_wanpipe_datascope.c.orig	2009-08-25 20:44:41.000000000 +0000
++++ wanpipe-3.5.10/patches/kdrivers/src/wanrouter/af_wanpipe_datascope.c	2010-03-14 00:36:02.263312803 +0000
+@@ -231,8 +231,8 @@ int wanpipe_bind_sk_to_parent(struct soc
+ 		
+ 		ifr.ifr_data = (void*)parent_sk;
+ 		err=-EINVAL;
+-		if (dev->do_ioctl)
+-			err=dev->do_ioctl(dev,&ifr,SIOC_WANPIPE_BIND_SK);
++		if (dev->netdev_ops && dev->netdev_ops->ndo_do_ioctl)
++			err=dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_WANPIPE_BIND_SK);
+ 
+ 		if (err != 0){
+ 			DEBUG_EVENT("%s: Error: Dev busy with another protocol!\n",
+@@ -256,7 +256,7 @@ int wanpipe_bind_sk_to_parent(struct soc
+ 					PPRIV(parent_sk)->seven_bit_hdlc?7:8);
+ 
+ 		PPRIV(parent_sk)->time_slots = 
+-		                      dev->do_ioctl(dev,NULL,SIOC_WANPIPE_GET_TIME_SLOTS);
++		                      dev->netdev_ops->ndo_do_ioctl(dev,NULL,SIOC_WANPIPE_GET_TIME_SLOTS);
+ 		if (PPRIV(parent_sk)->time_slots < 0){
+ 			DEBUG_EVENT("%s: Error, failed to obtain time slots from driver!\n",
+ 					dev->name);
+@@ -265,7 +265,7 @@ int wanpipe_bind_sk_to_parent(struct soc
+ 		}
+ 		
+ 		PPRIV(parent_sk)->media      =
+-		                      dev->do_ioctl(dev,NULL,SIOC_WANPIPE_GET_MEDIA_TYPE);
++		                      dev->netdev_ops->ndo_do_ioctl(dev,NULL,SIOC_WANPIPE_GET_MEDIA_TYPE);
+ 		if (PPRIV(parent_sk)->media < 0){
+ 			DEBUG_EVENT("%s: Error, failed to obtain media type from driver!\n",
+ 					dev->name);
+@@ -302,7 +302,7 @@ int wanpipe_bind_sk_to_parent(struct soc
+ #endif
+ 		write_unlock_irqrestore(&wanpipe_parent_sklist_lock,flags);
+ 
+-		err=dev->do_ioctl(dev,&ifr,SIOC_WANPIPE_DEV_STATE);
++		err=dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_WANPIPE_DEV_STATE);
+ 		if (err == WANSOCK_CONNECTED){
+ 			parent_sk->sk_state = WANSOCK_CONNECTED;
+ 		}else{
+@@ -1726,12 +1726,12 @@ static void wanpipe_free_parent_sock(str
+ 	write_lock_irqsave(&PPRIV(sk)->lock,flags);
+ 
+ 	dev=SK_PRIV(sk)->dev;
+-	if (dev && dev->do_ioctl){
++	if (dev && dev->netdev_ops && dev->netdev_ops->ndo_do_ioctl){
+ 		struct ifreq ifr;
+ 		memset(&ifr,0,sizeof(struct ifreq));
+ 		ifr.ifr_data = (void*)sk;
+ 		DEBUG_TEST("%s: UNBINDING SK dev=%s\n",__FUNCTION__,dev->name);
+-		dev->do_ioctl(dev,&ifr,SIOC_WANPIPE_UNBIND_SK);
++		dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_WANPIPE_UNBIND_SK);
+ 	}
+ 
+ 	sk->sk_socket = NULL;
+--- wanpipe-3.5.10/patches/kdrivers/src/wanrouter/af_wanpipe_src.c.orig	2009-08-25 20:44:41.000000000 +0000
++++ wanpipe-3.5.10/patches/kdrivers/src/wanrouter/af_wanpipe_src.c	2010-03-14 00:36:02.265438668 +0000
+@@ -289,12 +289,12 @@ dev_private_ioctl:
+ 				if (!dev)
+ 					return -ENODEV;
+ 
+-				if (!dev->do_ioctl)
++				if (!dev->netdev_ops && !dev->netdev_ops->ndo_do_ioctl)
+ 					return -ENODEV;
+-				
++
+ 				ifr.ifr_data = (void*)arg;
+ 			
+-				return dev->do_ioctl(dev,&ifr,cmd);
++				return dev->netdev_ops->ndo_do_ioctl(dev,&ifr,cmd);
+ 			}
+ 
+ 			DEBUG_EVENT("%s: Ioctl call not supported DevPriv %i Cmd %i \n",
+@@ -426,7 +426,7 @@ static int wanpipe_listen_rcv (struct sk
+ 	/* Bind the new socket into the lower layer. The lower
+ 	 * layer will increment the sock reference count. */
+ 	ifr.ifr_data = (void*)newsk;
+-	if (!dev->do_ioctl || dev->do_ioctl(dev,&ifr,SIOC_ANNEXG_BIND_SK) != 0){
++	if (!dev->netdev_ops || !dev->netdev_ops->ndo_do_ioctl || dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_ANNEXG_BIND_SK) != 0){
+ 		wanpipe_kill_sock(newsk);
+ 		return -ENODEV;
+ 	}
+@@ -603,9 +603,9 @@ static int wanpipe_accept(struct socket 
+ 		if (wansk_is_zapped(newsk) && SK_PRIV(newsk) && 
+ 		   (dev = (struct net_device *)SK_PRIV(newsk)->dev)){
+ 
+-			if (dev && dev->do_ioctl){
++			if (dev && dev->netdev_ops && dev->netdev_ops->ndo_do_ioctl){
+ 				struct sock* dev_sk;
+-				dev->do_ioctl(dev,&ifr,SIOC_ANNEXG_GET_SK);
++				dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_ANNEXG_GET_SK);
+ 				
+ 				if ((dev_sk=(struct sock*)ifr.ifr_data)!=NULL){
+ 					__sock_put(dev_sk);
+@@ -623,8 +623,8 @@ static int wanpipe_accept(struct socket 
+ 				}
+ 
+ 				ifr.ifr_data=(void*)newsk;
+-				if (dev->do_ioctl(dev,&ifr,SIOC_ANNEXG_UNBIND_SK)==0){
+-					dev->do_ioctl(dev,NULL,SIOC_ANNEXG_CLEAR_CALL);	
++				if (dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_ANNEXG_UNBIND_SK)==0){
++					dev->netdev_ops->ndo_do_ioctl(dev,NULL,SIOC_ANNEXG_CLEAR_CALL);	
+ 				}
+ 			}else{
+ 				printk(KERN_INFO "af_wanpipe: Accept killing newsk, lower layer down!\n");
+@@ -916,7 +916,7 @@ static int wanpipe_sendmsg(struct socket
+ 	}
+ 
+ 	dev = (struct net_device *)SK_PRIV(sk)->dev;
+-	if (dev == NULL){
++	if (dev == NULL || dev->netdev_ops == NULL){
+ 		printk(KERN_INFO "af_wanpipe: Send failed, dev index: %i\n",ifindex);
+ 		return -ENXIO;
+ 	}
+@@ -973,7 +973,7 @@ static int wanpipe_sendmsg(struct socket
+ #endif
+ 
+ 	AF_SKB_DEC(skb->truesize);
+-	if (!dev->hard_start_xmit(skb,dev)){
++	if (!dev->netdev_ops->ndo_start_xmit(skb,dev)){
+ 		return(len);
+ 	}else{
+ 		err = -EBUSY;
+@@ -1082,11 +1082,11 @@ static void release_queued_pending_socke
+ 
+ 		if (SK_PRIV(deadsk)){
+ 			dev = (struct net_device *)SK_PRIV(deadsk)->dev;
+-			if (dev && dev->do_ioctl){
++			if (dev && dev->netdev_ops && dev->netdev_ops->ndo_do_ioctl){
+ 				struct ifreq ifr;
+ 				ifr.ifr_data=(void*)sk;
+-				if (dev->do_ioctl(dev,&ifr,SIOC_ANNEXG_UNBIND_SK)==0){
+-					dev->do_ioctl(dev,NULL,SIOC_ANNEXG_CLEAR_CALL);
++				if (dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_ANNEXG_UNBIND_SK)==0){
++					dev->netdev_ops->ndo_do_ioctl(dev,NULL,SIOC_ANNEXG_CLEAR_CALL);
+ 				}
+ 			}	
+ 		}
+@@ -1162,11 +1162,11 @@ static int wanpipe_release(struct socket
+ 
+ 		netdevice_t *dev = (struct net_device *)SK_PRIV(sk)->dev;
+ 		if (dev){
+-			if(dev->do_ioctl){
++			if(dev->netdev_ops && dev->netdev_ops->ndo_do_ioctl){
+ 				struct ifreq ifr;
+ 				ifr.ifr_data=(void*)sk;
+-				if (dev->do_ioctl(dev,&ifr,SIOC_ANNEXG_UNBIND_SK)==0){
+-					dev->do_ioctl(dev,NULL,SIOC_ANNEXG_CLEAR_CALL);
++				if (dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_ANNEXG_UNBIND_SK)==0){
++					dev->netdev_ops->ndo_do_ioctl(dev,NULL,SIOC_ANNEXG_CLEAR_CALL);
+ 				}
+ 			}
+ 		}else{
+@@ -1175,10 +1175,10 @@ static int wanpipe_release(struct socket
+ 	}else if (wansk_is_zapped(sk)){
+ 		netdevice_t *dev = (struct net_device *)SK_PRIV(sk)->dev;
+ 		if (dev){
+-			if(dev->do_ioctl){
++			if(dev->netdev_ops && dev->netdev_ops->ndo_do_ioctl){
+ 				struct ifreq ifr;
+ 				ifr.ifr_data=(void*)sk;
+-				dev->do_ioctl(dev,&ifr,SIOC_ANNEXG_UNBIND_SK);
++				dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_ANNEXG_UNBIND_SK);
+ 			}
+ 		}else{
+ 			DEBUG_EVENT("%s: No dev on pvc release !\n",__FUNCTION__);
+@@ -1465,8 +1465,8 @@ wanpipe_svc_listen_skip:
+ 		}
+ #endif
+ 		
+-		if (dev->do_ioctl)
+-			err=dev->do_ioctl(dev,&ifr,SIOC_ANNEXG_BIND_SK);
++		if (dev->netdev_ops && dev->netdev_ops->ndo_do_ioctl)
++			err=dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_ANNEXG_BIND_SK);
+ 		
+ 		if (err == 0){
+ 			sk->sk_bound_dev_if = dev->ifindex; 
+@@ -1478,7 +1478,7 @@ wanpipe_svc_listen_skip:
+ 			    SK_PRIV(sk)->num == htons(DSP_PROT)){
+ 				sk->sk_state = WANSOCK_DISCONNECTED;
+ 			}else{
+-				err=dev->do_ioctl(dev,&ifr,SIOC_WANPIPE_DEV_STATE);
++				err=dev->netdev_ops->ndo_do_ioctl(dev,&ifr,SIOC_WANPIPE_DEV_STATE);
+ 				if (err == WANSOCK_CONNECTED){
+ 					sk->sk_state = WANSOCK_CONNECTED;
+ 				}else{
+@@ -1508,8 +1508,9 @@ wanpipe_svc_listen_skip:
+  *      and adds the socket to the wanpipe_sk_list. 
+  *      Crates AF_WANPIPE socket.
+  *===========================================================*/
+-
+-#ifdef LINUX_FEAT_2624 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++int wanpipe_create(struct net *net, struct socket *sock, int protocol, int kern)
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,24)
+ int wanpipe_create(struct net *net, struct socket *sock, int protocol)
+ #else
+ int wanpipe_create(struct socket *sock, int protocol)
+@@ -1622,8 +1623,8 @@ static int wanpipe_recvmsg(struct socket
+ 
+ 	dev = (struct net_device *)SK_PRIV(sk)->dev;
+ 	if (dev){
+-		if (dev->do_ioctl){
+-			dev->do_ioctl(dev,NULL,SIOC_ANNEXG_KICK);
++		if (dev->netdev_ops && dev->netdev_ops->ndo_do_ioctl){
++			dev->netdev_ops->ndo_do_ioctl(dev,NULL,SIOC_ANNEXG_KICK);
+ 		}
+ 	}
+ 	
+@@ -1966,13 +1967,13 @@ static int wanpipe_connect(struct socket
+ 		return -ENETUNREACH;
+ 	}
+ 
+-	if (!dev->do_ioctl)
++	if (!dev->netdev_ops || !dev->netdev_ops->ndo_do_ioctl)
+ 		return -ENETUNREACH;
+ 
+ 	sock->state   = SS_CONNECTING;
+ 	sk->sk_state     = WANSOCK_CONNECTING;
+ 
+-	err=dev->do_ioctl(dev,NULL,SIOC_ANNEXG_PLACE_CALL);
++	err=dev->netdev_ops->ndo_do_ioctl(dev,NULL,SIOC_ANNEXG_PLACE_CALL);
+ 	if (err){
+ 		sk->sk_state   = WANSOCK_DISCONNECTED;	
+ 		sock->state = SS_UNCONNECTED;
+--- wanpipe-3.5.10/patches/kdrivers/src/net/wanpipe_linux_iface.c.orig	2009-08-25 20:44:41.000000000 +0000
++++ wanpipe-3.5.10/patches/kdrivers/src/net/wanpipe_linux_iface.c	2010-03-14 00:36:02.266146771 +0000
+@@ -130,6 +130,32 @@ static void wan_iface_free(netdevice_t* 
+ }
+ 
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++const static struct net_device_ops wan_netdev_ops = {
++	.ndo_init               = &wan_iface_eth_init,
++	.ndo_get_stats		= &wan_iface_get_stats,
++	.ndo_do_ioctl		= &wan_iface_ioctl,
++	.ndo_open		= &wan_iface_open,
++	.ndo_stop		= &wan_iface_close,
++	.ndo_start_xmit		= &wan_iface_send,
++	.ndo_get_stats		= &wan_iface_get_stats,
++	.ndo_tx_timeout		= &wan_iface_tx_timeout,
++	.ndo_change_mtu		= &wan_iface_change_mtu
++};
++const static struct net_device_ops wan_netdev_ops_eth = {
++	.ndo_init               = &wan_iface_init,
++	.ndo_get_stats		= &wan_iface_get_stats,
++	.ndo_do_ioctl		= &wan_iface_ioctl,
++	.ndo_open		= &wan_iface_open,
++	.ndo_stop		= &wan_iface_close,
++	.ndo_start_xmit		= &wan_iface_send,
++	.ndo_get_stats		= &wan_iface_get_stats,
++	.ndo_tx_timeout		= &wan_iface_tx_timeout,
++	.ndo_change_mtu		= &wan_iface_change_mtu
++};
++#endif
++
++
+ static int wan_iface_attach_eth (netdevice_t* dev, char *ifname, int is_netdev)
+ {
+ 	int err = 0;
+@@ -137,7 +163,11 @@ static int wan_iface_attach_eth (netdevi
+ 		if (ifname){
+ 			wan_netif_init(dev, ifname);
+ 		}
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++		dev->netdev_ops = &wan_netdev_ops_eth;
++#else
+ 		dev->init = &wan_iface_eth_init;
++#endif
+ 		err=register_netdev(dev);
+ 	}else{
+ #ifdef CONFIG_PRODUCT_WANPIPE_GENERIC
+@@ -154,7 +184,11 @@ static int wan_iface_attach_eth (netdevi
+ 	if (err){
+ 		DEBUG_EVENT("%s: Failed to register interface (%d)\n",
+ 					wan_netif_name(dev), err);
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++		dev->netdev_ops = NULL;
++#else
+ 		dev->init = NULL;
++#endif
+ 		*(dev->name) = 0;
+ 		wan_netif_free(dev);
+ 		return -EINVAL;
+@@ -170,7 +204,11 @@ static int wan_iface_attach (netdevice_t
+ 		if (ifname){
+ 			wan_netif_init(dev, ifname);
+ 		}
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++		dev->netdev_ops = &wan_netdev_ops;
++#else
+ 		dev->init = &wan_iface_init;
++#endif
+ 		err=register_netdev(dev);
+ 	}else{
+ #ifdef CONFIG_PRODUCT_WANPIPE_GENERIC
+@@ -187,7 +225,11 @@ static int wan_iface_attach (netdevice_t
+ 	if (err){
+ 		DEBUG_EVENT("%s: Failed to register interface (%d)\n",
+ 					wan_netif_name(dev), err);
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++		dev->netdev_ops = NULL;
++#else
+ 		dev->init = NULL;
++#endif
+ 		*(dev->name) = 0;
+ 		wan_netif_free(dev);
+ 		return -EINVAL;
+@@ -217,19 +259,20 @@ static void wan_iface_detach (netdevice_
+ static int wan_iface_init(netdevice_t* dev)
+ {
+ //	dev->priv = NULL;	/* We need 'priv', hdlc doesn't */
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
+ 	dev->get_stats		= &wan_iface_get_stats;
+ 	dev->do_ioctl		= &wan_iface_ioctl;
+ 	dev->open		= &wan_iface_open;
+ 	dev->stop		= &wan_iface_close;
+-
+ 	dev->hard_start_xmit	= &wan_iface_send;
+ 	dev->get_stats		= &wan_iface_get_stats;
+ 	dev->tx_timeout		= &wan_iface_tx_timeout;
+ 	dev->change_mtu		= &wan_iface_change_mtu;
++	dev->set_config		= NULL;
++#endif
+ 
+ 	dev->watchdog_timeo	= HZ*2;
+ 	dev->hard_header_len	= 32;
+-	dev->set_config		= NULL;
+ 	
+ 	/* Initialize media-specific parameters */
+ 	dev->flags		|= IFF_POINTOPOINT;
+@@ -261,6 +304,7 @@ static int wan_iface_eth_init(netdevice_
+ 	int hw_addr=0;
+ 
+ //	dev->priv = NULL;	/* We need 'priv', hdlc doesn't */
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
+ 	dev->get_stats		= &wan_iface_get_stats;
+ 	dev->do_ioctl		= &wan_iface_ioctl;
+ 	dev->open		= &wan_iface_open;
+@@ -268,9 +312,10 @@ static int wan_iface_eth_init(netdevice_
+ 	dev->hard_start_xmit	= &wan_iface_send;
+ 	dev->get_stats		= &wan_iface_get_stats;
+ 	dev->tx_timeout		= &wan_iface_tx_timeout;
++	dev->set_config		= NULL;
++#endif
+ 	dev->watchdog_timeo	= HZ*2;
+ 	dev->hard_header_len	= 32;
+-	dev->set_config		= NULL;
+ 	
+ 	if (!dev->mtu) {
+ 		dev->mtu		= 1500;
+--- wanpipe-3.5.10/patches/kdrivers/src/net/aft_core.c.orig	2009-12-24 17:18:00.000000000 +0000
++++ wanpipe-3.5.10/patches/kdrivers/src/net/aft_core.c	2010-03-14 00:37:02.018438081 +0000
+@@ -264,6 +264,7 @@ static int aft_rx_copyback=500;
+ static int gcnt=0;
+ #endif
+ 
++
+ /*=================================================================
+  * Function Prototypes
+  *================================================================*/
+@@ -439,6 +440,27 @@ extern void 	wan_ng_link_state(wanpipe_c
+  int set_netdev_state(sdla_t* card, netdevice_t* dev, int state);
+ #endif
+ 
++
++#if defined(__LINUX__)
++# if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++static struct net_device_ops if_ops = {
++	.ndo_init		= &if_init,
++	.ndo_open		= &if_open,
++	.ndo_stop		= &if_close,
++/*	.ndo_tx_timeout		= &if_tx_timeout, */
++/*	.ndo_start_xmit		= &if_send, */
++	.ndo_get_stats		= &if_stats,
++	.ndo_do_ioctl		= &if_do_ioctl,
++	.ndo_change_mtu		= &if_change_mtu
++
++};
++
++static struct net_device_ops if_init_ops = {
++	.ndo_init		= &if_init
++};
++# endif
++#endif
++
+ /*=================================================================
+  * Public Functions
+  *================================================================*/
+@@ -2769,7 +2791,11 @@ static int new_if_private (wan_device_t*
+ 	 * finished successfully.  DO NOT place any code below that
+ 	 * can return an error */
+ #if defined(__LINUX__) || defined(__WINDOWS__)
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
+ 	dev->init = &if_init;
++#else
++	dev->netdev_ops = &if_init_ops;
++#endif
+ # if defined(CONFIG_PRODUCT_WANPIPE_GENERIC)
+ 	if_init(dev);
+ # endif
+@@ -3612,8 +3638,6 @@ static void disable_comm (sdla_t *card)
+  *
+  ********************************************************************/
+ 
+-
+-
+ /*============================================================================
+  * if_init - Initialize Linux network interface.
+  *
+@@ -3640,27 +3664,45 @@ static int if_init (netdevice_t* dev)
+ #endif
+ 
+ 	/* Initialize device driver entry points */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	dev->netdev_ops		= &if_ops;
++#else
+ 	dev->open		= &if_open;
+ 	dev->stop		= &if_close;
++	dev->get_stats		= &if_stats;
++	dev->do_ioctl		= &if_do_ioctl;
++	dev->change_mtu		= &if_change_mtu;
++#endif
+ #if defined(CONFIG_PRODUCT_WANPIPE_GENERIC)
+ 	hdlc		= dev_to_hdlc(dev);
+ 	hdlc->xmit 	= if_send;
+ #else
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	if_ops.ndo_start_xmit   = &if_send;
++#else
+ 	dev->hard_start_xmit	= &if_send;
+ #endif
+-	dev->get_stats		= &if_stats;
++#endif
+ 
+ #if 0
+ 	dev->tx_timeout		= &if_tx_timeout;
+ 	dev->watchdog_timeo	= 2*HZ;
+ #else
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	if (chan->common.usedby == TDM_VOICE ||
++	    chan->common.usedby == TDM_VOICE_API){
++		if_ops.ndo_tx_timeout	= NULL;
++	}else{
++		if_ops.ndo_tx_timeout	= &if_tx_timeout;
++	}
++#else
+ 	if (chan->common.usedby == TDM_VOICE ||
+ 	    chan->common.usedby == TDM_VOICE_API){
+ 		dev->tx_timeout		= NULL;
+ 	}else{
+ 		dev->tx_timeout		= &if_tx_timeout;
+ 	}
+-
++#endif
+ 	dev->watchdog_timeo	= 2*HZ;
+ 	{
+ 		u32 secs = ((chan->max_tx_bufs/2)*chan->dma_mru*8) / (64000 * chan->num_of_time_slots);
+@@ -3674,8 +3716,6 @@ static int if_init (netdevice_t* dev)
+ 	}
+ 
+ #endif
+-	dev->do_ioctl		= if_do_ioctl;
+-	dev->change_mtu		= if_change_mtu;
+ 
+ 	if (chan->common.usedby == BRIDGE ||
+             chan->common.usedby == BRIDGE_NODE){
+--- wanpipe-3.5.10/patches/kdrivers/src/net/wanpipe_usb.c.orig	2009-11-16 22:49:30.000000000 +0000
++++ wanpipe-3.5.10/patches/kdrivers/src/net/wanpipe_usb.c	2010-03-14 00:36:02.275439125 +0000
+@@ -164,6 +164,22 @@ static void wp_usb__task (void * card_pt
+ #endif  
+ static void wp_usb_isr(void *arg);
+ 
++#if defined(__LINUX__)
++# if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++static struct net_device_ops if_ops = {
++	.ndo_init		= &wp_usb_if_init,
++	.ndo_open		= &wp_usb_if_open,
++	.ndo_stop		= &wp_usb_if_close,
++	.ndo_start_xmit		= &wp_usb_if_send,
++	.ndo_get_stats		= &wp_usb_if_stats,
++	.ndo_do_ioctl		= &wp_usb_if_do_ioctl
++};
++
++static struct net_device_ops if_init_ops = {
++	.ndo_init		= &wp_usb_if_init
++};
++# endif
++#endif
+ 
+ /*****************************************************************************
+ *                       FUNCTION DEFINITIONS
+@@ -356,7 +372,11 @@ wp_usb_new_if_private (wan_device_t* wan
+ 	chan->time_slot_map=conf->active_ch;
+ 
+ #if defined(__LINUX__)
++# if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	dev->netdev_ops = &if_init_ops;
++# else
+ 	dev->init = &wp_usb_if_init;
++# endif
+ # if defined(CONFIG_PRODUCT_WANPIPE_GENERIC)
+ 	wp_usb_if_init(dev);
+ # endif
+@@ -762,28 +782,35 @@ static void wp_usb_disable_comm (sdla_t 
+ 	return;
+ }
+ 
+-
+ #if defined(__LINUX__)
+ static int wp_usb_if_init (netdevice_t* dev)
+ {
+ 	wp_usb_softc_t	*chan = wan_netif_priv(dev);
+ 	
+ 	/* Initialize device driver entry points */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	dev->netdev_ops		= &if_ops;
++#else
+ 	dev->open		= &wp_usb_if_open;
+ 	dev->stop		= &wp_usb_if_close;
+ 	dev->hard_start_xmit	= &wp_usb_if_send;
+ 	dev->get_stats		= &wp_usb_if_stats;
+-
++#endif
+ 	if (chan->common.usedby == TDM_VOICE || 
+ 	    chan->common.usedby == TDM_VOICE_API){
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++		if_ops.ndo_tx_timeout	= NULL;
++	} else {
++		if_ops.ndo_tx_timeout	= &wp_usb_if_tx_timeout;
++	}
++#else
+ 		dev->tx_timeout		= NULL;
+-	}else{
++	} else {
+ 		dev->tx_timeout		= &wp_usb_if_tx_timeout;
+ 	}
+-	dev->watchdog_timeo	= 2*HZ;
+-		
+-	dev->do_ioctl		= wp_usb_if_do_ioctl;
+-
++	dev->do_ioctl	= wp_usb_if_do_ioctl;
++#endif
++	dev->watchdog_timeo = 2*HZ;
+ 	dev->flags     |= IFF_POINTOPOINT;
+ 	dev->flags     |= IFF_NOARP;
+ 	dev->type	= ARPHRD_PPP;
+--- wanpipe-3.5.10/patches/kdrivers/src/net/sdla_tdmv.c.orig	2009-12-07 22:16:05.000000000 +0000
++++ wanpipe-3.5.10/patches/kdrivers/src/net/sdla_tdmv.c	2010-03-14 00:36:02.277145454 +0000
+@@ -2455,7 +2455,11 @@ static void wp_tdmv_tx_hdlc_hard(struct 
+ 		DEBUG_ERROR("%s: ERROR: TX HW DCHAN %d bytes (res %d)\n",
+ 					wp->devname, size, res);
+ 	}
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	err = wp->dchan_dev->netdev_ops->ndo_start_xmit(skb, wp->dchan_dev);
++#else
+ 	err = wp->dchan_dev->hard_start_xmit(skb, wp->dchan_dev);
++#endif
+ 	if (err){
+ 		wan_skb_free(skb);
+ 	}
+--- wanpipe-3.5.10/patches/kdrivers/src/net/sdla_aft_te3.c.orig	2009-11-16 22:44:38.000000000 +0000
++++ wanpipe-3.5.10/patches/kdrivers/src/net/sdla_aft_te3.c	2010-03-14 00:36:02.282147049 +0000
+@@ -417,6 +417,21 @@ static void xilinx_delay(int sec)
+ #endif
+ }
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++static struct net_device_ops if_ops = {
++	.ndo_init		= &if_init,
++	.ndo_open		= &if_open,
++	.ndo_stop		= &if_close,
++	.ndo_get_stats		= &if_stats,
++	.ndo_do_ioctl		= &if_do_ioctl,
++	.ndo_change_mtu		= &if_change_mtu
++};
++
++static struct net_device_ops if_init_ops = {
++	.ndo_init		= &if_init
++};
++#endif
++
+ /**SECTION*********************************************************
+  *
+  * Public Functions
+@@ -997,7 +1012,11 @@ static int new_if (wan_device_t* wandev,
+ 	 * can return an error */
+ 	wan_netif_set_priv(dev,chan);
+ #if defined(__LINUX__)
++# if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
+ 	dev->init = &if_init;
++# else
++	dev->netdev_ops = &if_init_ops;
++# endif
+ # ifdef WANPIPE_GENERIC
+ 	if_init(dev);
+ # endif
+@@ -1150,8 +1169,6 @@ static int del_if (wan_device_t* wandev,
+  *
+  ********************************************************************/
+ 
+-
+-
+ /*============================================================================
+  * if_init - Initialize Linux network interface.
+  *
+@@ -1176,23 +1193,35 @@ static int if_init (netdevice_t* dev)
+ #ifdef WANPIPE_GENERIC
+ 	hdlc_device*	hdlc;
+ #endif
+-
+ 	/* Initialize device driver entry points */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	dev->netdev_ops		= &if_ops;
++#else
+ 	dev->open		= &if_open;
+ 	dev->stop		= &if_close;
++	dev->get_stats		= &if_stats;
++	dev->do_ioctl		= if_do_ioctl;
++	dev->change_mtu		= if_change_mtu;
++#endif
+ #ifdef WANPIPE_GENERIC
+ 	hdlc		= dev_to_hdlc(dev);
+ 	hdlc->xmit 	= if_send;
+ #else
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	if_ops.ndo_start_xmit	= &if_send;
++#else
+ 	dev->hard_start_xmit	= &if_send;
+ #endif
+-	dev->get_stats		= &if_stats;
++#endif /* !WANPIPE_GENERIC */
++
+ #if defined(LINUX_2_4)||defined(LINUX_2_6)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	if_ops.ndo_tx_timeout	= &if_tx_timeout;
++#else
+ 	dev->tx_timeout		= &if_tx_timeout;
++#endif
+ 	dev->watchdog_timeo	= 2*HZ;
+ #endif
+-	dev->do_ioctl		= if_do_ioctl;
+-	dev->change_mtu		= if_change_mtu;
+ 
+ 	if (chan->common.usedby == BRIDGE ||
+             chan->common.usedby == BRIDGE_NODE){
+--- wanpipe-3.5.10/patches/kdrivers/src/net/sdla_xilinx.c.orig	2009-12-16 21:29:46.000000000 +0000
++++ wanpipe-3.5.10/patches/kdrivers/src/net/sdla_xilinx.c	2010-03-14 00:36:02.286145729 +0000
+@@ -476,6 +476,23 @@ int wp_xilinx_default_ifcfg(sdla_t* card
+ }
+ 
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++static struct net_device_ops if_ops = {
++	.ndo_init		= &if_init,
++	.ndo_open		= &wanpipe_xilinx_open,
++	.ndo_stop		= &wanpipe_xilinx_close,
++	.ndo_start_xmit		= &wanpipe_xilinx_send,
++	.ndo_get_stats		= &wanpipe_xilinx_ifstats,
++	.ndo_do_ioctl		= &wanpipe_xilinx_ioctl,
++/*	.ndo_tx_timeout		= &wanpipe_xilinx_tx_timeout */
++};
++
++static struct net_device_ops if_init_ops = {
++	.ndo_init		= &if_init,
++};
++#endif
++
++
+ /*============================================================================
+ * wp_xilinx_init - Cisco HDLC protocol initialization routine.
+ *
+@@ -1739,7 +1756,11 @@ static int new_if_private (wan_device_t*
+ 
+ 
+ #if defined(__LINUX__) || defined(__WINDOWS__)
++# if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
+ 	dev->init = &if_init;
++# else
++	dev->netdev_ops = &if_init_ops;
++# endif
+ # ifdef CONFIG_PRODUCT_WANPIPE_GENERIC
+ 	if_init(dev);
+ # endif
+@@ -2096,8 +2117,6 @@ static int del_if (wan_device_t* wandev,
+ *
+ ********************************************************************/
+ 
+-
+-
+ /*============================================================================
+ * if_init - Initialize Linux network interface.
+ *
+@@ -2124,22 +2143,34 @@ static int if_init (netdevice_t* dev)
+ 	/* Initialize device driver entry points */
+ #if defined(__LINUX__) || defined(__WINDOWS__)
+ # ifndef CONFIG_PRODUCT_WANPIPE_GENERIC
++#  if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	dev->netdev_ops		= &if_ops;
++#  else
+ 	dev->open		= &wanpipe_xilinx_open;
+ 	dev->stop		= &wanpipe_xilinx_close;
+ 	dev->hard_start_xmit	= &wanpipe_xilinx_send;
+ 	dev->get_stats		= &wanpipe_xilinx_ifstats;
+-
++#  endif
+ #  if defined(LINUX_2_4)||defined(LINUX_2_6)
+ 	if (chan->common.usedby == TDM_VOICE ||
+ 		chan->common.usedby == TDM_VOICE_DCHAN ||
+ 		chan->common.usedby == TDM_VOICE_API) {
+-			dev->tx_timeout		= NULL;
++#   if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++		if_ops.ndo_tx_timeout	= NULL;
++	} else {
++		if_ops.ndo_tx_timeout	= &wanpipe_xilinx_tx_timeout;
++	}
++#   else
++		dev->tx_timeout		= NULL;
+ 	} else {
+ 		dev->tx_timeout		= &wanpipe_xilinx_tx_timeout;
+ 	}
++#   endif
+ 	dev->watchdog_timeo	= 2*HZ;
+ #  endif
++#  if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,31)
+ 	dev->do_ioctl		= wanpipe_xilinx_ioctl;
++#  endif
+ # endif
+ 
+ 	if (chan->common.usedby == BRIDGE ||
+--- wanpipe-3.5.10/patches/kdrivers/src/net/wanpipe_syncppp.c.orig	2009-08-25 20:44:41.000000000 +0000
++++ wanpipe-3.5.10/patches/kdrivers/src/net/wanpipe_syncppp.c	2010-03-14 00:36:02.289438670 +0000
+@@ -2230,6 +2230,16 @@ int wp_sppp_do_ioctl(struct net_device *
+ 
+ EXPORT_SYMBOL(wp_sppp_do_ioctl);
+ 
++static struct net_device_ops if_ops = {
++	.ndo_do_ioctl		= &wp_sppp_do_ioctl,
++#if 0
++	.ndo_get_stats		= NULL,		/* Let the driver override these */
++	.ndo_open		= &wp_sppp_open,
++	.ndo_stop		= &wp_sppp_close,
++#endif	
++	.ndo_change_mtu		= &wp_sppp_change_mtu
++};
++
+ /**
+  *	wp_sppp_attach - attach synchronous PPP/HDLC to a device
+  *	@pd:	PPP device to initialise
+@@ -2313,20 +2323,20 @@ void wp_sppp_attach(struct ppp_device *p
+ 	dev->addr_len = 0;
+ 	dev->hard_header_len = sizeof(struct ppp_header);
+ 	dev->mtu = PPP_MTU;
++	dev->flags = IFF_MULTICAST|IFF_POINTOPOINT|IFF_NOARP;
+ 	/*
+ 	 *	These 4 are callers but MUST also call sppp_ functions
+ 	 */
+-	dev->do_ioctl = wp_sppp_do_ioctl;
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
++	dev->netdev_ops = &if_ops;
++#else
++	dev->do_ioctl   = wp_sppp_do_ioctl;
++	dev->change_mtu = wp_sppp_change_mtu;
++#endif
+ #if 0
+ 	dev->get_stats = NULL;		/* Let the driver override these */
+ 	dev->open = wp_sppp_open;
+ 	dev->stop = wp_sppp_close;
+-#endif	
+-	dev->change_mtu = wp_sppp_change_mtu;
+-	
+-	dev->flags = IFF_MULTICAST|IFF_POINTOPOINT|IFF_NOARP;
+-	
+-#if 0				
+ 	dev_init_buffers(dev);	/* Let the driver do this */
+ #endif
+ }

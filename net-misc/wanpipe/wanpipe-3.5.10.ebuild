@@ -95,10 +95,10 @@ src_prepare() {
 	# Silence "stel_tone/fsk.c:240: warning: dereferencing type-punned pointer will break strict-aliasing rules"
 	epatch "${FILESDIR}/${P}-QA-fix-libstelephony.patch"
 
-#	# >=2.6.32
-#	if kernel_is -ge 2 6 32 ; then
-#		epatch "${FILESDIR}"/${P}-linux-2.6.32-hack.patch
-#	fi
+	# >=2.6.31
+	if kernel_is -ge 2 6 31 ; then
+		epatch "${FILESDIR}"/${P}-linux-2.6.31.patch
+	fi
 
 #	# Remove some include paths
 #	sed -i -e "s:-I\$(INSTALLPREFIX)/include::; s:-I\$(INSTALLPREFIX)/usr/include::" \
