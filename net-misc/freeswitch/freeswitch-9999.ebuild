@@ -34,7 +34,7 @@ IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 IUSE_MODULES="alsa amr amrwb bv +cdr_csv celt cepstral cidlookup cluechoo +console curl dialplan_asterisk dialplan_directory
 distributor easyroute erlang_event fax file_string flite +g723_1 g729 h26x +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
 managed memcache nibblebill opal openzap perl pocketsphinx portaudio portaudio_stream python radius_cdr
-say_de +say_en say_es say_fr say_it say_nl say_ru say_zh shell_stream shout siren skypiax snapshot +sndfile +sofia +speex
+say_de +say_en say_es say_fr say_it say_nl say_ru say_zh shell_stream shout siren skypopen snapshot +sndfile +sofia +speex
 spidermonkey spy +syslog +tone_stream tts_commandline unimrcp valet_parking vmd +voipcodecs
 xml_cdr xml_curl xml_ldap xml_rpc yaml"
 
@@ -64,7 +64,7 @@ MODULES_RDEPEND="
 	freeswitch_modules_nibblebill? ( dev-db/unixODBC )
 	freeswitch_modules_easyroute? ( dev-db/unixODBC )
 	freeswitch_modules_lcr? ( dev-db/unixODBC )
-	freeswitch_modules_skypiax? ( x11-base/xorg-server x11-apps/xhost net-im/skype media-fonts/font-misc-misc media-fonts/font-cursor-misc )
+	freeswitch_modules_skypopen? ( x11-base/xorg-server x11-apps/xhost net-im/skype media-fonts/font-misc-misc media-fonts/font-cursor-misc )
 	freeswitch_modules_memcache? ( net-misc/memcached )
 	freeswitch_modules_erlang_event? ( dev-lang/erlang )
 	freeswitch_modules_shout? ( media-libs/libogg )
@@ -846,11 +846,11 @@ src_install() {
 
 	# TODO: install contributed stuff
 
-	# mod_skypiax sample config & helper files
-	if fs_use freeswitch_modules_skypiax ; then
-		docinto skypiax
-		dodoc   "${S}/src/mod/endpoints/mod_skypiax/README"
-		dodoc   "${S}/src/mod/endpoints/mod_skypiax/configs/"*
+	# mod_skypopen sample config & helper files
+	if fs_use freeswitch_modules_skypopen ; then
+		docinto skypopen
+		dodoc   "${S}/src/mod/endpoints/mod_skypopen/README"
+		dodoc   "${S}/src/mod/endpoints/mod_skypopen/configs/"*
 	fi
 
 	#
@@ -951,9 +951,9 @@ pkg_postinst() {
 	einfo "    http://wiki.freeswitch.org/"
 	echo
 
-	# skypiax setup guide
-	if use freeswitch_modules_skypiax ; then
-		einfo "To setup the Skype endpoint module mod_skypiax and the Skype client,"
+	# skypopen setup guide
+	if use freeswitch_modules_skypopen ; then
+		einfo "To setup the Skype endpoint module mod_skypopen and the Skype client,"
 		einfo "follow the instructions in the guide:"
 		einfo
 		einfo "  http://wiki.freeswitch.org/wiki/Skypiax"
