@@ -39,8 +39,9 @@ src_compile() {
 	emake || die "emake failed"
 
 	# build API documentation
-	use doc && \
+	if use doc ; then
 		emake doxygen || die "building API docs failed"
+	fi
 }
 
 src_install() {
