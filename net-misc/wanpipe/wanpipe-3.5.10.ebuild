@@ -98,6 +98,9 @@ src_prepare() {
 	# Silence gcc-4.4 "warning: format not a string literal and no format arguments"
 	epatch "${FILESDIR}/${P}-QA-fix-format-literal-warnings.patch"
 
+	# Silence gcc-4.4 "warning: deprecated conversion from string constant to 'char*'"
+	epatch "${FILESDIR}/${P}-QA-fix-const-char-warnings.patch"
+
 	# >=2.6.31
 	if kernel_is -ge 2 6 31 ; then
 		epatch "${FILESDIR}"/${P}-linux-2.6.31.patch
@@ -118,7 +121,7 @@ src_compile() {
 
 src_install() {
 	# install drivers, tools, headers and libs
-	emake install install_lib ARCH="$(tc-arch-kernel)" DESTDIR="${D}" || die "Failed to install wanpipe"
+	emake install install_lib ARCH="$(tc-arch-kernel)" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || die "Failed to install wanpipe"
 
 	# remove bogus symlink
 	rm "${D}/usr/include/wanpipe/linux"
