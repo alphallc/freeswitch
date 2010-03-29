@@ -34,7 +34,7 @@ IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 IUSE_MODULES="alsa amr amrwb bv +cdr_csv celt cepstral cidlookup cluechoo +console curl dialplan_asterisk dialplan_directory
 distributor easyroute erlang_event fax file_string flite +g723_1 g729 h26x +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
 managed memcache nibblebill opal openzap perl pocketsphinx portaudio portaudio_stream python radius_cdr
-say_de +say_en say_es say_fr say_it say_nl say_ru say_zh shell_stream shout siren skypopen snapshot +sndfile +sofia +speex
+say_de +say_en say_es say_fr say_it say_nl say_ru say_zh shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +speex
 spidermonkey spy +syslog +tone_stream tts_commandline unimrcp valet_parking vmd +voipcodecs
 xml_cdr xml_curl xml_ldap xml_rpc yaml"
 
@@ -772,7 +772,7 @@ src_compile() {
 	# 2. build everything
 	#
 	einfo "Building freeswitch... (this can take a long time)"
-	emake MONO_SHARED_DIR="${T}" || die "building freeswitch failed"
+	emake -j1 MONO_SHARED_DIR="${T}" || die "building freeswitch failed"
 
 	#
 	# 3. build esl modules
@@ -783,12 +783,12 @@ src_compile() {
 		esl_lang="${esl_lang#*-}"
 
 		einfo "Building esl module for ${esl_lang}..."
-		emake -C libs/esl "$(esl_modname "${esl_lang}")" || die "Failed to build esl module for language \"${esl_lang}\""
+		emake -j1 -C libs/esl "$(esl_modname "${esl_lang}")" || die "Failed to build esl module for language \"${esl_lang}\""
 	done
 
 	if use esl; then
 		einfo "Building libesl..."
-		emake -C libs/esl || die "Failed to build libesl"
+		emake -j1 -C libs/esl || die "Failed to build libesl"
 	fi
 }
 
@@ -800,7 +800,7 @@ src_install() {
 	# 1. Install core
 	#
 	einfo "Installing freeswitch core and modules..."
-	make install DESTDIR="${D}" MONO_SHARED_DIR="${T}" || die "Installation of freeswitch core failed"
+	make -j1 install DESTDIR="${D}" MONO_SHARED_DIR="${T}" || die "Installation of freeswitch core failed"
 
 	#
 	# 2. Documentation, sample config files, ...
