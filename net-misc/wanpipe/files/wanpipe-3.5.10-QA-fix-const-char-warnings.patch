@@ -1,0 +1,93 @@
+diff -Naurp wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_cpld.c wanpipe-3.5.10/firmware/wan_aftup/wan_aft_cpld.c
+--- wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_cpld.c	2009-08-25 20:44:41.000000000 +0000
++++ wanpipe-3.5.10/firmware/wan_aftup/wan_aft_cpld.c	2010-03-14 02:07:48.802079460 +0000
+@@ -163,7 +163,7 @@ struct flash_spec_t {
+ extern int	verbose;
+ extern int	card_type;
+ 
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ /*
+  ******************************************************************************
+ 			  FUNCTION PROTOTYPES
+diff -Naurp wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_flash.c wanpipe-3.5.10/firmware/wan_aftup/wan_aft_flash.c
+--- wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_flash.c	2009-12-16 21:31:07.000000000 +0000
++++ wanpipe-3.5.10/firmware/wan_aftup/wan_aft_flash.c	2010-03-14 02:05:34.252063454 +0000
+@@ -74,7 +74,7 @@ extern int	card_type;
+ extern int	exec_read_cmd(void*,unsigned int, unsigned int, unsigned int*);
+ extern int	exec_write_cmd(void*,unsigned int, unsigned int, unsigned int);
+ extern void	hit_any_key(void);
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ 
+ static int aft_reset_flash(wan_aft_cpld_t *cpld);
+ static int aft_is_protected(wan_aft_cpld_t *cpld, int stype);
+diff -Naurp wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_flash_a600.c wanpipe-3.5.10/firmware/wan_aftup/wan_aft_flash_a600.c
+--- wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_flash_a600.c	2009-12-16 21:31:02.000000000 +0000
++++ wanpipe-3.5.10/firmware/wan_aftup/wan_aft_flash_a600.c	2010-03-14 02:07:55.154064039 +0000
+@@ -48,7 +48,7 @@ aftup_flash_t	aft_a600_flash = {  0x014F
+ 
+ extern int	verbose;
+ 
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ /*
+  ******************************************************************************
+ 			  FUNCTION PROTOTYPES
+diff -Naurp wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_flash_shark.c wanpipe-3.5.10/firmware/wan_aftup/wan_aft_flash_shark.c
+--- wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_flash_shark.c	2009-12-16 21:31:13.000000000 +0000
++++ wanpipe-3.5.10/firmware/wan_aftup/wan_aft_flash_shark.c	2010-03-14 02:07:43.642063949 +0000
+@@ -114,7 +114,7 @@ aftup_flash_t	aft_shark_flash = {  0x014
+ 
+ extern int	verbose;
+ 
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ /*
+  ******************************************************************************
+ 			  FUNCTION PROTOTYPES
+diff -Naurp wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_flash_shark_ds.c wanpipe-3.5.10/firmware/wan_aftup/wan_aft_flash_shark_ds.c
+--- wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_flash_shark_ds.c	2009-08-25 20:44:41.000000000 +0000
++++ wanpipe-3.5.10/firmware/wan_aftup/wan_aft_flash_shark_ds.c	2010-03-14 02:06:53.803063891 +0000
+@@ -98,7 +98,7 @@ aftup_flash_t	aft_shark_ds_flash = {  0x
+ 
+ extern int	verbose;
+ 
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ /*
+  ******************************************************************************
+ 			  FUNCTION PROTOTYPES
+diff -Naurp wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_prg.c wanpipe-3.5.10/firmware/wan_aftup/wan_aft_prg.c
+--- wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aft_prg.c	2009-10-23 15:35:21.000000000 +0000
++++ wanpipe-3.5.10/firmware/wan_aftup/wan_aft_prg.c	2010-03-14 02:07:39.029064002 +0000
+@@ -180,7 +180,7 @@ struct flash_spec_t {
+ extern int	verbose;
+ extern int	card_type;
+ 
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ 
+ extern int exec_read_cmd(void*,unsigned int, unsigned int, unsigned int*);
+ extern int exec_write_cmd(void*,unsigned int, unsigned int, unsigned int);
+diff -Naurp wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aftup.c wanpipe-3.5.10/firmware/wan_aftup/wan_aftup.c
+--- wanpipe-3.5.10.orig/firmware/wan_aftup/wan_aftup.c	2009-12-16 21:31:17.000000000 +0000
++++ wanpipe-3.5.10/firmware/wan_aftup/wan_aftup.c	2010-03-14 02:06:22.372438749 +0000
+@@ -203,7 +203,7 @@ aft_core_info_t aft_core_table[] = {
+ /******************************************************************************
+ 			  FUNCTION PROTOTYPES
+ ******************************************************************************/
+-int progress_bar(char*,int,int);
++int progress_bar(const char*,int,int);
+ void main_menu(void);
+ void read_chip_control_menu(void);
+ void registers_and_internal_ram_test_menu(void);
+@@ -232,7 +232,7 @@ extern int wan_usbfxo_fwupdate(void*, ch
+ *			  FUNCTION DEFINITION	
+ ******************************************************************************/
+ 
+-int progress_bar(char *msg, int ci, int mi)
++int progress_bar(const char *msg, int ci, int mi)
+ {
+ 	static int index = 0;
+ 
