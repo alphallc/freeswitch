@@ -336,7 +336,7 @@ fs_check_core_abi_compat() {
 }
 
 fs_check_modules_api_compat() {
-	local x mod libfreeswitch libfreeswitch_syms
+	local x mod name libfreeswitch libfreeswitch_syms
 	local sym need_upgrade module_syms
 	local mod_warn_list="" mod_error_list=""
 
@@ -380,10 +380,17 @@ fs_check_modules_api_compat() {
 	einfo "Checking for incompatible modules..."
 	for x in "${ROOT}"/opt/freeswitch/mod/mod_*.so; do
 		mod="$(basename "${x}")"
+		name="$(echo "${mod}" | sed -e 's:^mod_\(.\+\)\.so$:\1:')"
 		need_upgrade="no"
 
 		# no need to check modules that will be overwritten
 		[ -e "${D}/opt/freeswitch/mod/${mod}" ] && continue
+
+
+		# skip modules that are in our list but disabled (= will be uninstalled)
+		if hasq "${name}" ${IUSE_MODULES} && ! useq "freeswitch_modules_${name}"; then
+			continue
+		fi
 
 		# check module
 		module_syms="$(nm -D --undefined-only "${x}" | sed -e 's:0\+\([1-9][0-9]*\):\1:g' | awk -v IGNORECASE=1 '/switch_.+/{ print $2 }')"
