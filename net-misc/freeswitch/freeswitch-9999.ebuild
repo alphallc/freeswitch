@@ -10,14 +10,13 @@ EAPI="2"
 
 inherit autotools flag-o-matic python
 
-DESCRIPTION="FreeSWITCH telephony platform SVN Trunk"
+DESCRIPTION="FreeSWITCH telephony platform GIT Head"
 HOMEPAGE="http://www.freeswitch.org/"
 
 if [ "${PV}" = "9999" ]; then
-	inherit subversion
-	ESVN_REPO_URI="http://svn.freeswitch.org/svn/freeswitch/trunk"
-	ESVN_PROJECT="freeswitch"
-	ESVN_BOOTSTRAP="bootstrap.sh"
+	inherit git
+	EGIT_REPO_URI="git://git.freeswitch.org/freeswitch.git"
+	EGIT_BOOTSTRAP="bootstrap.sh"
 else
 	SRC_URI="http://files.freeswitch.org/${P/_/}.tar.bz2"
 	S="${WORKDIR}/${P/_/}"
@@ -32,7 +31,7 @@ IUSE="esl +libedit nosamples odbc +resampler sctp"
 IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
 IUSE_MODULES="alsa amr amrwb bv +cdr_csv celt cepstral cidlookup cluechoo +console curl dialplan_asterisk dialplan_directory
-distributor easyroute erlang_event fax file_string flite +g723_1 g729 h26x +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
+distributor easyroute erlang_event fax file_string flite freetdm +g723_1 g729 gsmopen h26x +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
 managed memcache nibblebill opal openzap perl pocketsphinx portaudio portaudio_stream python radius_cdr
 say_de +say_en say_es say_fr say_it say_nl say_ru say_zh shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +speex
 spidermonkey spy +syslog +tone_stream tts_commandline unimrcp valet_parking vmd +voipcodecs
@@ -446,8 +445,9 @@ fs_set_module() {
 	[ -f "modules.conf" ] && config="modules.conf"
 
 	case ${mod} in
-	mod_openzap)
-		category="../../libs/openzap"
+	mod_openzap|mod_freetdm)
+		category="../../libs/freetdm"
+		mod="mod_freetdm"
 		;;
 	*)
 		category="$(ls -d src/mod/*/${mod} | cut -d'/' -f3)"
@@ -685,7 +685,7 @@ fs_set_permissions() {
 
 src_unpack() {
 	if [ "${PV}" = "9999" ]; then
-		subversion_src_unpack
+		git_src_unpack
 	else
 		unpack ${A}
 	fi
@@ -693,7 +693,12 @@ src_unpack() {
 
 src_prepare() {
 	if [ "${PV}" = "9999" ]; then
-		subversion_src_prepare
+		git_src_prepare
+
+		if use freeswitch_modules_openzap || use freeswitch_modules_freetdm
+		then
+			( cd "${S}/libs/freetdm" ; ./bootstrap ; ) || die "Failed to bootstrap FreeTDM"
+		fi
 	fi
 
 	#
@@ -741,7 +746,7 @@ src_configure() {
 	#
 	# 2. configure
 	#
-	einfo "Configuring freeswitch..."
+	einfo "Configuring FreeSWITCH..."
 	econf \
 		-C \
 		--prefix=/opt/freeswitch \
@@ -752,7 +757,21 @@ src_configure() {
 		$(fs_enable resampler resample) \
 		$(fs_enable odbc core-odbc-support) \
 		$(fs_enable libedit core-libedit-support) \
-		${java_opts} || die "configure failed"
+		${java_opts} || die "failed to configure FreeSWITCH"
+
+	#
+	# 3. configure FreeTDM
+	#
+	if use freeswitch_modules_openzap || use freeswitch_modules_freetdm
+	then
+		cd "${S}/libs/freetdm"
+		einfo "Configuring FreeTDM..."
+		econf \
+			--prefix=/opt/freeswitch \
+			--libdir=/opt/freeswitch/lib \
+			--sysconfdir=/opt/freeswitch/conf \
+			|| die "failed to configure FreeTDM"
+	fi
 }
 
 src_compile() {
@@ -769,10 +788,19 @@ src_compile() {
 	filter-flags -fvisibility-inlines-hidden
 
 	#
+	#
+	#
+	if use freeswitch_modules_openzap || use freeswitch_modules_freetdm
+	then
+		einfo "Building FreeTDM..."
+		emake -j1 -C libs/freetdm || die "failed to build FreeTDM"
+	fi
+
+	#
 	# 2. build everything
 	#
-	einfo "Building freeswitch... (this can take a long time)"
-	emake -j1 MONO_SHARED_DIR="${T}" || die "building freeswitch failed"
+	einfo "Building FreeSWITCH... (this can take a long time)"
+	emake -j1 MONO_SHARED_DIR="${T}" || die "failed to build FreeSWITCH"
 
 	#
 	# 3. build esl modules
