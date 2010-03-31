@@ -892,7 +892,7 @@ src_install() {
 	#    remove old pkgconfig dir(s) if empty
 	#
 	dodir "/usr/$(get_libdir)/pkgconfig"
-	find "${D}/opt/freeswitch" \( -name "freeswitch.pc" -or -name "openzap.pc" \) -exec \
+	find "${D}/opt/freeswitch" \( -name "freeswitch.pc" -or -name "freetdm.pc" \) -exec \
 		mv "{}" "${D}/usr/$(get_libdir)/pkgconfig" \;
 	rmdir "${D}"/opt/freeswitch/lib*/pkgconfig 2>/dev/null
 
