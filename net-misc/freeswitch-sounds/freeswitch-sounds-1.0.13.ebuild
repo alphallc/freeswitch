@@ -7,7 +7,7 @@
 #
 EAPI="1"
 
-IUSE="linguas_ru"
+IUSE="linguas_en linguas_ru"
 
 URI_BASE="http://files.freeswitch.org/freeswitch-sounds"
 
@@ -19,8 +19,14 @@ HOMEPAGE="http://www.freeswitch.org/"
 SRC_URI=""
 
 
-DEPEND=">=${CATEGORY}/${PN}-en-${EN_VERSION}
-	linguas_ru? ( >=${CATEGORY}/${PN}-ru-${RU_VERSION} )"
+DEPEND="
+	|| (
+		(
+		  linguas_en? ( >=${CATEGORY}/${PN}-en-${EN_VERSION} )
+		  linguas_ru? ( >=${CATEGORY}/${PN}-ru-${RU_VERSION} )
+		)
+		>=${CATEGORY}/${PN}-en-${EN_VERSION}
+	)"
 
 
 LICENSE="MPL-1.1"
