@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2008 Stefan Knoblich <s.knoblich@axsentis.de>
+# Copyright (C) 2008-2010 Stefan Knoblich <s.knoblich@axsentis.de>
 #
 # Distributed under the terms of the GNU General Public License 2
 # see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt for
@@ -8,23 +8,17 @@
 
 EAPI="1"
 
-IUSE="+16k 32k 48k linguas_en_US"
+IUSE="+16k 32k 48k"
 
 MY_PV="${PV/_/.}"
 URI_BASE="http://files.freeswitch.org/freeswitch-sounds"
 
-DESCRIPTION="Sounds for FreeSWITCH"
+DESCRIPTION="Russian soundfiles for FreeSWITCH"
 HOMEPAGE="http://www.freeswitch.org/"
-SRC_URI="${URI_BASE}-en-us-callie-8000-${MY_PV}.tar.gz
-	 16k? ( ${URI_BASE}-en-us-callie-16000-${MY_PV}.tar.gz )
-	 32k? ( ${URI_BASE}-en-us-callie-32000-${MY_PV}.tar.gz )
-	 48k? ( ${URI_BASE}-en-us-callie-48000-${MY_PV}.tar.gz )"
-
-#	 linguas_en_US? ( ${URI_BASE}-en-us-callie-8000-${MY_PV}.tar.gz
-#	 		  16k? ( ${URI_BASE}-en-us-callie-16000-${MY_PV}.tar.gz )
-#			  32k? ( ${URI_BASE}-en-us-callie-32000-${MY_PV}.tar.gz )"			  
-#                       )"
-
+SRC_URI="${URI_BASE}-ru-RU-elena-8000-${MY_PV}.tar.gz
+	 16k? ( ${URI_BASE}-ru-RU-elena-16000-${MY_PV}.tar.gz )
+	 32k? ( ${URI_BASE}-ru-RU-elena-32000-${MY_PV}.tar.gz )
+	 48k? ( ${URI_BASE}-ru-RU-elena-48000-${MY_PV}.tar.gz )"
 
 LICENSE="MPL-1.1"
 SLOT="0"
@@ -32,7 +26,6 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
 DEPEND="net-misc/freeswitch"
-
 RDEPEND="${DEPEND}"
 
 

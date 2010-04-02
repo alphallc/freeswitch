@@ -9,20 +9,23 @@ EAPI="1"
 
 IUSE="linguas_ru"
 
-RU_VERSION="${PV}"
+URI_BASE="http://files.freeswitch.org/freeswitch-sounds"
+
+RU_VERSION="1.0.12"
 EN_VERSION="${PV}"
 
-DESCRIPTION="Sounds for FreeSWITCH"
+DESCRIPTION="Sounds for FreeSWITCH (Meta package)"
 HOMEPAGE="http://www.freeswitch.org/"
 SRC_URI=""
 
+
 DEPEND=">=${CATEGORY}/${PN}-en-${EN_VERSION}
 	linguas_ru? ( >=${CATEGORY}/${PN}-ru-${RU_VERSION} )"
+
 
 LICENSE="MPL-1.1"
 SLOT="0"
 
 KEYWORDS="~amd64 ~x86"
 
-DEPEND="net-misc/freeswitch"
-RDEPEND="${DEPEND}"
+RDEPEND="net-misc/freeswitch"
