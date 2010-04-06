@@ -32,7 +32,7 @@ IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
 IUSE_MODULES="alsa amr amrwb bv +cdr_csv celt cepstral cidlookup cluechoo +console curl dialplan_asterisk dialplan_directory
 distributor easyroute erlang_event fax file_string flite freetdm +g723_1 g729 gsmopen h26x +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
-managed memcache nibblebill opal openzap perl pocketsphinx portaudio portaudio_stream python radius_cdr
+managed memcache nibblebill opal perl pocketsphinx portaudio portaudio_stream python radius_cdr
 say_de +say_en say_es say_fr say_it say_nl say_ru say_zh shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +speex
 spidermonkey spy +syslog +tone_stream tts_commandline unimrcp valet_parking vmd +voipcodecs
 xml_cdr xml_curl xml_ldap xml_rpc yaml"
@@ -452,7 +452,7 @@ fs_set_module() {
 	[ -f "modules.conf" ] && config="modules.conf"
 
 	case ${mod} in
-	mod_openzap|mod_freetdm)
+	mod_freetdm)
 		category="../../libs/freetdm"
 		mod="mod_freetdm"
 		;;
@@ -706,7 +706,7 @@ src_prepare() {
 	#
 	# 0. create freetdm configure
 	#
-	if use freeswitch_modules_openzap || use freeswitch_modules_freetdm
+	if use freeswitch_modules_freetdm
 	then
 		( cd "${S}/libs/freetdm" ; ./bootstrap ; ) || die "Failed to bootstrap FreeTDM"
 	fi
@@ -750,7 +750,7 @@ src_configure() {
 	# breaks linking freeswitch core lib (missing libdl symbols)
 	filter-ldflags -Wl,--as-needed
 
-	# breaks openzap
+	# breaks freetdm
 	filter-flags -fvisibility-inlines-hidden
 
 	#
@@ -772,7 +772,7 @@ src_configure() {
 	#
 	# 3. configure FreeTDM
 	#
-	if use freeswitch_modules_openzap || use freeswitch_modules_freetdm
+	if use freeswitch_modules_freetdm
 	then
 		cd "${S}/libs/freetdm"
 		einfo "Configuring FreeTDM..."
@@ -794,13 +794,13 @@ src_compile() {
 	# breaks linking freeswitch core lib (missing libdl symbols)
 	filter-ldflags -Wl,--as-needed
 
-	# breaks openzap
+	# breaks freetdm
 	filter-flags -fvisibility-inlines-hidden
 
 	#
 	#
 	#
-	if use freeswitch_modules_openzap || use freeswitch_modules_freetdm
+	if use freeswitch_modules_freetdm
 	then
 		einfo "Building FreeTDM..."
 		emake -j1 -C libs/freetdm || die "failed to build FreeTDM"
@@ -897,7 +897,7 @@ src_install() {
 	find "${D}" \( -name "*.la" -or -name "*.a" \) -exec rm -f "{}" \; || die "Failed to cleanup .a and .la files"
 
 	#
-	# 4. move freeswitch and openzap
+	# 4. move freeswitch and freetdm
 	#    pkg-config files to /usr/lib/pkgconfig
 	#    remove old pkgconfig dir(s) if empty
 	#
