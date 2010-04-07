@@ -33,9 +33,12 @@ IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 IUSE_MODULES="alsa amr amrwb bv +cdr_csv celt cepstral cidlookup cluechoo +console curl dialplan_asterisk dialplan_directory
 distributor easyroute erlang_event fax file_string flite freetdm +g723_1 g729 gsmopen h26x +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
 managed memcache nibblebill opal perl pocketsphinx portaudio portaudio_stream python radius_cdr
-say_de +say_en say_es say_fr say_it say_nl say_ru say_zh shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +speex
-spidermonkey spy +syslog +tone_stream tts_commandline unimrcp valet_parking vmd +voipcodecs
+shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +speex spidermonkey spy +syslog
++tone_stream tts_commandline unimrcp valet_parking vmd +voipcodecs
 xml_cdr xml_curl xml_ldap xml_rpc yaml"
+
+# mod_say_X
+IUSE_LINGUAS="de +en es fr it nl ru zh"
 
 # inter-module dependencies
 INTER_MODULE_DEPENDS=""
@@ -100,6 +103,9 @@ PDEPEND=">=net-misc/freeswitch-sounds-1.0.11
 for mod in ${IUSE_MODULES}; do
 	IUSE="${IUSE} "${mod//[^+]/}freeswitch_modules_${mod/+}""
 done
+for mod in ${IUSE_LINGUAS}; do
+	IUSE="${IUSE} "${mod//[^+]/}linguas_${mod/+}""
+done
 
 IUSE="${IUSE} ${IUSE_ESL}"
 
@@ -108,7 +114,7 @@ IUSE="${IUSE} ${IUSE_ESL}"
 # pre-flight checks
 #
 pkg_setup() {
-	local x mod dep error_cnt=0 mod_cnt=0
+	local x mod dep error_cnt=0 mod_cnt=0 lang_cnt=0
 
 	ewarn "--- Work-In-Progress ebuild ---"
 	epause 5
@@ -247,14 +253,31 @@ pkg_setup() {
 		die "Please read the error messages above and fix the listed issues"
 	fi
 
-	export FREESWITCH_AUTO_USE="${FREESWITCH_AUTO_USE}"
+	#
+	# 5. language checks
+	#
+	einfo "Checking selected languages..."
+	for x in ${IUSE_MODULES}; do
+		mod="${x/+}"
+		use linguas_${mod} && (( lang_cnt++ ))
+	done
+	if [ "${mod_cnt}" = "0" ]; then
+		echo
+		ewarn "No languages selected, enabling \"en\" as a fallback"
 
+		FREESWITCH_AUTO_USE="${FREESWITCH_AUTO_USE} linguas_en"
+	fi
 
 	#
-	# 4. create user + group
+	# 6. create user + group
 	#
 	enewgroup freeswitch
 	enewuser freeswitch -1 -1 /opt/freeswitch freeswitch
+
+	#
+	# DONE
+	#
+	export FREESWITCH_AUTO_USE="${FREESWITCH_AUTO_USE}"
 }
 
 
@@ -506,6 +529,20 @@ setup_modules() {
 		[ ${enablemod} -eq 1 ] \
 			&& fs_set_module "enable"  "mod_${mod}" \
 			|| fs_set_module "disable" "mod_${mod}"
+	done
+
+	einfo "Language modules:"
+	for x in ${IUSE_LINGUAS}; do
+		mod="${x/+}"
+		enablemod=1
+
+		[ -z "${x}" ] && continue
+
+		fs_use linguas_${mod} || enablemod=0
+
+		[ ${enablemod} -eq 1 ] \
+			&& fs_set_module "enable"  "mod_say_${mod}" \
+			|| fs_set_module "disable" "mod_say_${mod}"
 	done
 }
 
