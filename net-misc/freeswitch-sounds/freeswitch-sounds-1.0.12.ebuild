@@ -7,7 +7,7 @@
 #
 EAPI="1"
 
-IUSE="linguas_en linguas_ru"
+IUSE="+linguas_en linguas_ru"
 
 RU_VERSION="${PV}"
 EN_VERSION="${PV}"
