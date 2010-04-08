@@ -17,7 +17,7 @@ PROPERTIES="interactive"
 
 SLOT="0"
 
-LICENSE="MPL-1.1"
+LICENSE="EULA"
 KEYWORDS="~amd64 ~x86"
 
 RDEPEND="virtual/libc
@@ -51,7 +51,8 @@ src_compile() {
 	less EULA.txt || die "Failed to display EULA"
 
 	while [ $cnt -lt 4 ] ; do
-		echo "Do You accept the license [y/N]?"
+		echo
+		ewarn "Do You accept the license [y/n]?"
 		read -n1 response
 		case "${response}" in 
 		y|Y)
@@ -61,7 +62,7 @@ src_compile() {
 			die "License has not been accepted"
 			;;
 		*)
-			echo "Invalid response, press \"y\" or \"n\""
+			eerror "Invalid response, press \"y\" or \"n\""
 			;;
 		esac
 		(( cnt++ ))
