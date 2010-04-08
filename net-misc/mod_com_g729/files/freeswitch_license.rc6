@@ -1,0 +1,29 @@
+#!/sbin/runscript
+# Copyright (C) 2010 Stefan Knoblich <s.knoblich@axsentis.de>
+#
+# Distributed under the terms of the GNU General Public License 2
+# see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt for
+# more information
+#
+
+FS_LICENSE_BIN="/opt/freeswitch/bin/freeswitch_licence_server"
+FS_LICENSE_PID="/var/run/freeswitch_license_server.pid"
+
+depend() {
+	before freeswitch
+}
+
+start() {
+	ebegin "Starting FreeSWITCH G.729 license server..."
+	start-stop-daemon --start --exec "${FS_LICENSE_BIN}" \
+		--startas freeswitch_licence_server 2>/dev/null
+	pidof -s "${FS_LICENSE_BIN}" > "${FS_LICENSE_PID}"
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping FreeSWITCH G.729 license server..."
+	start-stop-daemon --stop --exec "${FS_LICENSE_BIN}" \
+		--pidfile "${FS_LICENSE_PID}"
+	eend $?
+}
