@@ -31,11 +31,12 @@ IUSE="esl +libedit nosamples odbc +resampler sctp"
 IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
 IUSE_MODULES="alsa amr amrwb bv +cdr_csv celt cepstral cidlookup cluechoo +console curl dialplan_asterisk dialplan_directory
-distributor easyroute erlang_event fax file_string flite freetdm +g723_1 g729 gsmopen h26x +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
-managed memcache nibblebill opal perl pocketsphinx portaudio portaudio_stream python radius_cdr
-shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +speex spidermonkey spy +syslog
-+tone_stream tts_commandline unimrcp valet_parking vmd +voipcodecs
-xml_cdr xml_curl xml_ldap xml_rpc yaml"
+	distributor easyroute erlang_event fax file_string flite freetdm +g723_1 g729 gsmopen h26x +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
+	managed memcache nibblebill opal openzap perl pocketsphinx portaudio portaudio_stream python radius_cdr
+	shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +speex spidermonkey spy +syslog
+	+tone_stream tts_commandline unimrcp valet_parking vmd +voicemail +voipcodecs
+	xml_cdr xml_curl xml_ldap xml_rpc yaml
+"
 
 # mod_say_X
 IUSE_LINGUAS="de +en es fr it nl ru zh"
@@ -100,11 +101,11 @@ PDEPEND=">=net-misc/freeswitch-sounds-1.0.11
 ###
 # IUSE merging
 #
-for mod in ${IUSE_MODULES}; do
-	IUSE="${IUSE} "${mod//[^+]/}freeswitch_modules_${mod/+}""
+for x in ${IUSE_MODULES}; do
+	IUSE="${IUSE} ${x//[^+]/}freeswitch_modules_${x/+}"
 done
-for mod in ${IUSE_LINGUAS}; do
-	IUSE="${IUSE} "${mod//[^+]/}linguas_${mod/+}""
+for x in ${IUSE_LINGUAS}; do
+	IUSE="${IUSE} ${x//[^+]/}linguas_${x/+}"
 done
 
 IUSE="${IUSE} ${IUSE_ESL}"
@@ -257,7 +258,7 @@ pkg_setup() {
 	# 5. language checks
 	#
 	einfo "Checking selected languages..."
-	for x in ${IUSE_MODULES}; do
+	for x in ${IUSE_LINGUAS}; do
 		mod="${x/+}"
 		use linguas_${mod} && (( lang_cnt++ ))
 	done
@@ -411,7 +412,7 @@ fs_check_modules_api_compat() {
 
 
 		# skip modules that are in our list but disabled (= will be uninstalled)
-		if hasq "${name}" ${IUSE_MODULES} && ! useq "freeswitch_modules_${name}"; then
+		if hasq "${name}" $(echo "${IUSE_MODULES}" | tr -d '+') && ! useq "freeswitch_modules_${name}"; then
 			continue
 		fi
 
@@ -478,6 +479,10 @@ fs_set_module() {
 	mod_freetdm)
 		category="../../libs/freetdm"
 		mod="mod_freetdm"
+		;;
+	mod_openzap)
+		category="../../libs/openzap"
+		mod="mod_openzap"
 		;;
 	*)
 		category="$(ls -d src/mod/*/${mod} | cut -d'/' -f3)"
@@ -835,7 +840,7 @@ src_compile() {
 	filter-flags -fvisibility-inlines-hidden
 
 	#
-	#
+	# build FreeTDM
 	#
 	if use freeswitch_modules_freetdm
 	then
@@ -844,10 +849,19 @@ src_compile() {
 	fi
 
 	#
+	# build OpenZAP (avoids some problems later)
+	#
+	if use freeswitch_modules_openzap
+	then
+		einfo "Building OpenZAP..."
+		emake -j1 -C libs/openzap || die "failed to build OpenZAP"
+	fi
+
+	#
 	# 2. build everything
 	#
 	einfo "Building FreeSWITCH... (this can take a long time)"
-	emake -j1 MONO_SHARED_DIR="${T}" || die "failed to build FreeSWITCH"
+	emake MONO_SHARED_DIR="${T}" || die "failed to build FreeSWITCH"
 
 	#
 	# 3. build esl modules
@@ -939,7 +953,7 @@ src_install() {
 	#    remove old pkgconfig dir(s) if empty
 	#
 	dodir "/usr/$(get_libdir)/pkgconfig"
-	find "${D}/opt/freeswitch" \( -name "freeswitch.pc" -or -name "freetdm.pc" \) -exec \
+	find "${D}/opt/freeswitch" \( -name "freeswitch.pc" -or -name "freetdm.pc" -or -name "openzap.pc" \) -exec \
 		mv "{}" "${D}/usr/$(get_libdir)/pkgconfig" \;
 	rmdir "${D}"/opt/freeswitch/lib*/pkgconfig 2>/dev/null
 
