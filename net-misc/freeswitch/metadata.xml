@@ -50,9 +50,11 @@
   <flag name="freeswitch_modules_fifo">First-in-First-out call queue module (mod_fifo)</flag>
   <flag name="freeswitch_modules_file_string">Stream audio from a file(?) (mod_file_string)</flag>
   <flag name="freeswitch_modules_flite">Flite TTS (Text-to-Speech) module (mod_flite)</flag>
+  <flag name="freeswitch_modules_freetdm">FreeTDM (SS7BOOST, PRI, BRI, Analog) endpoint module (mod_freetdm)</flag>
   <flag name="freeswitch_modules_fsv">Simple video recording application (mod_fsv)</flag>
   <flag name="freeswitch_modules_g723_1">G.723.1 codec module (mod_g723_1)</flag>
   <flag name="freeswitch_modules_g729">G.729 (pass-through only) codec module (mod_g729)</flag>
+  <flag name="freeswitch_modules_gsmopen">GSM modem/handset endpoint module (mod_gsmopen)</flag>
   <flag name="freeswitch_modules_h26x">H.261, H.263, H.264 pass-through codec module (mod_h26x)</flag>
   <flag name="freeswitch_modules_http">HTTP client api command (mod_http)</flag>
   <flag name="freeswitch_modules_iax">Inter-Asterisk eXchange (IAX2) endpoint module (mod_iax)</flag>
@@ -65,6 +67,7 @@
   <flag name="freeswitch_modules_lua">LUA language module (mod_lua)</flag>
   <flag name="freeswitch_modules_managed">.NET managed mode language module (mod_managed)</flag>
   <flag name="freeswitch_modules_memcache">Memcache API interface module (mod_memcache)</flag>
+  <flag name="freeswitch_modules_mp4v">MPEG4 / H.264 Video ES (Elementary Stream) pass-through codec module (mod_mp4v)</flag>
   <flag name="freeswitch_modules_nibblebill">Real-time debit module (mod_nibblebill)</flag>
   <flag name="freeswitch_modules_opal">H.323 endpoint module based on the Opal library (experimental) (mod_opal)</flag>
   <flag name="freeswitch_modules_openmrcp">OpenMRCP module (mod_openmrcp)</flag>
@@ -86,8 +89,10 @@
   <flag name="freeswitch_modules_say_zh">Simplified Chinese TTS functions (mod_say_zh)</flag>
   <flag name="freeswitch_modules_shell_stream">Stream audio from an external application (mod_shell_stream)</flag>
   <flag name="freeswitch_modules_shout">Shoutcast streaming module (mod_shout)</flag>
+  <flag name="freeswitch_modules_silk">SILK wideband codec module (mod_silk)</flag>
   <flag name="freeswitch_modules_siren">G.722.1 (aka "Siren") codec module (mod_siren)</flag>
-  <flag name="freeswitch_modules_skypiax">Skype endpoint module, using the Skype client remote control API (mod_skypiax)</flag>
+  <flag name="freeswitch_modules_skypiax">Skype endpoint module, using the Skype client remote control API (mod_skypiax)(deprecated, see: mod_skypopen)</flag>
+  <flag name="freeswitch_modules_skypopen">Skype endpoint module, using the Skype client remote control API (mod_skypopen)</flag>
   <flag name="freeswitch_modules_snapshot">Record sliding window (e.g. last 10 seconds) of audio (mod_snapshot)</flag>
   <flag name="freeswitch_modules_sndfile">Module to add support for various sound file formats (mod_sndfile)</flag>
   <flag name="freeswitch_modules_snom">SNOM VoIP phone helper applications (mod_snom)</flag>
