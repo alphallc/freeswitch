@@ -72,6 +72,7 @@
   <flag name="freeswitch_modules_opal">H.323 endpoint module based on the Opal library (experimental) (mod_opal)</flag>
   <flag name="freeswitch_modules_openmrcp">OpenMRCP module (mod_openmrcp)</flag>
   <flag name="freeswitch_modules_openzap">OpenZAP (SS7BOOST, PRI, BRI, Analog) endpoint module (mod_openzap)</flag>
+  <flag name="freeswitch_modules_osp">Open Settlement Protocol (OSP) module (mod_osp)</flag>
   <flag name="freeswitch_modules_perl">Perl language module (mod_perl)</flag>
   <flag name="freeswitch_modules_pocketsphinx">Pocketsphinx ASR (Speech-recognition) module (mod_pocketsphinx)</flag>
   <flag name="freeswitch_modules_portaudio">Portaudio endpoint module (mod_portaudio)</flag>

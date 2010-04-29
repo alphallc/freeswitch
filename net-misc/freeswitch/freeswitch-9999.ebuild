@@ -32,7 +32,7 @@ IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
 IUSE_MODULES="alsa amr amrwb bv +cdr_csv celt cepstral cidlookup cluechoo +console curl dialplan_asterisk dialplan_directory
 	distributor easyroute erlang_event fax file_string flite freetdm +g723_1 g729 gsmopen h26x +ilbc java dingaling lcr ldap +limit +local_stream +logfile +lua
-	managed memcache mp4v nibblebill opal openzap perl pocketsphinx portaudio portaudio_stream python radius_cdr
+	managed memcache mp4v nibblebill opal openzap osp perl pocketsphinx portaudio portaudio_stream python radius_cdr
 	shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +speex spidermonkey spy +syslog
 	+tone_stream tts_commandline unimrcp valet_parking vmd +voicemail +voipcodecs
 	xml_cdr xml_curl xml_ldap xml_rpc yaml
@@ -71,6 +71,7 @@ MODULES_RDEPEND="
 	freeswitch_modules_memcache? ( net-misc/memcached )
 	freeswitch_modules_erlang_event? ( dev-lang/erlang )
 	freeswitch_modules_shout? ( media-libs/libogg )
+	freeswitch_modules_osp? ( >=net-libs/osptoolkit-3.5.0 )
 "
 
 # external core dependencies
