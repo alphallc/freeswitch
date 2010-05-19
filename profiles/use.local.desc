@@ -1,6 +1,7 @@
 net-misc/freeswitch:cepstral		Cepstral swift commercial text-to-speech engine
 net-misc/freeswitch:iax			Inter-Asterisk-Exchange VoIP protocol
 net-misc/freeswitch:h26x		Pass-through support for H.261 and H.263 video
+net-misc/freeswitch:libpri		Build OpenZAP/FreeTDM with libpri module
 net-misc/freeswitch:nosamples		Do not install sample configuration
 net-misc/freeswitch:openzap		OpenZAP (support for analog/isdn telephony cards)
 net-misc/freeswitch:resampler		Sound resampling (e.g. 16KHz -> 8KHz) support

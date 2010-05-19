@@ -26,7 +26,7 @@ LICENSE="MPL-1.1"
 KEYWORDS=""
 SLOT="0"
 
-IUSE="esl +libedit nosamples odbc +resampler sctp"
+IUSE="esl +libedit nosamples odbc +resampler sctp libpri"
 
 IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
@@ -72,6 +72,8 @@ MODULES_RDEPEND="
 	freeswitch_modules_erlang_event? ( dev-lang/erlang )
 	freeswitch_modules_shout? ( media-libs/libogg )
 	freeswitch_modules_osp? ( >=net-libs/osptoolkit-3.5.0 )
+	freeswitch_modules_openzap? ( libpri? ( >=net-libs/libpri-1.4.0 ) )
+	freeswitch_modules_freetdm? ( libpri? ( >=net-libs/libpri-1.4.0 ) )
 "
 
 # external core dependencies
@@ -810,6 +812,7 @@ src_configure() {
 		$(fs_enable resampler resample) \
 		$(fs_enable odbc core-odbc-support) \
 		$(fs_enable libedit core-libedit-support) \
+		$(use_with libpri) \
 		${java_opts} || die "failed to configure FreeSWITCH"
 
 	#
@@ -823,6 +826,7 @@ src_configure() {
 			--prefix=/opt/freeswitch \
 			--libdir=/opt/freeswitch/lib \
 			--sysconfdir=/opt/freeswitch/conf \
+			$(use_with libpri) \
 			|| die "failed to configure FreeTDM"
 	fi
 }

@@ -13,6 +13,7 @@
   <flag name="nosamples">Do not install sample configuration files</flag>
   <flag name="resampler">Enable support for up-/downsampling of audio (e.g. 48KHz -> 8KHz)</flag>
   <flag name="sctp">Enable SCTP (Stream-Control-Transport-Protocol) support (mod_sofia, ...)</flag>
+  <flag name="libpri">Build OpenZAP/FreeTDM with libpri module</flag>
 
   <!-- ESL -->
   <flag name="esl">Event-Socket Library</flag>
