@@ -83,6 +83,7 @@ sndfile - Module to add support for various sound file formats (mod_sndfile)
 snom - SNOM VoIP phone helper applications (mod_snom)
 sofia - SIP (Session-Initiation-Protocol) endpoint module (mod_sofia)
 #soundtouch - 
+spandsp - SpanDSP fax applications and VoIP codecs (mod_spandsp)
 speex - Speex codec module (mod_speex)
 spidermonkey - Spidermonkey javascript language module (mod_spidermonkey)
 spidermonkey_curl - Spidermonkey curl extension (mod_spidermonkey_curl)

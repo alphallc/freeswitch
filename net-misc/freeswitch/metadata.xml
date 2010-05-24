@@ -99,6 +99,7 @@
   <flag name="freeswitch_modules_sndfile">Module to add support for various sound file formats (mod_sndfile)</flag>
   <flag name="freeswitch_modules_snom">SNOM VoIP phone helper applications (mod_snom)</flag>
   <flag name="freeswitch_modules_sofia">SIP (Session-Initiation-Protocol) endpoint module (mod_sofia)</flag>
+  <flag name="freeswitch_modules_spandsp">SpanDSP fax applications and VoIP codecs (mod_spandsp)</flag>
   <flag name="freeswitch_modules_speex">Speex codec module (mod_speex)</flag>
   <flag name="freeswitch_modules_spidermonkey">Spidermonkey javascript language module (mod_spidermonkey)</flag>
   <flag name="freeswitch_modules_spidermonkey_curl">Spidermonkey curl extension (mod_spidermonkey_curl)</flag>

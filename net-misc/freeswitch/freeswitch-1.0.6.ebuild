@@ -738,6 +738,12 @@ src_unpack() {
 	else
 		unpack ${A}
 	fi
+
+	cd "${S}"
+	#
+	# 1. buildsystem workarounds remove as soon as the fix has been comitted
+	#
+	epatch "${FILESDIR}/${P}-libsndfile-remove-autogen-dep.patch"
 }
 
 src_prepare() {
