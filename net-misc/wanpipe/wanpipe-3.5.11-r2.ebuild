@@ -5,10 +5,10 @@ EAPI="2"
 
 inherit linux-mod
 
-MY_P="${PN}-${PV/_p/.}b"
+MY_P="${PN}-${PV/_p/.}"
 DESCRIPTION="Wanpipe driver for Sangoma PCI/PCIe Telephony Cards"
 HOMEPAGE="http://www.sangoma.com/"
-SRC_URI="ftp://ftp.sangoma.com/linux/custom/DavidYS/${MY_P}.tgz"
+SRC_URI="ftp://ftp.sangoma.com/linux/current_wanpipe/${MY_P}.tgz"
 
 IUSE="+dahdi"
 KEYWORDS="~x86"
@@ -85,27 +85,22 @@ src_prepare() {
 	#          disable depmod call
 	#          do not install headers during "make all_util"
 	#
-	epatch "${FILESDIR}/${P}-Makefile.patch"
+	epatch "${FILESDIR}/${P/11*/10_p10}-Makefile.patch"
 
 	# Silence memset/memcpy implicit declaration QA warnings
-	epatch "${FILESDIR}/${P/_p*}-silence-QA-warnings.patch"
+	epatch "${FILESDIR}/${P/11*/10}-silence-QA-warnings.patch"
 
 	# Silence "jobserver unavailable" messages and QA warnings
-	epatch "${FILESDIR}/${P/_p*}-QA-fix-parallel-make.patch"
+	epatch "${FILESDIR}/${P/11*/10}-QA-fix-parallel-make.patch"
 
 	# TODO: Silence "stel_tone/fsk.c:240: warning: dereferencing type-punned pointer will break strict-aliasing rules"
-	#epatch "${FILESDIR}/${P/_p*}-QA-fix-libstelephony.patch"
+	#epatch "${FILESDIR}/${P/11*/10}-QA-fix-libstelephony.patch"
 
 	# Silence gcc-4.4 "warning: format not a string literal and no format arguments"
-	epatch "${FILESDIR}/${P/_p*}-QA-fix-format-literal-warnings.patch"
+	epatch "${FILESDIR}/${P/11*/10}-QA-fix-format-literal-warnings.patch"
 
 	# Silence gcc-4.4 "warning: deprecated conversion from string constant to 'char*'"
-	epatch "${FILESDIR}/${P/_p*}-QA-fix-const-char-warnings.patch"
-
-	# >=2.6.31
-#	if kernel_is -ge 2 6 31 ; then
-#		epatch "${FILESDIR}"/${P/_p*}-linux-2.6.31.patch
-#	fi
+	epatch "${FILESDIR}/${P/11*/10}-QA-fix-const-char-warnings.patch"
 
 #	# Remove some include paths
 #	sed -i -e "s:-I\$(INSTALLPREFIX)/include::; s:-I\$(INSTALLPREFIX)/usr/include::" \
