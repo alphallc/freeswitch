@@ -27,6 +27,7 @@
   <flag name="freeswitch_modules_alsa">Alsa endpoint module (mod_alsa)</flag>
   <flag name="freeswitch_modules_amr">AMR-NB (Narrowband) pass-through codec module (mod_amr)</flag>
   <flag name="freeswitch_modules_amr_wb">AMR-WB (Wideband) pass-through codec module (mod_amrwb)</flag>
+  <flag name="freeswitch_modules_vmd">Advanced voicemail detection application module (mod_avmd)</flag>
   <flag name="freeswitch_modules_bv">Broadvoice HD (Wideband) codec (mod_bv)</flag>
   <flag name="freeswitch_modules_cdr_csv">CSV (Comma-Separated-Value) CDR (Call-Detail-Record) module</flag>
   <flag name="freeswitch_modules_celt">CELT ultra-low delay wideband codec module (mod_celt)</flag>
@@ -113,7 +114,7 @@
   <flag name="freeswitch_modules_tts_commandline">System command TTS (Text-To-Speech) interface (mod_tts_commandline)</flag>
   <flag name="freeswitch_modules_unimrcp">MRCP (Media Resource Control Protocol) ASR/TTS client module (mod_unimrcp)</flag>
   <flag name="freeswitch_modules_valet_parking">Valet parking (mod_valet_parking)</flag>
-  <flag name="freeswitch_modules_vmd">Voicemail detect application module (mod_vmd)</flag>
+  <flag name="freeswitch_modules_vmd">Voicemail detection application module (mod_vmd)</flag>
   <flag name="freeswitch_modules_voicemail">Voicemail application module (mod_voicemail)</flag>
   <flag name="freeswitch_modules_voipcodecs">Collection of most-used codecs (G.711, G.722, G.726, GSM, LPC10) (mod_voipcodecs)</flag>
   <flag name="freeswitch_modules_xml_cdr">XML CDR (Call-Detail-Record) module (mod_xml_cdr)</flag>
