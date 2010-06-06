@@ -52,6 +52,15 @@ while read fn; do
 			return strtonum("0x"tmp);
 		}
 
+		BEGIN{
+			# offset of symbol name in entries first line,
+			# different for 32 and 64bit
+			if (elf_class == "ELF64") {
+				name_offset = 58;
+			} else {
+				name_offset = 54;
+			}
+		}
 
 		# skip padding lines
 		#
@@ -65,12 +74,9 @@ while read fn; do
 			line = "";
 			off  = 1;
 
-			# 64bit has a different offset
-			if (elf_class == "ELF64") {
-				line = substr($6, 9);
-			} else {
-				line = substr($6, 5);
-			}
+			# extract from $0 to avoid problems with space ('0x20')
+			# chars in ascii output of crc checksum
+			line = substr($0, name_offset);
 
 			# filter (imported) symbols with emtpy crc
 			if (sym_crc == 0) {
@@ -79,17 +85,16 @@ while read fn; do
 
 			# sym_name can span multiple lines
 			do {
-				ptr  = substr(line, off, 1);
-				off += 1;
-				if (ptr == ".") {
-					break;
-				}
-				sym_name = sym_name""ptr;
-
-				if (off > length(line)) {
-					getline
-					off  = 1;
+				if ((off = index(line, ".")) == 0) {
+					sym_name = sym_name line;
+					getline;
 					line = $6;
+					continue;
+				} else if (off == 1) {
+					break;
+				} else {
+					sym_name = sym_name substr(line, 1, off - 1);
+					break;
 				}
 			} while (1);
 

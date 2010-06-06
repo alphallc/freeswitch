@@ -1,0 +1,58 @@
+--- wanpipe-3.5.11/patches/kdrivers/include/wanpipe_common.h.orig	2009-12-16 22:24:29.000000000 +0100
++++ wanpipe-3.5.11/patches/kdrivers/include/wanpipe_common.h	2010-05-31 02:04:21.539309251 +0200
+@@ -2614,7 +2614,7 @@
+ static __inline int wan_netif_mcount(netdevice_t* dev)
+ {
+ #if defined(__LINUX__)
+-	return dev->mc_count;
++	return netdev_mc_count(dev);
+ #elif defined(__FreeBSD__)
+ 	return dev->if_amcount;
+ #elif defined(__OpenBSD__) || defined(__NetBSD__)
+--- wanpipe-3.5.11/patches/kdrivers/src/net/../wanrouter/af_wanpipe_src.c.orig	2010-05-31 02:22:23.601060726 +0200
++++ wanpipe-3.5.11/patches/kdrivers/src/net/../wanrouter/af_wanpipe_src.c	2010-05-31 02:22:44.416060428 +0200
+@@ -338,7 +338,7 @@
+ 	sk->sk_sndbuf      = osk->sk_sndbuf;
+ 	sk->sk_debug       = osk->sk_debug;
+ 	sk->sk_state       = WANSOCK_CONNECTING;
+-	sk->sk_sleep       = osk->sk_sleep;
++	sk->sk_wq          = osk->sk_wq;
+ 
+ 	return sk;
+ }
+@@ -564,7 +564,7 @@
+ 	if (SK_PRIV(sk)->num != htons(ETH_P_X25) && SK_PRIV(sk)->num != htons(WP_X25_PROT) && SK_PRIV(sk)->num != htons(DSP_PROT))
+ 		return -EPROTOTYPE;
+ 
+-	add_wait_queue(sk->sk_sleep,&wait);
++	add_wait_queue(sk_sleep(sk),&wait);
+ 	current->state = TASK_INTERRUPTIBLE;
+ 	for (;;){
+ 		skb = skb_dequeue(&sk->sk_receive_queue);
+@@ -585,7 +585,7 @@
+ 		schedule();
+ 	}
+ 	current->state = TASK_RUNNING;
+-	remove_wait_queue(sk->sk_sleep,&wait);
++	remove_wait_queue(sk_sleep(sk),&wait);
+ 
+ 	if (err != 0)
+ 		return err;
+@@ -657,7 +657,7 @@
+ 	newsk->sk_pair = NULL;
+ #endif
+ 	newsk->sk_socket = newsock;
+-	newsk->sk_sleep = &newsock->wait;
++	newsk->sk_wq = newsock->wq;
+ 
+ 	/* Now attach up the new socket */
+ 	sk->sk_ack_backlog--;
+@@ -1791,7 +1791,7 @@
+ 	DEBUG_TX("%s: Sock State %p = %d\n",
+ 			__FUNCTION__,sk,sk->sk_state);
+ 
+-	poll_wait(file, sk->sk_sleep, wait);
++	poll_wait(file, sk_sleep(sk), wait);
+ 
+ 	/* exceptional events? */
+ 	if (!SK_PRIV(sk) || 

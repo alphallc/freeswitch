@@ -116,7 +116,7 @@ src_compile() {
 	addread "${KERNEL_DIR}"
 
 	# Build everything
-	emake all_src all_lib ARCH="$(tc-arch-kernel)" DAHDI_DIR="${S_DAHDI}" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || "Failed to build wanpipe"
+	emake all_src all_lib ARCH="$(tc-arch-kernel)" DAHDI_DIR="${S_DAHDI}" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || die "Failed to build wanpipe"
 }
 
 src_install() {

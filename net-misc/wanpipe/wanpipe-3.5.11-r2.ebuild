@@ -22,10 +22,6 @@ S="${WORKDIR}/${P/_p/.}"
 S_DAHDI="${WORKDIR}/dahdi"
 S_KERNEL="${WORKDIR}/kernel"
 
-#pkg_setup() {
-#	linux-mod_pkg_setup
-#}
-
 src_prepare() {
 	###
 	# DAHDI: copy includes
@@ -102,6 +98,9 @@ src_prepare() {
 	# Silence gcc-4.4 "warning: deprecated conversion from string constant to 'char*'"
 	epatch "${FILESDIR}/${P/11*/10}-QA-fix-const-char-warnings.patch"
 
+	# experimental patch for 2.6.35(-rcX) support
+	#epatch "${FILESDIR}/${P}-linux-2.6.35.patch"
+
 #	# Remove some include paths
 #	sed -i -e "s:-I\$(INSTALLPREFIX)/include::; s:-I\$(INSTALLPREFIX)/usr/include::" \
 #		Makefile
@@ -112,7 +111,7 @@ src_compile() {
 	addread "${KERNEL_DIR}"
 
 	# Build everything
-	emake all_src all_lib ARCH="$(tc-arch-kernel)" DAHDI_DIR="${S_DAHDI}" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || "Failed to build wanpipe"
+	emake all_src all_lib ARCH="$(tc-arch-kernel)" DAHDI_DIR="${S_DAHDI}" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || die "Failed to build wanpipe"
 }
 
 src_install() {
