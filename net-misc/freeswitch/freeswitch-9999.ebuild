@@ -16,7 +16,8 @@ HOMEPAGE="http://www.freeswitch.org/"
 if [ "${PV}" = "9999" ]; then
 	inherit git
 	EGIT_REPO_URI="git://git.freeswitch.org/freeswitch.git"
-	EGIT_BOOTSTRAP="bootstrap.sh"
+	#EGIT_BOOTSTRAP="bootstrap.sh"
+	EGIT_BOOTSTRAP=""
 else
 	SRC_URI="http://files.freeswitch.org/${P/_/}.tar.bz2"
 	S="${WORKDIR}/${P/_/}"
@@ -32,10 +33,10 @@ IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
 IUSE_MODULES="alsa amr amrwb avmd bv +cdr_csv celt cepstral cidlookup cluechoo +console curl
 	dialplan_asterisk dialplan_directory dingaling distributor easyroute erlang_event
-	fax file_string flite freetdm +g723_1 g729 gsmopen h26x +ilbc java lcr ldap +limit +local_stream +logfile +lua
+	file_string flite freetdm +g723_1 g729 gsmopen h26x +ilbc java lcr ldap +limit +local_stream +logfile +lua
 	managed memcache mp4v nibblebill opal openzap osp perl pocketsphinx portaudio portaudio_stream python radius_cdr
 	shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +spandsp +speex spidermonkey spy +syslog
-	+tone_stream tts_commandline unimrcp valet_parking vmd +voicemail voipcodecs
+	+tone_stream tts_commandline unimrcp valet_parking vmd +voicemail
 	xml_cdr xml_curl xml_ldap xml_rpc yaml
 "
 
@@ -746,13 +747,23 @@ src_unpack() {
 	cd "${S}"
 	#
 	# 1. buildsystem workarounds remove as soon as the fix has been comitted
+	# (fixed upstream: d778a076)
 	#
-	epatch "${FILESDIR}/freeswitch-1.0.6-libsndfile-remove-autogen-dep.patch"
+	#epatch "${FILESDIR}/freeswitch-1.0.6-libsndfile-remove-autogen-dep.patch"
 }
 
 src_prepare() {
+	local BOOTSTRAP_OPTS=""
+
 	if [ "${PV}" = "9999" ]; then
 		git_src_prepare
+
+		# multi-threaded bootstrap
+		[ "${MAKEOPTS}" != "${MAKEOPTS/-j}" ] && {
+			einfo "Using parallel bootstrap..."
+			BOOTSTRAP_OPTS="-j"
+		}
+		./bootstrap.sh ${BOOTSTRAP_OPTS}
 	fi
 
 	#

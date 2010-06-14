@@ -48,7 +48,7 @@
   <flag name="freeswitch_modules_event_multicast">Multicast event handler module (mod_event_multicast)</flag>
   <flag name="freeswitch_modules_event_socket">Socket event handler / remote control module (mod_event_socket)</flag>
   <flag name="freeswitch_modules_expr">Dialplan expressions (mod_expr)</flag>
-  <flag name="freeswitch_modules_fax">Fax receive/transmit application module (mod_fax)</flag>
+  <flag name="freeswitch_modules_fax">Fax receive/transmit application module (mod_fax)(DEPRECATED: see mod_spandsp)</flag>
   <flag name="freeswitch_modules_fifo">First-in-First-out call queue module (mod_fifo)</flag>
   <flag name="freeswitch_modules_file_string">Stream audio from a file(?) (mod_file_string)</flag>
   <flag name="freeswitch_modules_flite">Flite TTS (Text-to-Speech) module (mod_flite)</flag>
@@ -116,7 +116,7 @@
   <flag name="freeswitch_modules_valet_parking">Valet parking (mod_valet_parking)</flag>
   <flag name="freeswitch_modules_vmd">Voicemail detection application module (mod_vmd)</flag>
   <flag name="freeswitch_modules_voicemail">Voicemail application module (mod_voicemail)</flag>
-  <flag name="freeswitch_modules_voipcodecs">Collection of most-used codecs (G.711, G.722, G.726, GSM, LPC10) (mod_voipcodecs)</flag>
+  <flag name="freeswitch_modules_voipcodecs">Collection of most-used codecs (G.711, G.722, G.726, GSM, LPC10) (mod_voipcodecs)(DEPRECATED: see mod_spandsp)</flag>
   <flag name="freeswitch_modules_xml_cdr">XML CDR (Call-Detail-Record) module (mod_xml_cdr)</flag>
   <flag name="freeswitch_modules_xml_curl">CURL XML Gateway module (mod_xml_curl)</flag>
   <flag name="freeswitch_modules_xml_ldap">LDAP XML Gateway module (mod_xml_ldap)</flag>
