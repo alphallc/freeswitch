@@ -798,13 +798,16 @@ src_prepare() {
 }
 
 src_configure() {
-	local java_opts
+	local java_opts config_opts
 
 	#
 	# option handling
 	#
 	fs_use freeswitch_modules_java && \
 		java_opts="--with-java=$(/usr/bin/java-config -O)"
+
+	fs_use libpri && \
+		config_opts="--with-libpri"
 
 	#
 	# 1. filter some flags known to break things
@@ -830,8 +833,7 @@ src_configure() {
 		$(fs_enable resampler resample) \
 		$(fs_enable odbc core-odbc-support) \
 		$(fs_enable libedit core-libedit-support) \
-		$(use_with libpri) \
-		${java_opts} || die "failed to configure FreeSWITCH"
+		${java_opts} ${config_opts} || die "failed to configure FreeSWITCH"
 
 	#
 	# 3. configure FreeTDM
@@ -844,8 +846,7 @@ src_configure() {
 			--prefix=/opt/freeswitch \
 			--libdir=/opt/freeswitch/lib \
 			--sysconfdir=/opt/freeswitch/conf \
-			$(use_with libpri) \
-			|| die "failed to configure FreeTDM"
+			${config_opts} || die "failed to configure FreeTDM"
 	fi
 }
 
