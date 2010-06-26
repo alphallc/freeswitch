@@ -36,6 +36,7 @@
   <flag name="freeswitch_modules_conference">Conferencing application (mod_conference)</flag>
   <flag name="freeswitch_modules_console">Console logger module (mod_console)</flag>
   <flag name="freeswitch_modules_curl">Curl-based HTTP client api command, replacing mod_http  (mod_curl)</flag>
+  <flag name="freeswitch_modules_db">Database-based resource limit module (mod_db)</flag>
   <flag name="freeswitch_modules_dialplan_asterisk">Asterisk-like dialplan module (mod_dialplan_asterisk)</flag>
   <flag name="freeswitch_modules_dialplan_directory">Directory interface dialplan module (mod_dialplan_directory)</flag>
   <flag name="freeswitch_modules_dialplan_xml">Default XML dialplan module (mod_dialplan_xml)</flag>
@@ -58,12 +59,13 @@
   <flag name="freeswitch_modules_g729">G.729 (pass-through only) codec module (mod_g729)</flag>
   <flag name="freeswitch_modules_gsmopen">GSM modem/handset endpoint module (mod_gsmopen)</flag>
   <flag name="freeswitch_modules_h26x">H.261, H.263, H.264 pass-through codec module (mod_h26x)</flag>
+  <flag name="freeswitch_modules_hash">Hash-based resource limit module (mod_hash)</flag>
   <flag name="freeswitch_modules_http">HTTP client api command (mod_http)</flag>
   <flag name="freeswitch_modules_iax">Inter-Asterisk eXchange (IAX2) endpoint module (mod_iax)</flag>
   <flag name="freeswitch_modules_ilbc">iLBC codec module (mod_ilbc)</flag>
   <flag name="freeswitch_modules_java">Java language module (mod_java)</flag>
   <flag name="freeswitch_modules_lcr">LCR (Least-Cost-Routing) application module (mod_lcr)</flag>
-  <flag name="freeswitch_modules_limit">Resource limit module (mod_limit)</flag>
+  <flag name="freeswitch_modules_limit">Resource limit module (mod_limit) (DEPRECATED: see mod_db + mod_hash)</flag>
   <flag name="freeswitch_modules_local_stream">Local file streaming module (mod_local_stream)</flag>
   <flag name="freeswitch_modules_logfile">File logger module (mod_logfile)</flag>
   <flag name="freeswitch_modules_lua">LUA language module (mod_lua)</flag>

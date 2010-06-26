@@ -32,8 +32,8 @@ IUSE="esl +libedit nosamples odbc +resampler sctp libpri"
 IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
 IUSE_MODULES="alsa amr amrwb avmd bv +cdr_csv celt cepstral cidlookup cluechoo +console curl
-	dialplan_asterisk dialplan_directory dingaling distributor easyroute erlang_event
-	file_string flite freetdm +g723_1 g729 gsmopen h26x +ilbc java lcr ldap +limit +local_stream +logfile +lua
+	+db dialplan_asterisk dialplan_directory dingaling distributor easyroute erlang_event
+	file_string flite freetdm +g723_1 g729 gsmopen h26x +hash +ilbc java lcr ldap +limit +local_stream +logfile +lua
 	managed memcache mp4v nibblebill opal openzap osp perl pocketsphinx portaudio portaudio_stream python radius_cdr
 	shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +spandsp +speex spidermonkey spy +syslog
 	+tone_stream tts_commandline unimrcp valet_parking vmd +voicemail
@@ -44,7 +44,10 @@ IUSE_MODULES="alsa amr amrwb avmd bv +cdr_csv celt cepstral cidlookup cluechoo +
 IUSE_LINGUAS="de +en es fr it nl ru zh"
 
 # inter-module dependencies
-INTER_MODULE_DEPENDS=""
+INTER_MODULE_DEPENDS="
+	limit:db
+	limit:hash
+"
 
 # modules need these core functions
 CORE_MODULE_DEPENDS="
