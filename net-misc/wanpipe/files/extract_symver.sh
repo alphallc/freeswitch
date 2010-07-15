@@ -64,7 +64,7 @@ while read fn; do
 
 		# skip padding lines
 		#
-		$6 ~ /^[.]+$/{ next }
+		$6 ~ /^\.{16}$/{ next }
 
 		# extract data 
 		#
