@@ -17,9 +17,9 @@
 }
 
 # special handling for installed modules
-[ "$1" != "${1#/lib/modules/*/}" ] && {
-	prefix="${1#/lib/modules/*/}/"
-}
+#[ "$1" != "${1#/lib/modules/*/}" ] && {
+#	prefix="${1#/lib/modules/*/}/"
+#}
 
 # 
 case "$2" in
@@ -33,6 +33,12 @@ esac
 find "$1" -type f -iname "*.ko" |\
 while read fn; do
 	elfclass="$(readelf -h "${fn}" | awk '/Class:/{ print $2 }')"
+
+	# calculate prefix for modules
+	prefix="$(dirname "${fn}")/"
+
+	[ "${prefix}" != "${prefix#/lib/modules/*/}" ] && \
+		prefix="${prefix#/lib/modules/*/}"
 
 	readelf -x __versions "$fn" |\
 	awk -v sym_module="${prefix}`basename ${fn/.ko}`" -v sym_license="${license}" -v elf_class="${elfclass}" '
