@@ -83,6 +83,7 @@
   <flag name="freeswitch_modules_portaudio_stream">Stream audio from a portaudio source (mod_portaudio_stream)</flag>
   <flag name="freeswitch_modules_python">Python language module (mod_python)</flag>
   <flag name="freeswitch_modules_radius_cdr">Radius CDR (Call-Detail-Record) module (mod_radius_cdr)</flag>
+  <flag name="freeswitch_modules_redis">Redis (advanced key-value store: http://code.google.com/p/redis/)-based resource limit module (mod_redis)</flag>
   <flag name="freeswitch_modules_rss">RSS feed application (mod_rss)</flag>
   <flag name="freeswitch_modules_say_de">German TTS functions (mod_say_de)</flag>
   <flag name="freeswitch_modules_say_en">English TTS functions (mod_say_en)</flag>
