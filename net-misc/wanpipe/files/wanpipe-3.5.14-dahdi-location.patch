@@ -1,0 +1,117 @@
+diff -Naurp wanpipe-3.5.14.orig/patches/kdrivers/include/sdladrv.h wanpipe-3.5.14/patches/kdrivers/include/sdladrv.h
+--- wanpipe-3.5.14.orig/patches/kdrivers/include/sdladrv.h	2010-06-23 23:19:47.000000000 +0200
++++ wanpipe-3.5.14/patches/kdrivers/include/sdladrv.h	2010-08-13 23:03:22.693506494 +0200
+@@ -793,8 +793,6 @@ WP_EXTERN int sdla_get_hw_usb_adptr_cnt(
+ WP_EXTERN int sdla_get_hwinfo(hardware_info_t *hwinfo, int card_no);
+ 
+ 
+-#ifdef __SDLADRV__
+-
+ static __inline unsigned int sdla_get_pci_bus(sdlahw_t* hw)
+ {
+ 	sdlahw_card_t	*hwcard;
+@@ -851,6 +849,48 @@ static __inline unsigned int sdla_get_pc
+ 	return 0;
+ }
+ 
++static __inline unsigned int sdla_get_location(sdlahw_t *hw, char *output, const int size)
++{
++	sdlahw_card_t	*hwcard;
++	sdlahw_cpu_t	*hwcpu;
++
++	WAN_ASSERT(hw == NULL);
++	WAN_ASSERT(hw->hwcpu == NULL);
++	hwcpu = hw->hwcpu;
++
++	WAN_ASSERT(hwcpu->hwcard == NULL);
++	hwcard = hwcpu->hwcard;
++
++	switch (hwcard->hw_type) {
++	case SDLA_PCI_CARD: /* PCI */
++		snprintf(output, size, "PCI Bus %02d Slot %02d",
++			sdla_get_pci_bus(hw), sdla_get_pci_slot(hw));
++		output[size - 1] = '\0';
++		break;
++	case SDLA_PCI_EXP_CARD: /* PCI Express */
++		snprintf(output, size, "PCI Express Bus %02d Slot %02d",
++			sdla_get_pci_bus(hw), sdla_get_pci_slot(hw));
++		output[size - 1] = '\0';
++		break;
++	case SDLA_ISA_CARD: /* ISA */
++		snprintf(output, size, "ISA IOPort 0x%03x", hwcard->u_isa.ioport);
++		output[size - 1] = '\0';
++		break;
++	case SDLA_USB_CARD: /* USB */
++#if defined(__LINUX__)
++		snprintf(output, size, "USB Bus %02d Device ID %02d",
++			 hwcard->u_usb.usb_dev->bus->busnum, hwcard->u_usb.usb_dev->devnum);
++		output[size - 1] = '\0';
++#endif
++		break;
++	default:
++		break;
++	}
++	return 0;
++}
++
++#ifdef __SDLADRV__
++
+ static __inline int 
+ sdla_bus_space_map(sdlahw_t* hw, int reg, int size, sdla_mem_handle_t* handle)
+ {
+diff -Naurp wanpipe-3.5.14.orig/patches/kdrivers/src/net/sdla_bri_tdmv.c wanpipe-3.5.14/patches/kdrivers/src/net/sdla_bri_tdmv.c
+--- wanpipe-3.5.14.orig/patches/kdrivers/src/net/sdla_bri_tdmv.c	2010-06-18 01:43:48.000000000 +0200
++++ wanpipe-3.5.14/patches/kdrivers/src/net/sdla_bri_tdmv.c	2010-08-13 23:04:05.077104544 +0200
+@@ -529,6 +529,10 @@ static int wp_tdmv_bri_software_init(wan
+ 	/* Zapata stuff */
+ 	sprintf(wr->span.name, "WPBRI/%d", wr->num);
+ 	sprintf(wr->span.desc, "wrtdm Board %d", wr->num + 1);
++#ifdef DAHDI_ISSUES
++	sdla_get_location(card->hw, wr->span.location, sizeof(wr->span.location));
++#endif
++
+ 	switch(fe->fe_cfg.tdmv_law){
+ 	case WAN_TDMV_ALAW:
+ 		DEBUG_EVENT(
+diff -Naurp wanpipe-3.5.14.orig/patches/kdrivers/src/net/sdla_remora_tdmv.c wanpipe-3.5.14/patches/kdrivers/src/net/sdla_remora_tdmv.c
+--- wanpipe-3.5.14.orig/patches/kdrivers/src/net/sdla_remora_tdmv.c	2010-05-03 19:09:30.000000000 +0200
++++ wanpipe-3.5.14/patches/kdrivers/src/net/sdla_remora_tdmv.c	2010-08-13 23:04:18.020981728 +0200
+@@ -691,6 +691,10 @@ static int wp_tdmv_remora_software_init(
+ 	/* Zapata stuff */
+ 	sprintf(wr->span.name, "WRTDM/%d", wr->num);
+ 	sprintf(wr->span.desc, "wrtdm Board %d", wr->num + 1);
++#ifdef DAHDI_ISSUES
++	sdla_get_location(card->hw, wr->span.location, sizeof(wr->span.location));
++#endif
++
+ 	switch(fe->fe_cfg.tdmv_law){
+ 	case WAN_TDMV_ALAW:
+ 		DEBUG_EVENT(
+diff -Naurp wanpipe-3.5.14.orig/patches/kdrivers/src/net/sdla_tdmv.c wanpipe-3.5.14/patches/kdrivers/src/net/sdla_tdmv.c
+--- wanpipe-3.5.14.orig/patches/kdrivers/src/net/sdla_tdmv.c	2010-06-18 01:44:02.000000000 +0200
++++ wanpipe-3.5.14/patches/kdrivers/src/net/sdla_tdmv.c	2010-08-13 23:04:45.174723995 +0200
+@@ -1131,6 +1131,10 @@ static int wp_tdmv_software_init(wan_tdm
+ 		sprintf(wp->span.name, "WPT1/%d", wp->num);
+ 	}
+ 	sprintf(wp->span.desc, "%s card %d", wp->devname, wp->num);
++#ifdef DAHDI_ISSUES
++	sdla_get_location(card->hw, wp->span.location, sizeof(wp->span.location));
++#endif
++
+ 	wp->span.spanconfig = wp_tdmv_spanconfig;
+ 	wp->span.chanconfig = wp_tdmv_chanconfig;
+ 	wp->span.startup = wp_tdmv_startup;
+diff -Naurp wanpipe-3.5.14.orig/patches/kdrivers/src/net/sdla_usb_remora_tdmv.c wanpipe-3.5.14/patches/kdrivers/src/net/sdla_usb_remora_tdmv.c
+--- wanpipe-3.5.14.orig/patches/kdrivers/src/net/sdla_usb_remora_tdmv.c	2010-05-28 21:03:50.000000000 +0200
++++ wanpipe-3.5.14/patches/kdrivers/src/net/sdla_usb_remora_tdmv.c	2010-08-13 23:05:00.877574895 +0200
+@@ -1168,6 +1168,10 @@ static int wp_usb_tdmv_remora_software_i
+ 	/* Zapata stuff */
+ 	sprintf(wr->span.name, "WRTDM/%d", wr->num);
+ 	sprintf(wr->span.desc, "wrtdm Board %d", wr->num + 1);
++#ifdef DAHDI_ISSUES
++	sdla_get_location(card->hw, wr->span.location, sizeof(wr->span.location));
++#endif
++
+ 	switch(fe->fe_cfg.tdmv_law){
+ 	case WAN_TDMV_ALAW:
+ 		DEBUG_EVENT(

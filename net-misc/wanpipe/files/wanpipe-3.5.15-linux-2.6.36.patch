@@ -1,0 +1,142 @@
+Experimental 2.6.36 support patch for wanpipe-3.5.15
+
+NOTE: naive unlocked_ioctl conversion, still need to check
+      if we need (additional) locking in the wan*_ioctl functions
+      to protect from race conditions
+
+--- wanpipe-3.5.15/patches/kdrivers/src/wanrouter/wanproc.c.orig	2010-08-28 18:14:44.211974672 +0200
++++ wanpipe-3.5.15/patches/kdrivers/src/wanrouter/wanproc.c	2010-08-28 18:14:47.250940409 +0200
+@@ -292,7 +292,11 @@ static struct file_operations wandev_fop
+ 	.read	 = seq_read,
+ 	.llseek	 = seq_lseek,
+ 	.release = single_release,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
++	.unlocked_ioctl	 = wanrouter_ioctl,
++#else
+ 	.ioctl	 = wanrouter_ioctl,
++#endif
+ };
+ 
+ static int wp_hwprobe_open(struct inode *inode, struct file *file)
+--- wanpipe-3.5.15/patches/kdrivers/src/wanrouter/wanmain.c.orig	2010-08-28 18:14:44.216974615 +0200
++++ wanpipe-3.5.15/patches/kdrivers/src/wanrouter/wanmain.c	2010-08-28 18:14:47.253940376 +0200
+@@ -527,8 +527,13 @@ unsigned short wanrouter_type_trans (str
+  *	o execute requested action or pass command to the device driver
+  */
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
++int wanrouter_ioctl(struct file *file,
++		unsigned int cmd, unsigned long arg)
++#else
+ int wanrouter_ioctl(struct inode *inode, struct file *file,
+ 		unsigned int cmd, unsigned long arg)
++#endif
+ {
+ 	int err = 0;
+ 	struct proc_dir_entry *dent;
+@@ -540,7 +545,11 @@ int wanrouter_ioctl(struct inode *inode,
+ 		return -EINVAL;
+ 	}
+ 		
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
++	dent = WP_PDE(file->f_dentry->d_inode);
++#else
+ 	dent = WP_PDE(inode);
++#endif
+ 	if ((dent == NULL) || (dent->data == NULL)){
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,18)
+ 		DEBUG_EVENT("%s: Invalid dent\n",
+--- wanpipe-3.5.15/patches/kdrivers/src/net/wanpipe_cdev_linux.c.orig	2010-08-28 18:14:44.219974582 +0200
++++ wanpipe-3.5.15/patches/kdrivers/src/net/wanpipe_cdev_linux.c	2010-08-28 18:14:47.255940354 +0200
+@@ -121,7 +121,11 @@ static struct file_operations wp_cdev_fo
+ 	llseek: NULL,
+ 	open: wp_cdev_open,
+ 	release: wp_cdev_release,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
++	unlocked_ioctl: wp_cdev_ioctl,
++#else
+ 	ioctl: wp_cdev_ioctl,
++#endif
+ 	read: wp_cdev_read,
+ 	write: wp_cdev_write,
+ 	poll: wp_cdev_poll,
+@@ -779,7 +783,11 @@ static ssize_t wp_cdev_write(struct file
+ }
+ 
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
+ static int wp_cdev_ioctl(struct inode *inode, struct file *file, unsigned int cmd, unsigned long data)
++#else
++static int wp_cdev_ioctl(struct file *file, unsigned int cmd, unsigned long data)
++#endif
+ {
+ 	wanpipe_cdev_t *cdev;
+ 	int err=-EINVAL;
+--- wanpipe-3.5.15/patches/kdrivers/include/wanpipe_wanrouter.h.orig	2010-08-28 18:15:06.810719887 +0200
++++ wanpipe-3.5.15/patches/kdrivers/include/wanpipe_wanrouter.h	2010-08-28 18:16:44.020623909 +0200
+@@ -440,7 +440,11 @@ extern int wanpipe_lip_get_if_status(voi
+ unsigned short wanrouter_type_trans(struct sk_buff *skb, netdevice_t *dev);
+ int wanrouter_encapsulate(struct sk_buff *skb, netdevice_t *dev,unsigned short type);
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
++extern int wanrouter_ioctl( struct file *file, unsigned int cmd, unsigned long arg);
++#else
+ extern int wanrouter_ioctl( struct inode *inode, struct file *file, unsigned int cmd, unsigned long arg);
++#endif
+ /* Proc interface functions. These must not be called by the drivers! */
+ extern int wanrouter_proc_init(void);
+ extern void wanrouter_proc_cleanup(void);
+--- wanpipe-3.5.15/patches/kdrivers/wanec/wanec_dev.c.orig	2010-08-28 18:14:44.226974503 +0200
++++ wanpipe-3.5.15/patches/kdrivers/wanec/wanec_dev.c	2010-08-28 18:14:47.258940318 +0200
+@@ -92,8 +92,12 @@ static int wanec_dev_release(struct inod
+ #if defined(__WINDOWS__)
+ int wanec_dev_ioctl(void *data, char *card_devname);
+ #else
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
++static int wanec_dev_ioctl(struct file*, unsigned int, unsigned long);
++#else
+ static int wanec_dev_ioctl(struct inode*, struct file*, unsigned int, unsigned long);
+ #endif
++#endif
+ 
+ #if !defined(__WINDOWS__)
+ /*==============================================================
+@@ -104,7 +108,11 @@ static struct file_operations wanec_dev_
+ 	llseek: NULL,
+ 	open: wanec_dev_open,
+ 	release: wanec_dev_release,
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
++	unlocked_ioctl: wanec_dev_ioctl,
++#else
+ 	ioctl: wanec_dev_ioctl,
++#endif
+ 	read: NULL,
+ 	write: NULL,
+ 	poll: NULL,
+@@ -244,8 +252,13 @@ int wanec_dev_ioctl(void *data, char *ca
+ }
+ #else
+ extern int wanec_ioctl(unsigned int, void*);
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,36)
++static int wanec_dev_ioctl(struct file *file,
++		      unsigned int cmd, unsigned long data)
++#else
+ static int wanec_dev_ioctl(struct inode *inode, struct file *file,
+ 		      unsigned int cmd, unsigned long data)
++#endif
+ {
+ 	if (data == 0){
+ 		return -EINVAL;
+--- wanpipe-3.5.15/patches/kdrivers/src/wanrouter/af_wanpipe_src.c.orig	2010-08-28 18:29:26.722913927 +0200
++++ wanpipe-3.5.15/patches/kdrivers/src/wanrouter/af_wanpipe_src.c	2010-08-28 18:30:10.128416963 +0200
+@@ -1516,7 +1516,9 @@
+  *      Crates AF_WANPIPE socket.
+  *===========================================================*/
+ 
+-#ifdef LINUX_FEAT_2624 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,32)
++int wanpipe_create(struct net *net, struct socket *sock, int protocol, int kern)
++#elif defined(LINUX_FEAT_2624)
+ int wanpipe_create(struct net *net, struct socket *sock, int protocol)
+ #else
+ int wanpipe_create(struct socket *sock, int protocol)
