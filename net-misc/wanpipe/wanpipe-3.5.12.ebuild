@@ -15,7 +15,7 @@ KEYWORDS="~x86"
 LICENSE=""
 SLOT="0"
 
-RDEPEND="dahdi? ( net-misc/dahdi )"
+RDEPEND="dahdi? ( <net-misc/dahdi-2.4.0 )"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/${P/_p/.}"

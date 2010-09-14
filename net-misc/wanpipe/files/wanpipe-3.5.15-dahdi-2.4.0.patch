@@ -1,0 +1,413 @@
+--- wanpipe-3.5.15/patches/kdrivers/src/net/sdla_tdmv_dummy.c.orig	2010-09-14 01:00:35.910220288 +0200
++++ wanpipe-3.5.15/patches/kdrivers/src/net/sdla_tdmv_dummy.c	2010-09-14 01:00:38.349931878 +0200
+@@ -87,7 +87,6 @@
+ #endif
+    wpd->span.channels = 0;	/* no channels */
+    wpd->span.deflaw = ZT_LAW_MULAW;
+-   wpd->span.pvt = wpd;
+    wpd->chan.pvt = wpd;
+    
+    if (zt_register(&wpd->span, 0)) {
+--- wanpipe-3.5.15/patches/kdrivers/src/net/sdla_bri_tdmv.c.orig	2010-09-14 01:00:35.913219934 +0200
++++ wanpipe-3.5.15/patches/kdrivers/src/net/sdla_bri_tdmv.c	2010-09-14 01:02:47.946620019 +0200
+@@ -310,11 +310,14 @@
+ 
+ static int wp_bri_zap_watchdog(struct zt_span *span, int event)
+ {
++#if 0
++	wp_tdmv_bri_t *wr = container_of(span, wp_tdmv_bri_t, span);
++#endif
+ 	BRI_FUNC();
+ 
+ #if 0
+ 	printk("TDM: Restarting DMA\n");
+-	wctdm_restart_dma(span->pvt);
++	wctdm_restart_dma(wr);
+ #endif
+ 	return 0;
+ }
+@@ -344,6 +347,10 @@
+ 	WAN_ASSERT2(wr->card == NULL, -ENODEV);
+ 	card	= wr->card;
+ 
++	/* card has no echo canceller module */
++	if (!card->wandev.ec_dev)
++		return -ENODEV;
++
+ 	if (ecp->param_count > 0) {
+  		DEBUG_TDMV("[TDMV] Wanpipe echo canceller does not support parameters; failing request\n");
+  		return -EINVAL;
+@@ -431,6 +438,10 @@
+ 	card	= wr->card;
+ 	fe	= &card->fe;
+ 
++	/* card has no echo canceller module */
++	if (!card->wandev.ec_dev)
++		return -ENODEV;
++
+ 	if (card->wandev.ec_enable){
+ 		DEBUG_EVENT("[TDMV_BRI]: %s: %s(): channel %d\n",
+ 			wr->devname, __FUNCTION__, chan->chanpos);
+@@ -502,6 +513,14 @@
+ 	return 0;
+ }
+ 
++static const struct dahdi_span_ops wp_tdmv_bri_span_ops = {
++	.owner		= THIS_MODULE,
++	.open		= wp_bri_zap_open,
++	.close		= wp_bri_zap_close,
++	.ioctl		= wp_bri_zap_ioctl,
++	.watchdog	= wp_bri_zap_watchdog,
++	.echocan_create = wp_tdmv_bri_hwec_create
++};
+ 
+ static int wp_tdmv_bri_software_init(wan_tdmv_t *wan_tdmv)
+ {
+@@ -585,7 +604,6 @@
+ 		//wr->rxsig_state[x] = ZT_RXSIG_INITIAL;
+ 	}/* for() */
+ 
+-	wr->span.pvt		= wr;
+ #ifdef DAHDI_ISSUES
+ 	wr->span.chans		= wr->chans_ptrs;
+ #else
+@@ -594,21 +612,10 @@
+ 	wr->span.channels	= MAX_BRI_TIMESLOTS;/* this is the number of b-chans (2) and the d-chan on one BRI line. */;
+ 	wr->span.linecompat	= ZT_CONFIG_AMI | ZT_CONFIG_CCS; /* <--- this is really BS */
+ 
+-	wr->span.open		= wp_bri_zap_open;
+-	wr->span.close		= wp_bri_zap_close;
++	wr->span.ops		= &wp_tdmv_bri_span_ops;
+ 
+ 	//wr->span.flags	= ZT_FLAG_RBS;
+ 
+-	wr->span.ioctl		= wp_bri_zap_ioctl;
+-	wr->span.watchdog	= wp_bri_zap_watchdog;
+-	/* Set this pointer only if card has hw echo canceller module */
+-	if (card->wandev.ec_dev){
+-#ifdef DAHDI_22
+-		wr->span.echocan_create = wp_tdmv_bri_hwec_create;
+-#else
+-		wr->span.echocan = wp_bri_zap_hwec;
+-#endif
+-	}
+ #if defined(__LINUX__)
+ 	init_waitqueue_head(&wr->span.maintq);
+ #endif
+--- wanpipe-3.5.15/patches/kdrivers/src/net/sdla_remora_tdmv.c.orig	2010-09-14 01:00:35.915219698 +0200
++++ wanpipe-3.5.15/patches/kdrivers/src/net/sdla_remora_tdmv.c	2010-09-14 01:03:45.464829408 +0200
+@@ -448,8 +448,10 @@
+ static int wp_remora_zap_watchdog(struct zt_span *span, int event)
+ {
+ #if 0
++	wp_tdmv_remora_t *wr = container_of(span, wp_tdmv_remora_t, span);
++
+ 	printk("TDM: Restarting DMA\n");
+-	wctdm_restart_dma(span->pvt);
++	wctdm_restart_dma(wr);
+ #endif
+ 	return 0;
+ }
+@@ -478,6 +480,9 @@
+ 	WAN_ASSERT2(wr->card == NULL, -ENODEV);
+ 	card = wr->card;
+ 
++	/* card has no echo canceller module */
++	if (!(wr->hwec == WANOPT_YES && card->wandev.ec_dev))
++		return -ENODEV;
+ 	
+ 	if (ecp->param_count > 0) {
+ 		DEBUG_TDMV("[TDMV] Wanpipe echo canceller does not support parameters; failing request\n");
+@@ -569,6 +574,9 @@
+ 	WAN_ASSERT2(wr->card == NULL, -ENODEV);
+ 	card = wr->card;
+ 
++	/* card has no echo canceller module */
++	if (!(wr->hwec == WANOPT_YES && card->wandev.ec_dev))
++		return -ENODEV;
+ 
+ 	if (enable) {
+ 		wan_set_bit(chan->chanpos-1,&card->wandev.rtp_tap_call_map);
+@@ -670,6 +678,17 @@
+ 	return 0;		
+ }
+ 
++static const struct dahdi_span_ops wp_tdmv_remora_span_ops = {
++	.owner		= THIS_MODULE,
++	.hooksig	= wp_remora_zap_hooksig,
++	.open		= wp_remora_zap_open,
++	.close		= wp_remora_zap_close,
++	.ioctl		= wp_remora_zap_ioctl,
++	.watchdog	= wp_remora_zap_watchdog,
++	.chanconfig 	= wp_remora_chanconfig,
++	.echocan_create = wp_tdmv_remora_hwec_create
++};
++
+ static int wp_tdmv_remora_software_init(wan_tdmv_t *wan_tdmv)
+ {
+ 	sdla_t			*card = NULL;
+@@ -746,7 +765,6 @@
+ 			num++;
+ 		}
+ 	}
+-	wr->span.pvt = wr;
+ #ifdef DAHDI_ISSUES
+ #ifdef DAHDI_23
+         wr->span.owner          = THIS_MODULE;
+@@ -755,24 +773,11 @@
+ #else
+ 	wr->span.chans		= wr->chans;
+ #endif
++	wr->span.ops		= &wp_tdmv_remora_span_ops;
++
+ 	wr->span.channels	= num/*wr->max_timeslots*/;
+-	wr->span.hooksig	= wp_remora_zap_hooksig;
+-	wr->span.open		= wp_remora_zap_open;
+-	wr->span.close		= wp_remora_zap_close;
+ 	wr->span.flags		= ZT_FLAG_RBS;
+-	wr->span.ioctl		= wp_remora_zap_ioctl;
+-	wr->span.watchdog	= wp_remora_zap_watchdog;
+-
+-	wr->span.chanconfig 	= wp_remora_chanconfig;
+ 
+-	/* Set this pointer only if card has hw echo canceller module */
+-	if (wr->hwec == WANOPT_YES && card->wandev.ec_dev){
+-#ifdef DAHDI_22
+-		wr->span.echocan_create = wp_tdmv_remora_hwec_create;
+-#else
+-		wr->span.echocan = wp_remora_zap_hwec;
+-#endif
+-	}
+ 
+ #if defined(__LINUX__)
+ 	init_waitqueue_head(&wr->span.maintq);
+--- wanpipe-3.5.15/patches/kdrivers/src/net/sdla_tdmv.c.orig	2010-09-14 01:00:35.918219344 +0200
++++ wanpipe-3.5.15/patches/kdrivers/src/net/sdla_tdmv.c	2010-09-14 01:04:59.209127598 +0200
+@@ -1096,6 +1096,23 @@
+ **
+ */
+ 
++static const struct dahdi_span_ops wp_tdmv_span_ops = {
++	.owner = THIS_MODULE,
++	.spanconfig = wp_tdmv_spanconfig,
++	.chanconfig = wp_tdmv_chanconfig,
++	.startup = wp_tdmv_startup,
++	.shutdown = wp_tdmv_shutdown,
++	.rbsbits = wp_tdmv_rbsbits,
++	.maint = wp_tdmv_maint,
++	.open = wp_tdmv_open,
++	.close = wp_tdmv_close,
++	.ioctl = wp_tdmv_ioctl,
++	.echocan_create = wp_tdmv_hwec_create,
++#if defined(CONFIG_PRODUCT_WANPIPE_TDM_VOICE_DCHAN) && defined(CONFIG_PRODUCT_WANPIPE_TDM_VOICE_DCHAN_ZAPTEL)
++	.hdlc_hard_xmit = wp_tdmv_tx_hdlc_hard
++#endif
++};
++
+ /******************************************************************************
+ ** wp_tdmv_software_init() - 
+ **
+@@ -1134,15 +1151,8 @@
+ #ifdef DAHDI_ISSUES
+ 	sdla_get_location(card->hw, wp->span.location, sizeof(wp->span.location));
+ #endif
++	wp->span.ops = &wp_tdmv_span_ops;
+ 
+-	wp->span.spanconfig = wp_tdmv_spanconfig;
+-	wp->span.chanconfig = wp_tdmv_chanconfig;
+-	wp->span.startup = wp_tdmv_startup;
+-	wp->span.shutdown = wp_tdmv_shutdown;
+-	wp->span.rbsbits = wp_tdmv_rbsbits;
+-	wp->span.maint = wp_tdmv_maint;
+-	wp->span.open = wp_tdmv_open;
+-	wp->span.close = wp_tdmv_close;
+ 	wp->span.channels = wp->max_timeslots;
+ #ifdef DAHDI_ISSUES
+ #ifdef DAHDI_23
+@@ -1154,24 +1164,6 @@
+ #endif
+ 	wp->span.flags = ZT_FLAG_RBS;
+ 
+-	wp->span.ioctl = wp_tdmv_ioctl;
+-	/* Set this pointer only if card has hw echo canceller module */
+-	if (wp->hwec == WANOPT_YES && card->wandev.ec_dev){
+-		/* Initialize it only if HWEC option is enabled */
+-#ifdef DAHDI_22
+-		wp->span.echocan_create = wp_tdmv_hwec_create;
+-#else
+-		wp->span.echocan = wp_tdmv_hwec;
+-#endif
+-	}
+-#if defined(CONFIG_PRODUCT_WANPIPE_TDM_VOICE_DCHAN) && defined(CONFIG_PRODUCT_WANPIPE_TDM_VOICE_DCHAN_ZAPTEL)
+-	if (wp->dchan_map){
+-		DEBUG_EVENT("%s: Enable Zaptel HW DCHAN interface\n",
+-				wp->devname);
+-		wp->span.hdlc_hard_xmit = wp_tdmv_tx_hdlc_hard;
+-	}
+-#endif
+-	wp->span.pvt = wp;
+ 	if (wp->ise1){
+ 		wp->span.deflaw = ZT_LAW_ALAW;
+ 		card->fe.fe_cfg.tdmv_law = WAN_TDMV_ALAW;
+@@ -1284,8 +1276,7 @@
+ 	int			i;
+ 
+ 	WAN_ASSERT2(span == NULL, -ENODEV);
+-	WAN_ASSERT2(span->pvt == NULL, -ENODEV);
+-	wp		= span->pvt;
++	wp		= container_of(span, wp_tdmv_softc_t, span);
+ 
+ 	/* initialize the start value for the entire chunk of last ec buffer */
+ 	for(i = 0; i < span->channels; i++){
+@@ -1322,8 +1313,7 @@
+ 	wan_smp_flag_t		flags;
+ 
+ 	WAN_ASSERT2(span == NULL, -ENODEV);
+-	WAN_ASSERT2(span->pvt == NULL, -ENODEV);
+-	wp		= span->pvt;
++	wp		= container_of(span, wp_tdmv_softc_t, span);
+ 	wan_clear_bit(WP_TDMV_RUNNING, &wp->flags);
+ 	wan_spin_lock_irq(&wp->lockirq, &flags);
+ 	span->flags &= ~ZT_FLAG_RUNNING;
+@@ -1338,14 +1328,13 @@
+ */
+ static int wp_tdmv_maint(struct zt_span *span, int cmd)
+ {
+-	wp_tdmv_softc_t	*wp = span->pvt;
++	wp_tdmv_softc_t	*wp = NULL;
+ 	sdla_t		*card = wp->card;
+ 	int		res = 0;
+ 	wan_smp_flag_t	flags;
+ 	
+ 	WAN_ASSERT2(span == NULL, -ENODEV);
+-	WAN_ASSERT2(span->pvt == NULL, -ENODEV);
+-	wp		= span->pvt;
++	wp		= container_of(span, wp_tdmv_softc_t, span);;
+ 	wan_spin_lock_irq(&wp->lockirq, &flags);
+ 	if (wp->ise1) {
+ #if 0
+@@ -1561,8 +1550,7 @@
+ 	wan_smp_flag_t smp_flags;
+ 
+ 	WAN_ASSERT2(span == NULL, -ENODEV);
+-	WAN_ASSERT2(span->pvt == NULL, -ENODEV);
+-	wp		= span->pvt;
++	wp		= container_of(span, wp_tdmv_softc_t, span);
+ 	card = (sdla_t*)wp->card;
+ 	DEBUG_TDMV("%s: Configuring span device..\n", wp->devname);
+ 	switch(wp->lcode){
+@@ -2134,6 +2122,10 @@
+ 	wp_tdmv_softc_t	*wp = NULL;
+ 	sdla_t *card = NULL;
+ 	int	err = -EINVAL;
++
++	/* card has no echo canceller module */
++	if (!(wp->hwec == WANOPT_YES && card->wandev.ec_dev))
++		return -ENODEV;
+ 	
+ 	if (ecp->param_count > 0) {
+ 		DEBUG_TDMV("[TDMV] Wanpipe echo canceller does not support parameters; failing request\n");
+@@ -2230,6 +2222,10 @@
+ 	WAN_ASSERT2(wp->card == NULL, -ENODEV);
+ 	card = wp->card;
+ 
++	/* card has no echo canceller module */
++	if (!(wp->hwec == WANOPT_YES && card->wandev.ec_dev))
++		return -ENODEV;
++
+ 	if (enable) {
+ 		wan_set_bit(chan->chanpos-1,&card->wandev.rtp_tap_call_map);
+ 		wp_fax_tone_timeout_set(wp, chan->chanpos-1);
+@@ -2476,6 +2472,9 @@
+ 	wp	= chan->pvt;
+ 	WAN_ASSERT_VOID(wp->dchan_dev == NULL);
+ 
++	if (!wp->dchan_map)
++		return;
++
+ 	size = chan->writen[chan->outwritebuf] - chan->writeidx[chan->outwritebuf]-2;
+ 	if (!size) {
+      /* Do not transmit zero length frame */
+--- wanpipe-3.5.15/patches/kdrivers/src/net/sdla_usb_remora_tdmv.c.orig	2010-09-14 01:00:35.921218989 +0200
++++ wanpipe-3.5.15/patches/kdrivers/src/net/sdla_usb_remora_tdmv.c	2010-09-14 01:06:29.864436909 +0200
+@@ -539,8 +539,10 @@
+ static int wp_remora_zap_watchdog(struct zt_span *span, int event)
+ {
+ #if 0
++	wp_usb_tdmv_remora_t *wr = container_of(span, wp_usb_tdmv_remora_t, span);
++
+ 	printk("TDM: Restarting DMA\n");
+-	wctdm_restart_dma(span->pvt);
++	wctdm_restart_dma(wr);
+ #endif
+ 	return 0;
+ }
+@@ -571,6 +573,9 @@
+ 	WAN_ASSERT2(wr->card == NULL, -ENODEV);
+ 	card = wr->card;
+ 
++	/* card has no echo canceller module */
++	if (!(wr->hwec == WANOPT_YES && card->wandev.ec_dev))
++		return -ENODEV;
+ 	
+ 	if (ecp->param_count > 0) {
+ 		DEBUG_TDMV("[TDMV] Wanpipe echo canceller does not support parameters; failing request\n");
+@@ -656,6 +661,10 @@
+ 	WAN_ASSERT2(wr->card == NULL, -ENODEV);
+ 	card = wr->card;
+ 
++	/* card has no echo canceller module */
++	if (!(wr->hwec == WANOPT_YES && card->wandev.ec_dev))
++		return -ENODEV;
++
+ 	if (enable) {
+ 		wan_set_bit(chan->chanpos-1, &card->wandev.rtp_tap_call_map);
+ 	} else {
+@@ -1147,6 +1156,16 @@
+ 	return 0;
+ }
+ 
++static const struct dahdi_span_ops wp_usb_tdmv_span_ops = {
++	.owner		= THIS_MODULE,
++	.hooksig	= wp_remora_zap_hooksig,
++	.open		= wp_remora_zap_open,
++	.close		= wp_remora_zap_close,
++	.ioctl		= wp_remora_zap_ioctl,
++	.watchdog	= wp_remora_zap_watchdog,
++	.echocan_create = wp_usb_tdmv_remora_hwec_create
++};
++
+ static int wp_usb_tdmv_remora_software_init(wan_tdmv_t *wan_tdmv)
+ {
+ 	sdla_t			*card = NULL;
+@@ -1237,27 +1256,16 @@
+ 			num++;
+ 		}
+ 	}
+-	wr->span.pvt = wr;
+ #ifdef DAHDI_ISSUES
+ 	wr->span.chans		= wr->chans_ptrs;
+ #else
+ 	wr->span.chans		= wr->chans;
+ #endif
+ 	wr->span.channels	= num/*wr->max_timeslots*/;
+-	wr->span.hooksig	= wp_remora_zap_hooksig;
+-	wr->span.open		= wp_remora_zap_open;
+-	wr->span.close		= wp_remora_zap_close;
+ 	wr->span.flags		= ZT_FLAG_RBS;
+-	wr->span.ioctl		= wp_remora_zap_ioctl;
+-	wr->span.watchdog	= wp_remora_zap_watchdog;
+-	/* Set this pointer only if card has hw echo canceller module */
+-	if (wr->hwec == WANOPT_YES && card->wandev.ec_dev){
+-#ifdef DAHDI_22
+-		wr->span.echocan_create = wp_usb_tdmv_remora_hwec_create;
+-#else
+-		wr->span.echocan = wp_remora_zap_hwec;
+-#endif
+-	}
++
++	wr->span.ops		= &wp_usb_tdmv_span_ops;
++
+ #if defined(__LINUX__)
+ 	init_waitqueue_head(&wr->span.maintq);
+ #endif

@@ -5,9 +5,10 @@ EAPI="2"
 
 inherit linux-mod
 
+MY_P="${PN}-${PV/_p/.}"
 DESCRIPTION="Wanpipe driver for Sangoma PCI/PCIe Telephony Cards"
 HOMEPAGE="http://www.sangoma.com/"
-SRC_URI="ftp://ftp.sangoma.com/linux/current_wanpipe/${P}.tgz"
+SRC_URI="ftp://ftp.sangoma.com/linux/current_wanpipe/${MY_P}.tgz"
 
 IUSE="+dahdi"
 KEYWORDS="~x86"
@@ -17,13 +18,9 @@ SLOT="0"
 RDEPEND="dahdi? ( net-misc/dahdi )"
 DEPEND="${RDEPEND}"
 
-S="${WORKDIR}/${P}"
+S="${WORKDIR}/${P/_p/.}"
 S_DAHDI="${WORKDIR}/dahdi"
 S_KERNEL="${WORKDIR}/kernel"
-
-#pkg_setup() {
-#	linux-mod_pkg_setup
-#}
 
 src_prepare() {
 	###
@@ -84,26 +81,36 @@ src_prepare() {
 	#          disable depmod call
 	#          do not install headers during "make all_util"
 	#
-	epatch "${FILESDIR}/${P}-Makefile.patch"
+	epatch "${FILESDIR}/${PN}-3.5.10_p10-Makefile.patch"
 
 	# Silence memset/memcpy implicit declaration QA warnings
-	epatch "${FILESDIR}/${P}-silence-QA-warnings.patch"
+	epatch "${FILESDIR}/${PN}-3.5.10-silence-QA-warnings.patch"
 
 	# Silence "jobserver unavailable" messages and QA warnings
-	epatch "${FILESDIR}/${P}-QA-fix-parallel-make.patch"
+	epatch "${FILESDIR}/${PN}-3.5.15-QA-fix-parallel-make.patch"
 
-	# Silence "stel_tone/fsk.c:240: warning: dereferencing type-punned pointer will break strict-aliasing rules"
-	epatch "${FILESDIR}/${P}-QA-fix-libstelephony.patch"
+	# TODO: Silence "stel_tone/fsk.c:240: warning: dereferencing type-punned pointer will break strict-aliasing rules"
+	#epatch "${FILESDIR}/${PN}-3.5.10-QA-fix-libstelephony.patch"
 
 	# Silence gcc-4.4 "warning: format not a string literal and no format arguments"
-	epatch "${FILESDIR}/${P}-QA-fix-format-literal-warnings.patch"
+	epatch "${FILESDIR}/${PN}-3.5.10-QA-fix-format-literal-warnings.patch"
 
 	# Silence gcc-4.4 "warning: deprecated conversion from string constant to 'char*'"
-	epatch "${FILESDIR}/${P}-QA-fix-const-char-warnings.patch"
+	epatch "${FILESDIR}/${PN}-3.5.10-QA-fix-const-char-warnings.patch"
 
-	# >=2.6.31
-	if kernel_is -ge 2 6 31 ; then
-		epatch "${FILESDIR}"/${P}-linux-2.6.31.patch
+	# experimental patch for 2.6.36(-rcX) support
+	if kernel_is ge 2 6 36; then
+		ewarn "Experimental support for linux-2.6.36"
+		epatch "${FILESDIR}/${PN}-3.5.15-linux-2.6.36.patch"
+	fi
+
+	# experimental dahdi location support
+	epatch "${FILESDIR}"/${PN}-3.5.14-dahdi-location.patch
+
+	# experimental patch for dahdi-2.4.0 support
+	if use dahdi && has_version ">=net-misc/dahdi-2.4.0"; then
+		ewarn "Experimental support for dahdi-2.4.0"
+		epatch "${FILESDIR}/${PN}-3.5.15-dahdi-2.4.0.patch"
 	fi
 
 #	# Remove some include paths
