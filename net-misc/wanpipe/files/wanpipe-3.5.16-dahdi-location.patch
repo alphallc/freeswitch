@@ -1,0 +1,120 @@
+--- wanpipe-3.5.16/patches/kdrivers/src/net/sdla_bri_tdmv.c.orig	2010-09-14 00:41:55.000000000 +0200
++++ wanpipe-3.5.16/patches/kdrivers/src/net/sdla_bri_tdmv.c	2010-10-07 01:01:51.188381112 +0200
+@@ -555,6 +555,10 @@
+ 	/* Zapata stuff */
+ 	sprintf(wr->span.name, "WPBRI/%d", wr->num);
+ 	sprintf(wr->span.desc, "wrtdm Board %d", wr->num + 1);
++#ifdef DAHDI_ISSUES
++	sdla_get_location(card->hw, wr->span.location, sizeof(wr->span.location));
++#endif
++
+ 	switch(fe->fe_cfg.tdmv_law){
+ 	case WAN_TDMV_ALAW:
+ 		DEBUG_EVENT(
+--- wanpipe-3.5.16/patches/kdrivers/src/net/sdla_remora_tdmv.c.orig	2010-09-14 00:41:57.000000000 +0200
++++ wanpipe-3.5.16/patches/kdrivers/src/net/sdla_remora_tdmv.c	2010-10-07 01:01:51.191380749 +0200
+@@ -729,6 +729,10 @@
+ 	/* Zapata stuff */
+ 	sprintf(wr->span.name, "WRTDM/%d", wr->num);
+ 	sprintf(wr->span.desc, "wrtdm Board %d", wr->num + 1);
++#ifdef DAHDI_ISSUES
++	sdla_get_location(card->hw, wr->span.location, sizeof(wr->span.location));
++#endif
++
+ 	switch(fe->fe_cfg.tdmv_law){
+ 	case WAN_TDMV_ALAW:
+ 		DEBUG_EVENT(
+--- wanpipe-3.5.16/patches/kdrivers/src/net/sdla_tdmv.c.orig	2010-10-04 23:50:19.000000000 +0200
++++ wanpipe-3.5.16/patches/kdrivers/src/net/sdla_tdmv.c	2010-10-07 01:04:00.484726844 +0200
+@@ -1135,7 +1135,7 @@
+ 	WAN_ASSERT(wp == NULL);
+ 	WAN_ASSERT(wp->card == NULL);
+ 	card = wp->card;
+-	
++
+ 	if (wan_test_bit(WP_TDMV_REGISTER, &wp->flags)){
+ 		DEBUG_EVENT("%s: Wanpipe device is already registered to Zaptel span # %d!\n", 
+ 					wp->devname, wp->span.spanno);
+@@ -1156,6 +1156,9 @@
+ 		sprintf(wp->span.name, "WPT1/%d", wp->num);
+ 	}
+ 	sprintf(wp->span.desc, "%s card %d", wp->devname, wp->num);
++#ifdef DAHDI_ISSUES
++	sdla_get_location(card->hw, wp->span.location, sizeof(wp->span.location));
++#endif
+ 
+ #if defined(DAHDI_24) 
+     wp->span.ops = &wp_tdm_span_ops;
+--- wanpipe-3.5.16/patches/kdrivers/src/net/sdla_usb_remora_tdmv.c.orig	2010-09-14 00:42:00.000000000 +0200
++++ wanpipe-3.5.16/patches/kdrivers/src/net/sdla_usb_remora_tdmv.c	2010-10-07 01:01:51.198379902 +0200
+@@ -1197,6 +1197,10 @@
+ 	/* Zapata stuff */
+ 	sprintf(wr->span.name, "WRTDM/%d", wr->num);
+ 	sprintf(wr->span.desc, "wrtdm Board %d", wr->num + 1);
++#ifdef DAHDI_ISSUES
++	sdla_get_location(card->hw, wr->span.location, sizeof(wr->span.location));
++#endif
++
+ 	switch(fe->fe_cfg.tdmv_law){
+ 	case WAN_TDMV_ALAW:
+ 		DEBUG_EVENT(
+--- wanpipe-3.5.16/patches/kdrivers/include/sdladrv.h.orig	2010-06-23 23:19:47.000000000 +0200
++++ wanpipe-3.5.16/patches/kdrivers/include/sdladrv.h	2010-10-07 01:01:51.185381475 +0200
+@@ -793,8 +793,6 @@
+ WP_EXTERN int sdla_get_hwinfo(hardware_info_t *hwinfo, int card_no);
+ 
+ 
+-#ifdef __SDLADRV__
+-
+ static __inline unsigned int sdla_get_pci_bus(sdlahw_t* hw)
+ {
+ 	sdlahw_card_t	*hwcard;
+@@ -851,6 +849,48 @@
+ 	return 0;
+ }
+ 
++static __inline unsigned int sdla_get_location(sdlahw_t *hw, char *output, const int size)
++{
++	sdlahw_card_t	*hwcard;
++	sdlahw_cpu_t	*hwcpu;
++
++	WAN_ASSERT(hw == NULL);
++	WAN_ASSERT(hw->hwcpu == NULL);
++	hwcpu = hw->hwcpu;
++
++	WAN_ASSERT(hwcpu->hwcard == NULL);
++	hwcard = hwcpu->hwcard;
++
++	switch (hwcard->hw_type) {
++	case SDLA_PCI_CARD: /* PCI */
++		snprintf(output, size, "PCI Bus %02d Slot %02d",
++			sdla_get_pci_bus(hw), sdla_get_pci_slot(hw));
++		output[size - 1] = '\0';
++		break;
++	case SDLA_PCI_EXP_CARD: /* PCI Express */
++		snprintf(output, size, "PCI Express Bus %02d Slot %02d",
++			sdla_get_pci_bus(hw), sdla_get_pci_slot(hw));
++		output[size - 1] = '\0';
++		break;
++	case SDLA_ISA_CARD: /* ISA */
++		snprintf(output, size, "ISA IOPort 0x%03x", hwcard->u_isa.ioport);
++		output[size - 1] = '\0';
++		break;
++	case SDLA_USB_CARD: /* USB */
++#if defined(__LINUX__)
++		snprintf(output, size, "USB Bus %02d Device ID %02d",
++			 hwcard->u_usb.usb_dev->bus->busnum, hwcard->u_usb.usb_dev->devnum);
++		output[size - 1] = '\0';
++#endif
++		break;
++	default:
++		break;
++	}
++	return 0;
++}
++
++#ifdef __SDLADRV__
++
+ static __inline int 
+ sdla_bus_space_map(sdlahw_t* hw, int reg, int size, sdla_mem_handle_t* handle)
+ {
