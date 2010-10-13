@@ -27,7 +27,7 @@ LICENSE="MPL-1.1"
 KEYWORDS=""
 SLOT="0"
 
-IUSE="esl +libedit nosamples odbc +resampler sctp libpri"
+IUSE="esl nosamples odbc +resampler sctp libpri"
 
 IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
@@ -720,19 +720,19 @@ fs_set_permissions() {
 	einfo "Setting file and directory permissions..."
 
 	# sysconfdir
-	chown -R root:freeswitch "${prefix}/etc/freeswitch"
-	chmod -R u=rwX,g=rX,o=   "${prefix}/etc/freeswitch"
+	chown -R root:freeswitch "${prefix}/etc/freeswitch" || die
+	chmod -R u=rwX,g=rX,o=   "${prefix}/etc/freeswitch" || die
 
 	# prefix
-	chown -R root:freeswitch "${prefix}/opt/freeswitch"
-	chmod -R u=rwX,g=rX,o=   "${prefix}/opt/freeswitch"
+	chown -R root:freeswitch "${prefix}/opt/freeswitch" || die
+	chmod -R u=rwX,g=rX,o=   "${prefix}/opt/freeswitch" || die
 	# allow read access for things like building external modules
-	chmod -R u=rwx,g=rx,o=rx "${prefix}/opt/freeswitch/"{lib*,bin,include}
-	chmod    u=rwx,g=rx,o=rx "${prefix}/opt/freeswitch"
+	chmod -R u=rwx,g=rx,o=rx "${prefix}/opt/freeswitch/"{lib*,bin,include} || die
+	chmod    u=rwx,g=rx,o=rx "${prefix}/opt/freeswitch" || die
 
 	# directories owned by the fs user
 	for x in db run log cores storage recordings; do
-		chown -R freeswitch:freeswitch "${prefix}/opt/freeswitch/${x}"
+		chown -R freeswitch:freeswitch "${prefix}/opt/freeswitch/${x}" ||  die
 	done
 }
 
@@ -824,19 +824,24 @@ src_configure() {
 	filter-flags -fvisibility-inlines-hidden
 
 	#
-	# 2. configure
+	# 2. configure (can't use econf thanks to b0rked buildsystem)
 	#
 	einfo "Configuring FreeSWITCH..."
-	econf \
-		-C \
+	./configure -C \
+		--host=${CHOST} \
+		${CBUILD:+--build=${CBUILD}} \
+		${CTARGET:+--target=${CTARGET}} \
 		--prefix=/opt/freeswitch \
 		--libdir=/opt/freeswitch/lib \
 		--sysconfdir=/opt/freeswitch/conf \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--datadir=/usr/share \
+		--enable-core-libedit-support \
 		$(fs_enable sctp) \
 		$(fs_with freeswitch_modules_python python) \
 		$(fs_enable resampler resample) \
 		$(fs_enable odbc core-odbc-support) \
-		$(fs_enable libedit core-libedit-support) \
 		${java_opts} ${config_opts} || die "failed to configure FreeSWITCH"
 
 	#
