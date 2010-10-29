@@ -18,7 +18,7 @@ KEYWORDS="-* ~amd64 ~x86"
 SLOT="0"
 LICENSE="unknown"
 
-RDEPEND=""
+RDEPEND="net-misc/wanpipe"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/${MY_P}"
