@@ -18,7 +18,7 @@ KEYWORDS="-* ~amd64 ~x86"
 SLOT="0"
 LICENSE="unknown"
 
-RDEPEND=""
+RDEPEND="net-misc/wanpipe"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/${MY_P}"
@@ -41,4 +41,9 @@ src_install() {
 	dodir "/usr/$(get_libdir)"
 
 	emake DESTDIR="${D}/usr" install || die "emake install failed"
+
+	[ ! -e "${ROOT}/usr/$(get_libdir)/libssl.so.6" ] && {
+		einfo "Creating libssl.so.6 compat symlink"
+		ln -s "libssl.so" "${D}/usr/$(get_libdir)/libssl.so.6" || die "Failed to create libssl.so.6 compat symlink"
+	}
 }
