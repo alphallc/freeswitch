@@ -1,0 +1,14 @@
+--- wanpipe-3.5.17/work/wanpipe-3.5.17/patches/kdrivers/src/wanrouter/wanmain.c.orig	2010-11-01 22:22:16.278907705 +0100
++++ wanpipe-3.5.17/work/wanpipe-3.5.17/patches/kdrivers/src/wanrouter/wanmain.c	2010-11-01 22:21:42.685960077 +0100
+@@ -2144,9 +2144,9 @@
+ {
+ 	if (skb->dev){
+ 		struct net_device *dev=skb->dev;
+-		atomic_dec(&(dev)->refcnt);
++		dev_put(dev);
+ 		//printk(KERN_INFO "%s: Skb destructor: put dev: refcnt=%i\n",
+-		//		dev->name,atomic_read(&dev->refcnt));
++		//		dev->name, netdev_refcnt_read(dev));
+ 	}	
+ }
+ 

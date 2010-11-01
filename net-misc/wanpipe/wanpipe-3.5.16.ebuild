@@ -122,13 +122,28 @@ src_compile() {
 	# DEBUG: deny write access to linux source
 	addread "${KERNEL_DIR}"
 
+	use dahdi && \
+		build_target="all_src_dahdi"
+
 	# Build everything
-	emake all_src all_lib ARCH="$(tc-arch-kernel)" DAHDI_DIR="${S_DAHDI}" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || die "Failed to build wanpipe"
+	emake ${build_target:-all_src} all_lib \
+		ARCH="$(tc-arch-kernel)" \
+		WARCH="$(tc-arch-kernel)" \
+		DAHDI_DIR="${S_DAHDI}" \
+		KVER="${KV_FULL}" \
+		KDIR="${S_KERNEL}" \
+		DESTDIR="${D}" || die "Failed to build wanpipe"
 }
 
 src_install() {
 	# install drivers, tools, headers and libs
-	emake install install_lib ARCH="$(tc-arch-kernel)" KVER="${KV_FULL}" KDIR="${S_KERNEL}" DESTDIR="${D}" || die "Failed to install wanpipe"
+	emake install install_lib \
+		ARCH="$(tc-arch-kernel)" \
+		WARCH="$(tc-arch-kernel)" \
+		DAHDI_DIR="${S_DAHDI}" \
+		KVER="${KV_FULL}" \
+		KDIR="${S_KERNEL}" \
+		DESTDIR="${D}" || die "Failed to install wanpipe"
 
 	# remove bogus symlink
 	rm "${D}/usr/include/wanpipe/linux"

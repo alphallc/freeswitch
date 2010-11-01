@@ -8,7 +8,14 @@ inherit linux-mod
 MY_P="${PN}-${PV/_p/.}"
 DESCRIPTION="Wanpipe driver for Sangoma PCI/PCIe Telephony Cards"
 HOMEPAGE="http://www.sangoma.com/"
-SRC_URI="ftp://ftp.sangoma.com/linux/current_wanpipe/${MY_P}.tgz"
+
+if [ "${PV/_p/}" = "${PV}" ]; then
+	# release version
+	SRC_URI="ftp://ftp.sangoma.com/linux/current_wanpipe/${MY_P}.tgz"
+else
+	# post-release (patched) version
+	SRC_URI="ftp://ftp.sangoma.com/linux/custom/3.5/${MY_P}.tgz"
+fi
 
 IUSE="+dahdi"
 KEYWORDS="~x86"
