@@ -104,7 +104,7 @@ DEPEND="${RDEPEND}
 	>=sys-devel/automake-1.10
 	sctp? ( kernel_linux? ( net-misc/lksctp-tools ) )"
 
-PDEPEND=">=net-misc/freeswitch-sounds-1.0.11
+PDEPEND=">=net-misc/freeswitch-sounds-1.0.14
 	 >=net-misc/freeswitch-music-1.0.8"
 
 ###
