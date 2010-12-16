@@ -35,7 +35,7 @@ src_unpack() {
 
 src_prepare() {
 	# fix absolute libsng_isdn.so => /var/tmp/../libsng_isdn.so.${PV} symlink
-	epatch "${FILESDIR}/${P}-relative-symlink.patch"
+	epatch "${FILESDIR}/${PN}-6.0.0-relative-symlink.patch"
 }
 
 src_install() {
