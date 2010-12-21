@@ -1,13 +1,24 @@
 
 EAPI="3"
 
-IUSE="alsa dahdi doc gsm mysql postgres sctp speex ssl"
+IUSE="alsa dahdi debug doc gsm mysql postgres sctp speex ssl"
 
-MY_P="${P/_/-}"
+inherit flag-o-matic
+
+MY_P="${P/_/-}-1"
 
 DESCRIPTION="Yet Another Telephony Engine"
 HOMEPAGE="http://yate.null.ro/"
-SRC_URI="http://yate.null.ro/tarballs/yate3/${MY_P}.tar.gz"
+
+if [[ "${PV}" = "9999" ]]
+then
+	inherit subversion
+	ESVN_REPO_URI="http://yate.null.ro/svn/yate/trunk"
+	ESVN_BOOTSTRAP="./autogen.sh"
+	SVN_DEPENDS="media-sound/sox"
+else
+	SRC_URI="http://yate.null.ro/tarballs/yate3/${MY_P}.tar.gz"
+fi
 
 KEYWORDS="~amd64"
 SLOT="0"
@@ -23,14 +34,19 @@ RDEPENDS="
 	sctp? ( net-misc/lksctp-tools )
 	dahdi? ( net-misc/dahdi )"
 
-DEPENDS="${RDEPENDS}"
+DEPENDS="
+	${RDEPENDS}
+	${SVN_DEPENDS}"
 
 S="${WORKDIR}/${PN}"
 
 src_configure() {
+	use debug && append-cflags -DDEBUG=1
+
 	econf \
 		--without-libqt4 	\
 		--without-coredumper	\
+		--disable-wpcard --disable-tdmcard --disable-wanpipe \
 		$(use_enable sctp)	\
 		$(use_enable dahdi)	\
 		$(use_with gsm libgsm)	\
