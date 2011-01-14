@@ -21,7 +21,7 @@ if [ "${PV}" = "9999" ]; then
 	EGIT_BOOTSTRAP=""
 	KEYWORDS=""
 else
-	SRC_URI="http://files.freeswitch.org/${P/_/}.tar.bz2"
+	SRC_URI="http://latest.freeswitch.org/${P/_/}.tar.bz2"
 	S="${WORKDIR}/${P/_/}"
 fi
 
