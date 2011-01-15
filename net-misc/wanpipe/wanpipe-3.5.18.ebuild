@@ -189,4 +189,8 @@ src_install() {
 	dodir "/usr/share/doc/${PF}"
 	rm "${D}/etc/wanpipe/samples/clean.sh"
 	mv "${D}/etc/wanpipe/samples" "${D}/usr/share/doc/${PF}" || die "Failed to move samples to /usr/share/doc/${PF}"
+
+	# install udev rules
+	insinto "/etc/udev/rules.d"
+	doins "${FILESDIR}/wanpipe.rules"
 }

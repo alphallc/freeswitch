@@ -1,0 +1,2 @@
+KERNEL=="wanpipe*", OWNER="root", GROUP="dialout", MODE="0660"
+KERNEL=="wanec",    OWNER="root", GROUP="dialout", MODE="0660"
