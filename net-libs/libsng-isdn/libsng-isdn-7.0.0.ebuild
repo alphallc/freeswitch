@@ -14,7 +14,7 @@ SRC_URI="amd64? ( ftp://ftp.sangoma.com/linux/${MY_PN}/${MY_P}.x86_64.tgz )
 
 RESTRICT="mirror strip"
 
-KEYWORDS="-* ~amd64"
+KEYWORDS="-* ~amd64 ~x86"
 SLOT="0"
 LICENSE="unknown"
 

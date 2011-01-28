@@ -9,12 +9,12 @@ MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="Sangoma ISDN library"
 HOMEPAGE="http://www.sangoma.com/"
-SRC_URI="amd64? ( ftp://ftp.sangoma.com/linux/${MY_PN}/${MY_P}.x86_64.tgz )
-	 x86? ( ftp://ftp.sangoma.com/linux/${MY_PN}/${MY_P}.i686.tgz )"
+SRC_URI="amd64? ( ftp://ftp.sangoma.com/linux/${MY_PN}/${MY_P}.x86_64.tgz )"
+#	 x86? ( ftp://ftp.sangoma.com/linux/${MY_PN}/${MY_P}.i686.tgz )"
 
 RESTRICT="mirror strip"
 
-KEYWORDS="-* ~amd64 ~x86"
+KEYWORDS="-* ~amd64"
 SLOT="0"
 LICENSE="unknown"
 
@@ -22,6 +22,11 @@ RDEPEND="net-misc/wanpipe"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/${MY_P}"
+
+src_prepare() {
+	# disable ldconfig
+	sed -i -e 's:ldconfig:#ldconfig:' install.sh || die "sed failed"
+}
 
 src_unpack() {
 	unpack ${A}
