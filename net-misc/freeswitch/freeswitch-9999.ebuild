@@ -840,6 +840,7 @@ src_configure() {
 		--infodir=/usr/share/info \
 		--datadir=/usr/share \
 		--enable-core-libedit-support \
+		--with-pkgconfigdir=/usr/$(get_libdir)/pkgconfig \
 		$(fs_enable sctp) \
 		$(fs_with freeswitch_modules_python python) \
 		$(fs_enable resampler resample) \
@@ -857,6 +858,7 @@ src_configure() {
 			--prefix=/opt/freeswitch \
 			--libdir=/opt/freeswitch/lib \
 			--sysconfdir=/opt/freeswitch/conf \
+			--with-pkgconfigdir=/usr/$(get_libdir)/pkgconfig \
 			${config_opts} || die "failed to configure FreeTDM"
 	fi
 }
