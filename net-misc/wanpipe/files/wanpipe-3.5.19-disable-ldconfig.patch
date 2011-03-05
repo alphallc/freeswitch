@@ -1,0 +1,13 @@
+--- wanpipe-3.5.19/Makefile.orig	2011-03-05 03:07:17.407897875 +0100
++++ wanpipe-3.5.19/Makefile	2011-03-05 03:20:42.944522969 +0100
+@@ -315,8 +315,8 @@ install: install_etc install_util instal
+ 	@if [ -e .all_lib ] ; then \
+ 		$(MAKE) -C api/libsangoma install DESTDIR=$(INSTALLPREFIX); \
+ 		$(MAKE) -C api/libstelephony install DESTDIR=$(INSTALLPREFIX); \
+-		ldconfig; \
+-    fi
++		#ldconfig; \
++	fi
+ 
+ 
+ #Install kernel modules only
