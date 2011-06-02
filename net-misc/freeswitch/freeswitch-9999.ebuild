@@ -7,6 +7,7 @@
 #
 
 EAPI="2"
+PYTHON_DEPEND="2"
 
 inherit autotools flag-o-matic python
 
@@ -290,6 +291,15 @@ pkg_setup() {
 	# DONE
 	#
 	export FREESWITCH_AUTO_USE="${FREESWITCH_AUTO_USE}"
+
+	#
+	# 7. set active python version
+	#
+	if use freeswitch_modules_python || use esl-python
+	then
+		python_set_active_version 2
+		python_pkg_setup
+	fi
 }
 
 
@@ -577,7 +587,7 @@ fs_enable() {
 	local option value
 
 	if [ -z "${1}" ]; then
-		eerror "fs_enable(): Usage fs_conf_enable <useflag> [<optname> [<optvalue>]]"
+		eerror "fs_enable(): Usage fs_enable <useflag> [<optname> [<optvalue>]]"
 		return 1
 	fi
 
@@ -601,7 +611,7 @@ fs_with() {
 	local option value
 
 	if [ -z "${1}" ]; then
-		eerror "fs_with(): Usage fs_conf_with <useflag> [<optname> [<optvalue>]]"
+		eerror "fs_with(): Usage fs_with <useflag> [<optname> [<optvalue>]]"
 		return 1
 	fi
 
@@ -842,7 +852,7 @@ src_configure() {
 		--enable-core-libedit-support \
 		--with-pkgconfigdir=/usr/$(get_libdir)/pkgconfig \
 		$(fs_enable sctp) \
-		$(fs_with freeswitch_modules_python python) \
+		$(fs_with freeswitch_modules_python python "$(PYTHON -a)") \
 		$(fs_enable resampler resample) \
 		$(fs_enable odbc core-odbc-support) \
 		${java_opts} ${config_opts} || die "failed to configure FreeSWITCH"
