@@ -112,6 +112,12 @@ src_prepare() {
 			epatch "${FILESDIR}/${PN}-3.5.17-linux-2.6.37.patch"
 		fi
 
+		# experimental patch for 2.6.39(-rcX) support
+		if kernel_is ge 2 6 39; then
+			ewarn "Experimental support for linux-2.6.39"
+			epatch "${FILESDIR}/${PN}-3.5.20-linux-2.6.39.patch"
+		fi
+
 		# experimental dahdi location support
 		epatch "${FILESDIR}/${PN}-3.5.16-dahdi-location.patch"
 	else
