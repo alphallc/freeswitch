@@ -120,6 +120,8 @@ src_prepare() {
 
 	# disable ldconfig, causes sandbox violation otherwise
 	epatch "${FILESDIR}/${PN}-3.5.19-disable-ldconfig.patch"
+	# libstelephony autotools cleanup, fixes error on build (from pre-3.5.21)
+	epatch "${FILESDIR}/${PN}-3.5.20-libstelephony-cleanup.patch"
 
 #	# Remove some include paths
 #	sed -i -e "s:-I\$(INSTALLPREFIX)/include::; s:-I\$(INSTALLPREFIX)/usr/include::" \
