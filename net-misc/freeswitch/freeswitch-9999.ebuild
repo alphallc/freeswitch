@@ -9,7 +9,7 @@
 EAPI="2"
 PYTHON_DEPEND="2"
 
-inherit autotools flag-o-matic python
+inherit autotools eutils flag-o-matic python
 
 DESCRIPTION="FreeSWITCH telephony platform GIT Head"
 HOMEPAGE="http://www.freeswitch.org/"
@@ -762,10 +762,9 @@ src_unpack() {
 
 	cd "${S}"
 	#
-	# 1. buildsystem workarounds remove as soon as the fix has been comitted
-	# (fixed upstream: d778a076)
+	# 1. custom user patches
 	#
-	#epatch "${FILESDIR}/freeswitch-1.0.6-libsndfile-remove-autogen-dep.patch"
+	epatch_user
 }
 
 src_prepare() {
