@@ -9,7 +9,7 @@
 EAPI="2"
 PYTHON_DEPEND="2"
 
-inherit autotools flag-o-matic python
+inherit autotools eutils flag-o-matic python
 
 DESCRIPTION="FreeSWITCH telephony platform GIT Head"
 HOMEPAGE="http://www.freeswitch.org/"
@@ -33,10 +33,10 @@ IUSE="esl nosamples odbc +resampler sctp libpri"
 
 IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
-IUSE_MODULES="alsa amr amrwb avmd bv +cdr_csv cdr_pg_csv cdr_sqlite celt cepstral cidlookup cluechoo +console curl
+IUSE_MODULES="alsa amr amrwb avmd bv +cdr_csv cdr_pg_csv cdr_sqlite celt cepstral cidlookup +console curl
 	+db dialplan_asterisk dialplan_directory dingaling distributor easyroute erlang_event
 	flite freetdm fsk +g723_1 g729 gsmopen h26x +hash +ilbc java lcr ldap +limit +local_stream +logfile +lua
-	managed memcache mp4 mp4v nibblebill opal openzap osp perl pocketsphinx portaudio portaudio_stream python radius_cdr redis
+	managed memcache mp4 mp4v nibblebill opal openzap osp perl pocketsphinx portaudio portaudio_stream python radius_cdr redis rtmp
 	shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +spandsp +speex spidermonkey spy +syslog
 	+tone_stream tts_commandline unimrcp valet_parking vmd +voicemail
 	xml_cdr xml_curl xml_ldap xml_rpc yaml
@@ -762,10 +762,9 @@ src_unpack() {
 
 	cd "${S}"
 	#
-	# 1. buildsystem workarounds remove as soon as the fix has been comitted
-	# (fixed upstream: d778a076)
+	# 1. custom user patches
 	#
-	#epatch "${FILESDIR}/freeswitch-1.0.6-libsndfile-remove-autogen-dep.patch"
+	epatch_user
 }
 
 src_prepare() {
