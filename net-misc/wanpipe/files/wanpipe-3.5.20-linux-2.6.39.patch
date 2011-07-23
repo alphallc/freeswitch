@@ -14,7 +14,7 @@
  		memset(PPRIV(parent_sk),0,sizeof(wanpipe_parent_t));
  
 -		PPRIV(parent_sk)->lock = RW_LOCK_UNLOCKED; 
-+		PPRIV(parent_sk)->lock = __RW_LOCK_UNLOCKED(PPRIV(parent_sk)->lock);
++		rwlock_init(&(PPRIV(parent_sk)->lock));
  
  		SK_PRIV(parent_sk)->dev=dev;
  

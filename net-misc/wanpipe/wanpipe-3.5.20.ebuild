@@ -108,14 +108,20 @@ src_prepare() {
 
 		# experimental patch for 2.6.37(-rcX) support
 		if kernel_is ge 2 6 37; then
-			ewarn "Experimental support for linux-2.6.37"
+			ewarn "Experimental support for linux-2.6.37+"
 			epatch "${FILESDIR}/${PN}-3.5.17-linux-2.6.37.patch"
 		fi
 
 		# experimental patch for 2.6.39(-rcX) support
 		if kernel_is ge 2 6 39; then
-			ewarn "Experimental support for linux-2.6.39"
+			ewarn "Experimental support for linux-2.6.39+"
 			epatch "${FILESDIR}/${PN}-3.5.20-linux-2.6.39.patch"
+		fi
+
+		# experimental patch for 3.0 (-rcX) support
+		if kernel_is ge 3 0 0; then
+			ewarn "Experimental support for linux-3.0+"
+			epatch "${FILESDIR}/${PN}-3.5.20-linux-3.0.patch"
 		fi
 
 		# experimental dahdi location support

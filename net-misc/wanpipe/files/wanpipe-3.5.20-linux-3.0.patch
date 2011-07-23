@@ -1,0 +1,11 @@
+--- wanpipe-3.5.20/samples/wanrouter.orig	2011-07-23 22:10:55.163731552 +0200
++++ wanpipe-3.5.20/samples/wanrouter	2011-07-23 22:11:16.105168258 +0200
+@@ -2263,7 +2263,7 @@
+ 				fi
+ 			else
+ 	
+-				uname -r | grep "^2.6.*" > /dev/null
++				uname -r | grep "^\(2.6\|3\).*" > /dev/null
+ 				if [ $? -eq 0 ]; then
+ 					if [ -d /lib/modules/$(uname -r)/kernel ]; then	
+ 						MOD1=/lib/modules/$(uname -r)/kernel/drivers/net/wan/sdladrv
