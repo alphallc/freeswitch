@@ -9,8 +9,8 @@ MY_P="${MY_PN}-${PV}"
 
 DESCRIPTION="Sangoma ISDN library"
 HOMEPAGE="http://www.sangoma.com/"
-SRC_URI="amd64? ( ftp://ftp.sangoma.com/linux/${MY_PN}/${MY_P}.x86_64.tgz )
-	 x86? ( ftp://ftp.sangoma.com/linux/${MY_PN}/${MY_P}.i686.tgz )"
+SRC_URI="amd64? ( ftp://ftp.sangoma.com/linux/${MY_PN}/old/${MY_P}.x86_64.tgz )
+	 x86? ( ftp://ftp.sangoma.com/linux/${MY_PN}/old/${MY_P}.i686.tgz )"
 
 RESTRICT="mirror strip"
 
