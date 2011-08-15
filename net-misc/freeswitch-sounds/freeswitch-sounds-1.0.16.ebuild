@@ -7,11 +7,12 @@
 #
 EAPI="1"
 
-IUSE="+linguas_en linguas_ru"
+IUSE="+linguas_en linguas_fr linguas_ru"
 
 URI_BASE="http://files.freeswitch.org/freeswitch-sounds"
 
 RU_VERSION="1.0.12"
+FR_VERSION="1.0.14"
 EN_VERSION="${PV}"
 
 DESCRIPTION="Sounds for FreeSWITCH (Meta package)"
@@ -23,6 +24,7 @@ DEPEND="
 	|| (
 		(
 		  linguas_en? ( >=${CATEGORY}/${PN}-en-${EN_VERSION} )
+		  linguas_fr? ( >=${CATEGORY}/${PN}-fr-${FR_VERSION} )
 		  linguas_ru? ( >=${CATEGORY}/${PN}-ru-${RU_VERSION} )
 		)
 		>=${CATEGORY}/${PN}-en-${EN_VERSION}
