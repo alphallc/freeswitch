@@ -1,0 +1,51 @@
+--- wanpipe-3.5.22/Makefile.orig	2011-08-22 21:33:18.000000000 +0200
++++ wanpipe-3.5.22/Makefile	2011-08-25 12:24:41.033237392 +0200
+@@ -199,13 +199,13 @@ cleanup_local:
+ 
+ 
+ #Build only kernel modules
+-all_kmod_dahdi:  _checkzap _checksrc _cleanoldwanpipe _check_kver
++all_kmod_dahdi:  _checkzap _checksrc _check_kver
+ 	$(MAKE) KBUILD_VERBOSE=$(KBUILD_VERBOSE) -C $(KDIR) SUBDIRS=$(WAN_DIR) EXTRA_FLAGS="$(EXTRA_CFLAGS) $(DAHDI_CFLAGS) $(shell cat ./patches/kfeatures)" ZAPDIR=$(ZAPDIR_PRIV) ZAPHDLC=$(ZAPHDLC_PRIV) HOMEDIR=$(PWD) modules  
+ 
+-all_kmod:  _checksrc _cleanoldwanpipe _check_kver
++all_kmod:  _checksrc _check_kver
+ 	$(MAKE) KBUILD_VERBOSE=$(KBUILD_VERBOSE) -C $(KDIR) SUBDIRS=$(WAN_DIR) EXTRA_FLAGS="$(EXTRA_CFLAGS) $(shell cat ./patches/kfeatures)" ZAPDIR= ZAPHDLC= HOMEDIR=$(PWD) modules  
+ 
+-all_kmod_ss7: _checkzap _checksrc _cleanoldwanpipe _check_kver
++all_kmod_ss7: _checkzap _checksrc _check_kver
+ 	@if [ -e  $(PWD)/ss7_build_dir ]; then \
+ 		rm -rf $(PWD)/ss7_build_dir; \
+ 	fi
+@@ -213,7 +213,7 @@ all_kmod_ss7: _checkzap _checksrc _clean
+ 	./Setup drivers --builddir=$(PWD)/ss7_build_dir --with-linux=$(KDIR) $(ZAP_OPTS) --usr-cc=$(CC) --protocol=AFT_TE1-XMTP2 --no-zaptel-compile --noautostart --arch=$(WARCH) --silent
+ 	@eval "./patches/copy_modules.sh $(PWD)/ss7_build_dir $(WAN_DIR)"  
+ 
+-all_bin_kmod:  _checkzap _checksrc _cleanoldwanpipe _check_kver
++all_bin_kmod:  _checkzap _checksrc _check_kver
+ 	@if [ -e  $(PWD)/ast_build_dir ]; then \
+ 		rm -rf $(PWD)/ast_build_dir; \
+ 	fi
+@@ -224,7 +224,7 @@ all_bin_kmod:  _checkzap _checksrc _clea
+ 
+ #Clean utilites and kernel modules
+ .PHONY: clean
+-clean: cleanup_local  clean_util _cleanoldwanpipe
++clean: cleanup_local  clean_util
+ 	$(MAKE) -C $(KDIR) SUBDIRS=$(WAN_DIR) clean
+ 	$(MAKE) -C api SUBDIRS=$(WAN_DIR) clean
+ 	@find patches/kdrivers -name '.*.cmd' | xargs rm -f
+@@ -351,12 +351,10 @@ install_kmod:
+         echo "install -m 644 -D $(WAN_DIR)/xmtp2km.${MODTYPE} $(INSTALLPREFIX)/$(KINSTDIR)/drivers/net/wan/xmtp2km.${MODTYPE}"; \
+         install -m 644 -D $(WAN_DIR)/xmtp2km.${MODTYPE} $(INSTALLPREFIX)/$(KINSTDIR)/drivers/net/wan/xmtp2km.${MODTYPE}; \
+     fi
+-	@eval "./patches/rundepmod.sh"	
+-	
+ endif
+ 
+ #Compile utilities only
+-all_util:  install_inc all_lib 
++all_util: all_lib 
+ 	$(MAKE) -C util all EXTRA_FLAGS="$(EXTRA_UTIL_FLAGS)" SYSINC="$(PWD)/$(WINCLUDE) -I $(PWD)/api/libsangoma/include" CC=$(CC) \
+ 	PREFIX=$(INSTALLPREFIX) HOSTCFLAGS="$(EXTRA_UTIL_FLAGS)" ARCH=$(WARCH) 
+ 	$(MAKE) -C util all_wancfg EXTRA_FLAGS="$(EXTRA_UTIL_FLAGS)" SYSINC="$(PWD)/$(WINCLUDE) -I$(PWD)/api/libsangoma/include" CC=$(CC)  \

@@ -1,0 +1,11 @@
+--- wanpipe-3.5.22/util/wancfg_legacy/Makefile.Linux.orig	2011-08-25 13:17:16.240483638 +0200
++++ wanpipe-3.5.22/util/wancfg_legacy/Makefile.Linux	2011-08-25 13:19:05.477331367 +0200
+@@ -1,7 +1,7 @@
+ install:
+ 	install -D -m 755 wancfg_legacy $(WAN_VIRTUAL)/usr/sbin/wancfg_legacy
+ 	install -D -m 755 pppconfig $(WAN_VIRTUAL)/usr/sbin/wp_pppconfig
+-	cp -rf lib $(WAN_VIRTUAL)/etc/wanpipe/
++	install -D -m 644 -t $(WAN_VIRTUAL)/etc/wanpipe/lib/ lib/*
+ 
+ uninstall:
+ 	rm -f $(WAN_VIRTUAL)/usr/sbin/wancfg_legacy
