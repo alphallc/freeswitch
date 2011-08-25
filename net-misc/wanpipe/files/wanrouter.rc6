@@ -1,0 +1,60 @@
+#!/sbin/runscript
+#
+
+opts="${opts} showconfig showdevices showstatus"
+
+depend() {
+	before dahdi
+}
+
+checkconfig() {
+	local devices=""
+
+	if [ ! -f /etc/wanpipe/wanrouter.rc ] ; then
+		error "No wanrouter configuration found!"
+		error "Please use the wancfg tools to create the configuration"
+		return 1
+	fi
+
+	devices="$(sh -c 'source /etc/wanpipe/wanrouter.rc ; echo ${WAN_DEVICES}')"
+	if [ -z "${devices}" ] ; then
+		error "No devices in wanrouter configuration found!"
+		error "Please use the wancfg tools to create the configuration"
+		return 1
+	fi
+
+	for x in ${devices}; do
+		if [ ! -f "/etc/wanpipe/${x}.conf" ] ; then
+			error "No ${x} configuration found!"
+			error "Please use the wancfg tools to create the configuration"
+			return 1
+		fi
+	done
+	return 0
+}
+
+start() {
+	checkconfig || return $?
+
+	ebegin "Starting wanrouter"
+	/usr/sbin/wanrouter start
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping wanrouter"
+	/usr/sbin/wanrouter stop
+	eend $?
+}
+
+showconfig() {
+	/usr/sbin/wanrouter summary
+}
+
+showdevices() {
+	/usr/sbin/wanrouter list
+}
+
+showstatus() {
+	/usr/sbin/wanrouter status
+}

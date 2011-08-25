@@ -195,6 +195,9 @@ src_install() {
 	# install udev rules
 	insinto "/etc/udev/rules.d"
 	doins "${FILESDIR}/wanpipe.rules"
+
+	# install wanrouter init script
+	newinitd "${FILESDIR}/wanrouter.rc6" wanrouter
 }
 
 pkg_preinst() {
