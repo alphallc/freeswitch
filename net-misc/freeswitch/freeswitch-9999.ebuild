@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2008-2010 Stefan Knoblich <s.knoblich@axsentis.de>
+# Copyright (C) 2008-2011 Stefan Knoblich <s.knoblich@axsentis.de>
 #
 # Distributed under the terms of the GNU General Public License 2
 # see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt for
@@ -244,7 +244,7 @@ pkg_setup() {
 		mod="${x%:*}"
 		dep="${x#*:}"
 
-		if hasq "freeswitch_modules_${mod}" ${FREESWITCH_AUTO_USE} ${USE} && ! use "${dep}"; then
+		if has "freeswitch_modules_${mod}" ${FREESWITCH_AUTO_USE} ${USE} && ! use "${dep}"; then
 			# check if this core option has an external dependency
 			if $(echo "${CORE_RDEPEND}" | grep -q "${dep}\?"); then
 				eerror "Module \"${mod}\" requires core useflag \"${dep}\","
@@ -433,7 +433,7 @@ fs_check_modules_api_compat() {
 
 
 		# skip modules that are in our list but disabled (= will be uninstalled)
-		if hasq "${name}" $(echo "${IUSE_MODULES}" | tr -d '+') && ! useq "freeswitch_modules_${name}"; then
+		if has "${name}" $(echo "${IUSE_MODULES}" | tr -d '+') && ! useq "freeswitch_modules_${name}"; then
 			continue
 		fi
 
@@ -577,7 +577,7 @@ setup_modules() {
 #
 
 fs_use() {
-	if hasq $1 ${FREESWITCH_AUTO_USE} ${USE}; then
+	if has $1 ${FREESWITCH_AUTO_USE} ${USE}; then
 		return 0
 	fi
 	return 1
@@ -624,7 +624,7 @@ fs_with() {
 		option="${1}"
 	fi
 
-	if hasq $1 ${FREESWITCH_AUTO_USE} ${USE}; then
+	if has $1 ${FREESWITCH_AUTO_USE} ${USE}; then
 		echo "--with-${option}${value}"
 	else
 		echo "--without-${option}"
