@@ -36,7 +36,7 @@ IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 IUSE_MODULES="alsa amr amrwb avmd bv +cdr_csv cdr_pg_csv cdr_sqlite celt cepstral cidlookup +console curl
 	+db dialplan_asterisk dialplan_directory dingaling distributor easyroute erlang_event
 	flite freetdm fsk +g723_1 g729 gsmopen h26x +hash +ilbc java lcr ldap +limit +local_stream +logfile +lua
-	managed memcache mp4 mp4v nibblebill opal openzap osp perl pocketsphinx portaudio portaudio_stream python radius_cdr redis rtmp
+	managed memcache mp4 mp4v nibblebill opal osp perl pocketsphinx portaudio portaudio_stream python radius_cdr redis rtmp
 	shell_stream shout silk siren skinny skypopen snapshot +sndfile +sofia +spandsp +speex spidermonkey spy +syslog
 	+tone_stream tts_commandline unimrcp valet_parking vmd +voicemail
 	xml_cdr xml_curl xml_ldap xml_rpc yaml
@@ -78,7 +78,6 @@ MODULES_RDEPEND="
 	freeswitch_modules_erlang_event? ( dev-lang/erlang )
 	freeswitch_modules_shout? ( media-libs/libogg )
 	freeswitch_modules_osp? ( >=net-libs/osptoolkit-3.5.0 )
-	freeswitch_modules_openzap? ( libpri? ( >=net-libs/libpri-1.4.0 ) )
 	freeswitch_modules_freetdm? ( libpri? ( >=net-libs/libpri-1.4.0 ) )
 	freeswitch_modules_spandsp? ( media-libs/jpeg )
 	freeswitch_modules_redis? ( dev-db/redis )
@@ -501,10 +500,6 @@ fs_set_module() {
 		category="../../libs/freetdm"
 		mod="mod_freetdm"
 		;;
-	mod_openzap)
-		category="../../libs/openzap"
-		mod="mod_openzap"
-		;;
 	*)
 		category="$(ls -d src/mod/*/${mod} | cut -d'/' -f3)"
 		;;
@@ -895,15 +890,6 @@ src_compile() {
 	fi
 
 	#
-	# build OpenZAP (avoids some problems later)
-	#
-	if use freeswitch_modules_openzap
-	then
-		einfo "Building OpenZAP..."
-		emake -j1 -C libs/openzap || die "failed to build OpenZAP"
-	fi
-
-	#
 	# 2. build everything
 	#
 	einfo "Building FreeSWITCH... (this can take a long time)"
@@ -999,7 +985,7 @@ src_install() {
 	#    remove old pkgconfig dir(s) if empty
 	#
 	dodir "/usr/$(get_libdir)/pkgconfig"
-	find "${D}/opt/freeswitch" \( -name "freeswitch.pc" -or -name "freetdm.pc" -or -name "openzap.pc" \) -exec \
+	find "${D}/opt/freeswitch" \( -name "freeswitch.pc" -or -name "freetdm.pc" \) -exec \
 		mv "{}" "${D}/usr/$(get_libdir)/pkgconfig" \;
 	rmdir "${D}"/opt/freeswitch/lib*/pkgconfig 2>/dev/null
 
