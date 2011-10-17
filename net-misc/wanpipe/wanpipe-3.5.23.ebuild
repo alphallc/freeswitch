@@ -143,7 +143,7 @@ src_compile() {
 src_install() {
 	# Install drivers, tools, headers and libs
 	# Use LDCONFIG="/bin/true" to avoid sandbox violation
-	emake install \
+	emake -j1 install \
 		ARCH="$(tc-arch-kernel)" \
 		WARCH="$(tc-arch-kernel)" \
 		DAHDI_DIR="${S_DAHDI}" \
