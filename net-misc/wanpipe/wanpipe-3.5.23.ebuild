@@ -1,7 +1,7 @@
 #
 #
 #
-EAPI="2"
+EAPI="4"
 
 inherit linux-mod
 
