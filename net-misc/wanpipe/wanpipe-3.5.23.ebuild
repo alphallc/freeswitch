@@ -182,6 +182,12 @@ src_install() {
 		rm "${D}/etc/wanpipe/wancfg_zaptel/${x}" || die "Failed to remove /etc/wanpipe/wancfg_zaptel/${x}"
 	done
 
+	# fix WAN_LOCK(_DIR)
+	sed -i -e '/^WAN_LOCK\(_DIR\)\?=/s:/var/lock/subsys:/var/lock:' \
+		"${D}/etc/wanpipe/wanrouter.rc" \
+		"${D}/etc/wanpipe/wancfg_zaptel/templates/wanrouter.rc.template" \
+		|| die "Failed to update WAN_LOCK(_DIR)"
+
 	# ugh, this shouldn't be there, really...
 	if ! use vanilla ; then
 		rm -rf "${D}/etc/wanpipe/api" || die "Failed to remove api folder"
