@@ -23,7 +23,8 @@ LICENSE=""
 SLOT="0"
 
 RDEPEND="dahdi? ( net-misc/dahdi )"
-DEPEND="${RDEPEND}"
+DEPEND="${RDEPEND}
+	sys-devel/bison"
 
 S="${WORKDIR}/${P/_p/.}"
 S_DAHDI="${WORKDIR}/dahdi"
