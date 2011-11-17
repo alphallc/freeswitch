@@ -1,3 +1,126 @@
+diff -Naurp wanpipe-3.5.24.orig/patches/kdrivers/src/net/sdladrv.c wanpipe-3.5.24/patches/kdrivers/src/net/sdladrv.c
+--- wanpipe-3.5.24.orig/patches/kdrivers/src/net/sdladrv.c	2008-08-01 15:00:00.000000000 +0200
++++ wanpipe-3.5.24/patches/kdrivers/src/net/sdladrv.c	2011-11-17 15:15:07.507595529 +0100
+@@ -343,12 +343,12 @@ static unsigned	sdla_test_memregion (sdl
+ static unsigned short sdla_checksum (unsigned char* buf, unsigned len);
+ static int sdla_init_pci_slot(sdlahw_t *);
+ 
+-static sdlahw_card_t* sdla_card_register(u8 hw_type, int bus_no, int slot_no, int ioport, char*);
++static sdlahw_card_t* sdla_card_register(u8 hw_type, int bus_no, int slot_no, int ioport, const char*);
+ static int sdla_card_unregister (sdlahw_card_t*);
+-static sdlahw_card_t* sdla_card_search(u8 hw_type, int bus_no, int slot_no, int ioport, char*);
++static sdlahw_card_t* sdla_card_search(u8 hw_type, int bus_no, int slot_no, int ioport, const char*);
+ static int sdla_card_info(sdlahw_card_t*);
+ 
+-sdlahw_cpu_t* sdla_hwcpu_search(u8, int, int, int, int, char*);
++sdlahw_cpu_t* sdla_hwcpu_search(u8, int, int, int, int, const char*);
+ static sdlahw_cpu_t* sdla_hwcpu_register(sdlahw_card_t*, int, int, void*);
+ static int sdla_hwcpu_unregister(sdlahw_cpu_t*);
+ static int sdla_hwcpu_info(sdlahw_cpu_t*);
+@@ -4275,7 +4275,7 @@ static int sdla_card_info(sdlahw_card_t
+ }
+ 
+ static sdlahw_card_t*
+-sdla_card_register(u8 hw_type, int bus_no, int slot_no, int ioport, char *bus_id)
++sdla_card_register(u8 hw_type, int bus_no, int slot_no, int ioport, const char *bus_id)
+ {
+ 	sdlahw_card_t	*new_hwcard, *last_hwcard;
+ 
+@@ -4344,7 +4344,7 @@ sdla_card_unregister(sdlahw_card_t* hwca
+ }
+ 
+ static sdlahw_card_t*
+-sdla_card_search(u8 hw_type, int bus_no, int slot_no, int ioport, char *bus_id)
++sdla_card_search(u8 hw_type, int bus_no, int slot_no, int ioport, const char *bus_id)
+ {
+ 	sdlahw_card_t*	tmp;
+ 	
+@@ -4483,7 +4483,7 @@ static int sdla_hwcpu_unregister(sdlahw_
+ }
+ 
+ sdlahw_cpu_t*
+-sdla_hwcpu_search(u8 hw_type, int bus_no, int slot_no, int ioport, int cpu_no, char *bus_id)
++sdla_hwcpu_search(u8 hw_type, int bus_no, int slot_no, int ioport, int cpu_no, const char *bus_id)
+ {
+ 	sdlahw_cpu_t*	tmp;
+ 	
+@@ -5716,7 +5716,7 @@ static int sdla_bootcfg (sdlahw_t* hw, s
+ #ifdef __WINDOWS__
+ 		offset = sfminfo->dataoffs - (unsigned short)hwcpu->vector;
+ #else
+-		offset = sfminfo->dataoffs - (unsigned int)hwcpu->vector;
++		offset = (unsigned int)(sfminfo->dataoffs - (unsigned long)hwcpu->vector);
+ #endif
+ 	}
+ 
+diff -Naurp wanpipe-3.5.24.orig/patches/kdrivers/src/net/sdladrv_usb.c wanpipe-3.5.24/patches/kdrivers/src/net/sdladrv_usb.c
+--- wanpipe-3.5.24.orig/patches/kdrivers/src/net/sdladrv_usb.c	2008-08-01 15:00:00.000000000 +0200
++++ wanpipe-3.5.24/patches/kdrivers/src/net/sdladrv_usb.c	2011-11-17 15:10:05.200560777 +0100
+@@ -188,7 +188,7 @@ struct sdla_usb_desc {
+ ****               F U N C T I O N   P R O T O T Y P E S                ****
+ ***************************************************************************/
+ extern sdlahw_t* sdla_find_adapter(wandev_conf_t* conf, char* devname);
+-extern sdlahw_cpu_t* sdla_hwcpu_search(u8, int, int, int, int);
++extern sdlahw_cpu_t* sdla_hwcpu_search(u8, int, int, int, int, const char *);
+ extern sdlahw_t* sdla_hw_search(sdlahw_cpu_t*, int);
+ extern int sdla_hw_fe_test_and_set_bit(void *phw,int value);
+ extern int sdla_hw_fe_test_bit(void *phw,int value);
+diff -Naurp wanpipe-3.5.24.orig/api/libsangoma/libsangoma_hwec.c wanpipe-3.5.24/api/libsangoma/libsangoma_hwec.c
+--- wanpipe-3.5.24.orig/api/libsangoma/libsangoma_hwec.c	2008-08-01 15:00:00.000000000 +0200
++++ wanpipe-3.5.24/api/libsangoma/libsangoma_hwec.c	2011-11-17 14:54:30.976639794 +0100
+@@ -70,7 +70,7 @@ static sangoma_status_t sangoma_hwec_byp
+ static int sangoma_hwec_is_numeric_parameter(char *parameter)
+ {
+ 	int i;
+-	static char *WANEC_numeric_params[] = {
++	static const char *WANEC_numeric_params[] = {
+ 		"WANEC_TailDisplacement",
+ 		"WANEC_MaxPlayoutBuffers",
+ 		"WANEC_MaxConfBridges",
+diff -Naurp wanpipe-3.5.24.orig/api/libsangoma/wanec/wanec_api_lib.c wanpipe-3.5.24/api/libsangoma/wanec/wanec_api_lib.c
+--- wanpipe-3.5.24.orig/api/libsangoma/wanec/wanec_api_lib.c	2008-08-01 15:00:00.000000000 +0200
++++ wanpipe-3.5.24/api/libsangoma/wanec/wanec_api_lib.c	2011-11-17 14:56:45.543661831 +0100
+@@ -132,8 +132,8 @@ typedef struct {
+ 	UINT32	max_channels;
+ 	UINT32	memory_chip_size;
+ 	UINT32	debug_data_mode;
+-	char	*image_name;	
+-	char	*image_path;
++	const char	*image_name;	
++	const char	*image_path;
+ } wanec_image_info_t;
+ 
+ wanec_image_info_t	wanec_image_32 = 
+@@ -184,8 +184,8 @@ struct wan_ec_image
+ 	UINT32	max_channels;
+ 	UINT32	memory_chip_size;
+ 	UINT32	debug_data_mode;
+-	char	*image;	
+-	char	*image_path;
++	const char	*image;	
++	const char	*image_path;
+ 	int	hwec_opt_no;
+ 	int	hwec_opt[5];
+ } wan_ec_image_list[] =
+@@ -222,7 +222,7 @@ struct wan_ec_image
+ #endif
+ 
+ #if !defined(__WINDOWS__)	
+-CHAR *ToneBufferPaths[WAN_NUM_PLAYOUT_TONES] = 
++const CHAR *ToneBufferPaths[WAN_NUM_PLAYOUT_TONES] = 
+ {
+ 	WAN_EC_BUFFERS "/DTMF_0_ulaw.pcm",
+ 	WAN_EC_BUFFERS "/DTMF_1_ulaw.pcm",
+@@ -436,7 +436,7 @@ int wanec_api_lib_ioctl(HANDLE dev, wan_
+ **/
+ static int
+ wanec_api_lib_loadImageFile(	wan_ec_api_t 	*ec_api,
+-				char		*path,
++				const char	*path,
+ 				UINT8		**WP_POINTER_64 pData,
+ 				UINT32		*file_size)
+ {
+diff -Naurp wanpipe-3.5.24.orig/api/libsangoma/libsangoma_hwec.c wanpipe-3.5.24/api/libsangoma/libsangoma_hwec.c
 --- wanpipe-3.5.24.orig/firmware/wan_aftup/wan_usb_fwupdate.cpp	2011-11-17 10:27:41.214136518 +0100
 +++ wanpipe-3.5.24/firmware/wan_aftup/wan_usb_fwupdate.cpp	2011-11-17 10:26:30.853064433 +0100
 @@ -32,7 +32,7 @@ int CloseConnection(char *ifname);

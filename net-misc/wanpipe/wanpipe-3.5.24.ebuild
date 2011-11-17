@@ -101,10 +101,14 @@ src_prepare() {
 		#epatch "${FILESDIR}/${PN}-3.5.10-QA-fix-libstelephony.patch"
 
 		# Silence gcc-4.4 "warning: format not a string literal and no format arguments"
-		epatch "${FILESDIR}/${PN}-3.5.16-QA-fix-format-literal-warnings.patch"
+		epatch "${FILESDIR}/${PN}-3.5.24-QA-fix-format-literal-warnings.patch"
 
 		# Silence gcc-4.4 "warning: deprecated conversion from string constant to 'char*'"
 		epatch "${FILESDIR}/${PN}-3.5.24-QA-fix-const-char-warnings.patch"
+
+		# Silence "ignoring return value of 'XXXX', declared with attribute warn_unused_result"
+		epatch "${FILESDIR}/${PN}-3.5.24-QA-fix-warn_unused_result.patch"
+		epatch "${FILESDIR}/${PN}-3.5.24-QA-fix-warn_unused_result-legacy.patch"
 
 		# experimental dahdi location support
 		epatch "${FILESDIR}/${PN}-3.5.22-dahdi-location.patch"
