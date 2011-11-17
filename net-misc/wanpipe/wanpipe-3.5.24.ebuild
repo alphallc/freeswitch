@@ -108,6 +108,9 @@ src_prepare() {
 
 		# experimental dahdi location support
 		epatch "${FILESDIR}/${PN}-3.5.22-dahdi-location.patch"
+
+		# >=linux-3.1 removed HAVE_NET_DEVICE_OPS from netdevice.h
+		epatch "${FILESDIR}/${PN}-3.5.24-linux-3.1.patch"
 	else
 		ewarn "Vanilla wanpipe build, all non-mandatory patches are disabled!"
 	fi

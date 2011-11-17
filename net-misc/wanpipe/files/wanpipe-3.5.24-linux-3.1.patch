@@ -1,0 +1,28 @@
+--- wanpipe-3.5.24/patches/kdrivers/include/wanpipe_kernel.h.orig	2011-11-17 13:18:59.658684573 +0100
++++ wanpipe-3.5.24/patches/kdrivers/include/wanpipe_kernel.h	2011-11-17 13:24:47.629233904 +0100
+@@ -108,6 +108,10 @@
+ 
+ 
+ //////////////////////
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,1,0)
++#define HAVE_NET_DEVICE_OPS
++#endif
++
+ #ifdef HAVE_NET_DEVICE_OPS
+ #define WAN_DECLARE_NETDEV_OPS(_ops_name) static struct net_device_ops _ops_name = {0};
+ 
+--- wanpipe-3.5.24/patches/kdrivers/include/wanpipe_defines.h.orig	2011-11-17 13:19:08.251946155 +0100
++++ wanpipe-3.5.24/patches/kdrivers/include/wanpipe_defines.h	2011-11-17 13:24:44.044125392 +0100
+@@ -893,6 +893,12 @@ typedef struct wan_rtp_pkt {
+ #pragma pack()
+ 
+ 
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,1,0)
++#ifndef HAVE_NET_DEVICE_OPS
++#define HAVE_NET_DEVICE_OPS
++#endif
++#endif
++
+ #if defined(HAVE_NET_DEVICE_OPS) 
+ 
+ #define WAN_DECLARE_NETDEV_OPS(_ops_name) static struct net_device_ops _ops_name = {0};
