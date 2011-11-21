@@ -22,9 +22,11 @@ KEYWORDS="~x86"
 LICENSE=""
 SLOT="0"
 
-RDEPEND="dahdi? ( net-misc/dahdi )"
+RDEPEND="dahdi? ( net-misc/dahdi )
+	sys-devel/gcc[cxx]"
 DEPEND="${RDEPEND}
-	sys-devel/bison"
+	sys-devel/bison
+	sys-devel/flex"
 
 S="${WORKDIR}/${P/_p/.}"
 S_DAHDI="${WORKDIR}/dahdi"
