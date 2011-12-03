@@ -6,28 +6,31 @@
 # more information
 #
 
-inherit git flag-o-matic autotools
+EAPI="4"
+
+inherit autotools
 
 IUSE=""
 
 DESCRIPTION="Stand-alone version of the WebKit JavaScript engine"
 HOMEPAGE="http://oss.axsentis.de/"
-#SRC_URI="http://oss.axsentis.de/"
 
-EGIT_REPO_URI="http://oss.axsentis.de/git/libSquirrelFish.git"
-#EGIT_BOOTSTRAP="./autogen.sh"
+if [[ "${PV}" = "9999" ]]; then
+	inherit git-2
+	EGIT_REPO_URI="http://oss.axsentis.de/git/libSquirrelFish.git"
+else
+	SRC_URI="http://oss.axsentis.de/"
+fi
+
+KEYWORDS="~amd64 ~x86"
 
 SLOT="0"
-
 LICENSE="LGPL-2"
-KEYWORDS="~amd64 ~x86"
 
 RDEPEND="virtual/libc
 	 dev-libs/icu"
 
 DEPEND="${RDEPEND}
-	>=sys-devel/autoconf-2.61
-	>=sys-devel/automake-1.10
 	sys-devel/flex
 	sys-devel/bison
 	dev-lang/perl"
@@ -35,23 +38,21 @@ DEPEND="${RDEPEND}
 S="${WORKDIR}/${PN}"
 
 src_unpack() {
-	git_src_unpack
+	if [[ "${PV}" = "9999" ]]; then
+		git-2_src_unpack
+	else
+		default_src_unpack
+	fi
 
 	cd "${S}"
-	eautoreconf
-}
-
-src_compile() {
-	# wrong order of libs in configure script
-	filter-ldflags -Wl,--as-needed
-
-	econf || die "econf failed"
-	emake || die "emake failed"
+	# eautoreconf doesn't work here,
+	# aclocal dies with a circular dependency error
+	AT_M4DIR="Source/autotools" eautoreconf
 }
 
 src_install() {
 	emake DESTDIR="${D}" install || die "make install failed"
 
 	# install docs
-	dodoc README INSTALL JavaScriptCore/{COPYING.LIB,AUTHORS,THANKS}
+	dodoc Source/JavaScriptCore/{COPYING.LIB,AUTHORS,THANKS}
 }
