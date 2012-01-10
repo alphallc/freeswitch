@@ -6,26 +6,32 @@
 # more information
 #
 
-EAPI="2"
+EAPI="4"
 
-inherit git-2 flag-o-matic
+IUSE="doc lua +pcap static-libs"
 
-IUSE="doc lua pcap static-libs"
+if [[ "${PV}" = "9999" ]]
+then
+	EGIT_REPO_URI="http://git.openisdn.net/libisdn.git/"
+	EGIT_BOOTSTRAP="./autogen.sh"
+	SCM="git-2"
+else
+	SRC_URI="http://files.openisdn.net/releases/${P}.tar.xz"
+fi
+
+inherit flag-o-matic ${SCM}
 
 DESCRIPTION="ISDN (Q.931; PRI/BRI) protocol stack"
 HOMEPAGE="http://www.openisdn.net/"
-#SRC_URI="http://files.openisdn.net/"
-
-EGIT_REPO_URI="http://git.openisdn.net/libisdn.git/"
-EGIT_BOOTSTRAP="./autogen.sh"
 
 SLOT="0"
 
 LICENSE="BSD"
 KEYWORDS=""
 
-RDEPEND="virtual/libc"
+DOCS=( "${S}/CREDITS" "${S}/TODO" )
 
+RDEPEND="virtual/libc"
 DEPEND="${RDEPEND}
 	>=sys-devel/autoconf-2.61
 	>=sys-devel/automake-1.10
@@ -51,18 +57,17 @@ src_configure() {
 src_compile() {
 	emake || die "emake failed"
 
-	# build API documentation
 	if use doc ; then
+		einfo "Building API documentation..."
 		emake doxygen || die "building API docs failed"
 	fi
 }
 
 src_install() {
-	emake DESTDIR="${D}" install || die "make install failed"
+	default_src_install
 
-	dodoc CREDITS TODO
-
-	# install API documentation
-	use doc && \
-		cp -dPR docs/html "${D}/usr/share/doc/${PF}"
+	if use doc ; then
+		einfo "Installing ${PN} API documentation into \"${ROOT}usr/share/doc/${PVF}/html\""
+		dohtml -r docs/html/
+	fi
 }
