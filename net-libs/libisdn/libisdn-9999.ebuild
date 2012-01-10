@@ -8,15 +8,15 @@
 
 EAPI="2"
 
-inherit git flag-o-matic
+inherit git-2 flag-o-matic
 
-IUSE="doc"
+IUSE="doc lua pcap static-libs"
 
 DESCRIPTION="ISDN (Q.931; PRI/BRI) protocol stack"
-HOMEPAGE="http://oss.axsentis.de/gitweb/?p=libisdn.git;a=summary"
-#SRC_URI="http://oss.axsentis.de/"
+HOMEPAGE="http://www.openisdn.net/"
+#SRC_URI="http://files.openisdn.net/"
 
-EGIT_REPO_URI="http://oss.axsentis.de/git/libisdn.git"
+EGIT_REPO_URI="http://git.openisdn.net/libisdn.git/"
 EGIT_BOOTSTRAP="./autogen.sh"
 
 SLOT="0"
@@ -29,10 +29,23 @@ RDEPEND="virtual/libc"
 DEPEND="${RDEPEND}
 	>=sys-devel/autoconf-2.61
 	>=sys-devel/automake-1.10
-	doc? ( app-doc/doxygen )"
+	doc? ( app-doc/doxygen )
+	lua? ( dev-lang/lua )
+	pcap? ( >=net-libs/libpcap-1.0 )"
 
 src_configure() {
-	econf || die "econf failed"
+	local myconf=""
+
+	if [ -n "${FREETDM_SOURCE_DIR}" ]
+	then
+		myconf="${myconf} --with-freetdm=${FREETDM_SOURCE_DIR}"
+	fi
+
+	econf \
+		$(use_with lua) \
+		$(use_with pcap) \
+		$(use_enable static-libs static) \
+		${myconf} || die "econf failed"
 }
 
 src_compile() {
