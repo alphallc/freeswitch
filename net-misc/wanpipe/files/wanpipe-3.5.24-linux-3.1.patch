@@ -26,3 +26,14 @@
  #if defined(HAVE_NET_DEVICE_OPS) 
  
  #define WAN_DECLARE_NETDEV_OPS(_ops_name) static struct net_device_ops _ops_name = {0};
+--- wanpipe-3.5.24/samples/wanrouter.orig	2008-08-01 15:00:00.000000000 +0200
++++ wanpipe-3.5.24/samples/wanrouter	2012-02-01 10:00:13.491721703 +0100
+@@ -2282,7 +2282,7 @@
+ 						WANEC_MOD_DIR=/lib/modules/$(uname -r)/kernel/net/wanrouter
+ 					fi
+ 				else
+-					uname -r | grep "^3.0.*" > /dev/null
++					uname -r | grep "^3.*" > /dev/null
+ 					if [ $? -eq 0 ]; then	
+ 						MOD1=/lib/modules/$(uname -r)/kernel/drivers/net/wan/sdladrv
+ 						MOD2=/lib/modules/$(uname -r)/kernel/net/wanrouter/wanrouter
