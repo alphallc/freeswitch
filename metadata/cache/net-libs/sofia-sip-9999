@@ -1,0 +1,22 @@
+glib? ( dev-libs/glib ) ssl? ( dev-libs/openssl ) dev-vcs/darcs
+glib? ( dev-libs/glib ) ssl? ( dev-libs/openssl )
+0
+
+
+http://sofia-sip.sourceforge.net/
+LGPL-2.1
+Based on the eutils eclass
+
+darcs eutils multilib portability toolchain-funcs user
+glib ipv6 ntlm sctp ssl +stun
+
+
+
+1
+
+compile install unpack
+
+
+
+
+

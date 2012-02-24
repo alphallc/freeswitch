@@ -1,0 +1,12 @@
+# ChangeLog for net-misc/freeswitch-sounds-pt
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*freeswitch-sounds-pt-1.0.14 (05 Sep 2011)
+
+  05 Sep 2011; Stefan Knoblich <s.knoblich@axsentis.de>
+  +freeswitch-sounds-pt-1.0.14.ebuild:
+  Add Spanish and Portuguese (BR) sound packages from wirelessmundi.com.
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+

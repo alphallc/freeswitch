@@ -1,0 +1,22 @@
+dahdi? ( <net-misc/dahdi-2.4.0 ) kernel_linux? ( sys-apps/module-init-tools ) sys-apps/sed kernel_linux? ( virtual/linux-sources )
+dahdi? ( <net-misc/dahdi-2.4.0 ) kernel_linux? ( sys-apps/module-init-tools )
+0
+ftp://ftp.sangoma.com/linux/current_wanpipe/wanpipe-3.5.12.tgz
+
+http://www.sangoma.com/
+
+Wanpipe driver for Sangoma PCI/PCIe Telephony Cards
+~x86
+eutils linux-info linux-mod multilib portability toolchain-funcs user versionator
++dahdi kernel_linux
+
+
+
+2
+
+compile install postinst postrm preinst prepare setup
+
+
+
+
+

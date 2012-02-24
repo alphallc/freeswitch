@@ -1,0 +1,16 @@
+# ChangeLog for net-libs/libSquirrelFish
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  03 Dec 2011; Stefan Knoblich <stkn@openisdn.net>
+  libSquirrelFish-9999.ebuild:
+  libSquirrelFish: update for recent changes
+
+  Signed-off-by: Stefan Knoblich <stkn@openisdn.net>
+
+*libSquirrelFish-9999 (19 Jan 2010)
+
+  19 Jan 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  +libSquirrelFish-9999.ebuild:
+  Import everything freeswitch related from axsentis-overlay
+

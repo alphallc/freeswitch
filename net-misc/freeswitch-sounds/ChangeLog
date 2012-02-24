@@ -1,0 +1,83 @@
+# ChangeLog for net-misc/freeswitch-sounds
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+  05 Sep 2011; Stefan Knoblich <s.knoblich@axsentis.de>
+  freeswitch-sounds-1.0.16.ebuild:
+  Add Spanish and Portuguese (BR) sound packages from wirelessmundi.com.
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+
+  15 Aug 2011; Stefan Knoblich <s.knoblich@axsentis.de>
+  freeswitch-sounds-1.0.16.ebuild:
+  Add FreeSWITCH fr(_ca) sounds
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+
+*freeswitch-sounds-1.0.16 (10 May 2011)
+
+  10 May 2011; Stefan Knoblich <s.knoblich@axsentis.de>
+  +freeswitch-sounds-1.0.16.ebuild:
+  freeswitch: add 1.0.16 sounds-en
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+
+*freeswitch-sounds-1.0.14 (27 Nov 2010)
+
+  27 Nov 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  +freeswitch-sounds-1.0.14.ebuild:
+  freeswitch: add 1.0.14 sounds-en
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+
+  07 Apr 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  freeswitch-sounds-1.0.11.ebuild, freeswitch-sounds-1.0.12.ebuild,
+  freeswitch-sounds-1.0.13.ebuild:
+  FreeSWITCH: Set +linguas_en, should fix fallback language on paludis (this
+  needs some more work).
+
+  02 Apr 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  freeswitch-sounds-1.0.11.ebuild, freeswitch-sounds-1.0.12.ebuild,
+  freeswitch-sounds-1.0.13.ebuild:
+  FreeSWITCH: Improve default language handling in sounds meta-package, only
+  install default language (en) if no supported LINGUAS flag has been set. Add
+  an "en" LINGUAS flag.
+
+*freeswitch-sounds-1.0.13 (02 Apr 2010)
+
+  02 Apr 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  -freeswitch-sounds-1.0.3.ebuild, -freeswitch-sounds-1.0.5.ebuild,
+  -freeswitch-sounds-1.0.6.ebuild, -freeswitch-sounds-1.0.7.ebuild,
+  -freeswitch-sounds-1.0.8.ebuild, -freeswitch-sounds-1.0.9.ebuild,
+  -freeswitch-sounds-1.0.10.ebuild, freeswitch-sounds-1.0.11.ebuild,
+  freeswitch-sounds-1.0.12.ebuild, +freeswitch-sounds-1.0.13.ebuild:
+  FreeSWITCH: Split sounds into meta-package and language subpackages. Rename
+  LINGUAS flag "ru_RU" to "ru" and drop the "en_US" flag (default now).
+
+  19 Jan 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  freeswitch-sounds-1.0.3.ebuild, freeswitch-sounds-1.0.5.ebuild,
+  freeswitch-sounds-1.0.6.ebuild, freeswitch-sounds-1.0.7.ebuild,
+  freeswitch-sounds-1.0.8.ebuild, freeswitch-sounds-1.0.9.ebuild,
+  freeswitch-sounds-1.0.10.ebuild, freeswitch-sounds-1.0.11.ebuild,
+  freeswitch-sounds-1.0.12.ebuild:
+  Cleanup: Move freeswitch svn live ebuild into net-misc/freeswitch (part 2/3:
+  Fix DEPEND in freeswitch-music and -sounds)
+
+*freeswitch-sounds-1.0.12 (19 Jan 2010)
+*freeswitch-sounds-1.0.11 (19 Jan 2010)
+*freeswitch-sounds-1.0.10 (19 Jan 2010)
+*freeswitch-sounds-1.0.9 (19 Jan 2010)
+*freeswitch-sounds-1.0.8 (19 Jan 2010)
+*freeswitch-sounds-1.0.7 (19 Jan 2010)
+*freeswitch-sounds-1.0.6 (19 Jan 2010)
+*freeswitch-sounds-1.0.5 (19 Jan 2010)
+*freeswitch-sounds-1.0.3 (19 Jan 2010)
+
+  19 Jan 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  +freeswitch-sounds-1.0.3.ebuild, +freeswitch-sounds-1.0.5.ebuild,
+  +freeswitch-sounds-1.0.6.ebuild, +freeswitch-sounds-1.0.7.ebuild,
+  +freeswitch-sounds-1.0.8.ebuild, +freeswitch-sounds-1.0.9.ebuild,
+  +freeswitch-sounds-1.0.10.ebuild, +freeswitch-sounds-1.0.11.ebuild,
+  +freeswitch-sounds-1.0.12.ebuild:
+  Import everything freeswitch related from axsentis-overlay
+

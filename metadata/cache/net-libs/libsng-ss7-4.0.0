@@ -1,0 +1,22 @@
+net-misc/wanpipe
+net-misc/wanpipe
+0
+amd64? ( ftp://ftp.sangoma.com/linux/libsng_ss7/libsng_ss7-4.0.0.x86_64.tgz ) x86? ( ftp://ftp.sangoma.com/linux/libsng_ss7/libsng_ss7-4.0.0.i686.tgz )
+mirror strip
+http://www.sangoma.com/
+unknown
+Sangoma ISDN library
+-* ~amd64 ~x86
+eutils multilib portability toolchain-funcs user
+
+
+
+
+2
+
+install prepare unpack
+
+
+
+
+

@@ -1,0 +1,22 @@
+virtual/libc dev-libs/icu sys-devel/flex sys-devel/bison dev-lang/perl || ( =sys-devel/automake-1.11* ) >=sys-devel/autoconf-2.68 sys-devel/libtool dev-vcs/git
+virtual/libc dev-libs/icu
+0
+
+
+http://oss.axsentis.de/
+LGPL-2
+Stand-alone version of the WebKit JavaScript engine
+~amd64 ~x86
+autotools eutils git-2 libtool multilib portability toolchain-funcs user
+
+
+
+
+4
+
+install unpack
+
+
+
+
+

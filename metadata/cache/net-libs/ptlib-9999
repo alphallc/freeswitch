@@ -1,0 +1,22 @@
+audio? ( alsa? ( media-libs/alsa-lib ) esd? ( media-sound/esound ) ) ldap? ( net-nds/openldap ) odbc? ( dev-db/unixODBC ) sasl? ( dev-libs/cyrus-sasl:2 ) sdl? ( media-libs/libsdl ) ssl? ( dev-libs/openssl ) video? ( ieee1394? ( media-libs/libdc1394:1 media-libs/libdv sys-libs/libavc1394 sys-libs/libraw1394 ) v4l2? ( media-libs/libv4l ) ) xml? ( dev-libs/expat ) dev-util/pkgconfig sys-devel/bison sys-devel/flex video? ( v4l? ( sys-kernel/linux-headers ) v4l2? ( sys-kernel/linux-headers ) ) !!dev-libs/pwlib dev-vcs/subversion net-misc/rsync || ( =sys-devel/automake-1.11* ) >=sys-devel/autoconf-2.68 sys-devel/libtool
+audio? ( alsa? ( media-libs/alsa-lib ) esd? ( media-sound/esound ) ) ldap? ( net-nds/openldap ) odbc? ( dev-db/unixODBC ) sasl? ( dev-libs/cyrus-sasl:2 ) sdl? ( media-libs/libsdl ) ssl? ( dev-libs/openssl ) video? ( ieee1394? ( media-libs/libdc1394:1 media-libs/libdv sys-libs/libavc1394 sys-libs/libraw1394 ) v4l2? ( media-libs/libv4l ) ) xml? ( dev-libs/expat ) ffmpeg? ( media-video/ffmpeg )
+0
+
+
+http://www.opalvoip.org/
+MPL-1.0
+Network focused portable C++ class library providing high level functions
+
+autotools eutils flag-o-matic libtool multilib portability subversion toolchain-funcs user
+alsa +asn +audio debug doc dtmf esd examples ffmpeg ftp http ieee1394 ipv6 jabber ldap mail odbc oss pch qos remote sasl sdl serial shmvideo snmp soap socks ssl +stun telnet tts v4l v4l2 +video vxml wav xml xmlrpc
+
+
+
+2
+
+compile configure install postinst preinst prepare setup unpack
+
+
+
+
+

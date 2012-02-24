@@ -1,0 +1,22 @@
+>=net-libs/ptlib-9999 >=media-video/ffmpeg-0.4.7 media-libs/speex java? ( virtual/jdk ) doc? ( app-doc/doxygen ) dev-vcs/subversion net-misc/rsync || ( =sys-devel/automake-1.11* ) >=sys-devel/autoconf-2.68 sys-devel/libtool
+>=net-libs/ptlib-9999 >=media-video/ffmpeg-0.4.7 media-libs/speex java? ( virtual/jdk )
+0
+
+
+http://www.opalvoip.org/
+MPL-1.0
+C++ class library normalising numerous telephony protocols
+
+autotools eutils flag-o-matic libtool multilib portability subversion toolchain-funcs user
+debug doc java
+
+
+
+
+
+compile install preinst setup unpack
+
+
+
+
+

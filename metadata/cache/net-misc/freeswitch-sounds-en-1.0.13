@@ -1,0 +1,22 @@
+net-misc/freeswitch
+net-misc/freeswitch
+0
+http://files.freeswitch.org/freeswitch-sounds-en-us-callie-8000-1.0.13.tar.gz 16k? ( http://files.freeswitch.org/freeswitch-sounds-en-us-callie-16000-1.0.13.tar.gz ) 32k? ( http://files.freeswitch.org/freeswitch-sounds-en-us-callie-32000-1.0.13.tar.gz ) 48k? ( http://files.freeswitch.org/freeswitch-sounds-en-us-callie-48000-1.0.13.tar.gz )
+
+http://www.freeswitch.org/
+MPL-1.1
+English soundfiles for FreeSWITCH
+~amd64 ~x86
+
++16k 32k 48k
+
+
+
+1
+
+install
+
+
+
+
+

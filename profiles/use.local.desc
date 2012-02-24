@@ -1,19 +1,115 @@
-net-misc/freeswitch:cepstral		Cepstral swift commercial text-to-speech engine
-net-misc/freeswitch:iax			Inter-Asterisk-Exchange VoIP protocol
-net-misc/freeswitch:h26x		Pass-through support for H.261 and H.263 video
-net-misc/freeswitch:libpri		Build OpenZAP/FreeTDM with libpri module
-net-misc/freeswitch:nosamples		Do not install sample configuration
-net-misc/freeswitch:openzap		OpenZAP (support for analog/isdn telephony cards)
-net-misc/freeswitch:resampler		Sound resampling (e.g. 16KHz -> 8KHz) support
-net-misc/freeswitch:sctp		SIP over SCTP (Stream-Control-Protocol) support
-net-misc/freeswitch-music:16k		16KHz sample rate (Wideband) On-Hold music
-net-misc/freeswitch-music:32k		32KHz sample rate (Ultra-Wideband) On-Hold music
-net-misc/freeswitch-music:48k		48KHz sample rate (Ultra-Wideband) On-Hold music
-net-misc/freeswitch-sounds:16k		16KHz sample rate (Wideband) sounds
-net-misc/freeswitch-sounds:32k		32KHz sample rate (Ultra-Wideband) sounds
-net-misc/freeswitch-sounds:48k		48KHz sample rate (Ultra-Wideband) sounds
-net-misc/freeswitch-svn:nosamples	Do not install sample configuration
-net-misc/freeswitch-svn:resampler	Sound resampling (e.g. 16KHz -> 8KHz) support
-net-misc/freeswitch-svn:sctp		SIP over SCTP (Stream-Control-Protocol) support
-net-libs/opal:celt			CELT ultra-low-delay 32KHz, 48KHz wideband audio codec support
-media-libs/celt:fixed-point-math	Enable fixed-point arithmetic
+# This file is deprecated as per GLEP 56 in favor of metadata.xml. Please add
+# your descriptions to your package's metadata.xml ONLY.
+# * generated automatically using egencache *
+
+net-misc/freeswitch:esl - Event-Socket Library
+net-misc/freeswitch:esl-lua - LUA bindings for ESL
+net-misc/freeswitch:esl-perl - Perl bindings for ESL
+net-misc/freeswitch:esl-php - PHP bindings for ESL
+net-misc/freeswitch:esl-python - Python bindings for ESL
+net-misc/freeswitch:esl-ruby - Ruby bindings for ESL
+net-misc/freeswitch:freeswitch_modules_alsa - Alsa endpoint module (mod_alsa)
+net-misc/freeswitch:freeswitch_modules_amr - AMR-NB (Narrowband) pass-through codec module (mod_amr)
+net-misc/freeswitch:freeswitch_modules_amr_wb - AMR-WB (Wideband) pass-through codec module (mod_amrwb)
+net-misc/freeswitch:freeswitch_modules_bv - Broadvoice HD (Wideband) codec (mod_bv)
+net-misc/freeswitch:freeswitch_modules_cdr_csv - CSV (Comma-Separated-Value) CDR (Call-Detail-Record) module
+net-misc/freeswitch:freeswitch_modules_celt - CELT ultra-low delay wideband codec module (mod_celt)
+net-misc/freeswitch:freeswitch_modules_cepstral - Cepstral SWIFT TTS (Text-To-Speech) engine module (mod_cepstral)
+net-misc/freeswitch:freeswitch_modules_cidlookup - API commands to query CallerID lookup services (mod_cidlookup)
+net-misc/freeswitch:freeswitch_modules_conference - Conferencing application (mod_conference)
+net-misc/freeswitch:freeswitch_modules_console - Console logger module (mod_console)
+net-misc/freeswitch:freeswitch_modules_curl - Curl-based HTTP client api command, replacing mod_http (mod_curl)
+net-misc/freeswitch:freeswitch_modules_db - Database-based resource limit module (mod_db)
+net-misc/freeswitch:freeswitch_modules_dialplan_asterisk - Asterisk-like dialplan module (mod_dialplan_asterisk)
+net-misc/freeswitch:freeswitch_modules_dialplan_directory - Directory interface dialplan module (mod_dialplan_directory)
+net-misc/freeswitch:freeswitch_modules_dialplan_xml - Default XML dialplan module (mod_dialplan_xml)
+net-misc/freeswitch:freeswitch_modules_dingaling - Jingle (XMPP / GoogleTalk) endpoint module (mod_dingaling)
+net-misc/freeswitch:freeswitch_modules_distributor - Distribute calls between multiple routes (mod_distributor)
+net-misc/freeswitch:freeswitch_modules_dptools - Dialplan tools (mod_dptools)
+net-misc/freeswitch:freeswitch_modules_easyroute - DB-based routing application module (mod_easyroute)
+net-misc/freeswitch:freeswitch_modules_enum - ENUM application module (mod_enum)
+net-misc/freeswitch:freeswitch_modules_erlang_event - Erlang event handler / remote control module (mod_event_erlang)
+net-misc/freeswitch:freeswitch_modules_event_multicast - Multicast event handler module (mod_event_multicast)
+net-misc/freeswitch:freeswitch_modules_event_socket - Socket event handler / remote control module (mod_event_socket)
+net-misc/freeswitch:freeswitch_modules_expr - Dialplan expressions (mod_expr)
+net-misc/freeswitch:freeswitch_modules_fax - Fax receive/transmit application module (mod_fax)(DEPRECATED: see mod_spandsp)
+net-misc/freeswitch:freeswitch_modules_fifo - First-in-First-out call queue module (mod_fifo)
+net-misc/freeswitch:freeswitch_modules_file_string - Stream audio from a file(?) (mod_file_string)
+net-misc/freeswitch:freeswitch_modules_flite - Flite TTS (Text-to-Speech) module (mod_flite)
+net-misc/freeswitch:freeswitch_modules_freetdm - FreeTDM (SS7BOOST, PRI, BRI, Analog) endpoint module (mod_freetdm)
+net-misc/freeswitch:freeswitch_modules_fsv - Simple video recording application (mod_fsv)
+net-misc/freeswitch:freeswitch_modules_g723_1 - G.723.1 codec module (mod_g723_1)
+net-misc/freeswitch:freeswitch_modules_g729 - G.729 (pass-through only) codec module (mod_g729)
+net-misc/freeswitch:freeswitch_modules_gsmopen - GSM modem/handset endpoint module (mod_gsmopen)
+net-misc/freeswitch:freeswitch_modules_h26x - H.261, H.263, H.264 pass-through codec module (mod_h26x)
+net-misc/freeswitch:freeswitch_modules_hash - Hash-based resource limit module (mod_hash)
+net-misc/freeswitch:freeswitch_modules_http - HTTP client api command (mod_http)
+net-misc/freeswitch:freeswitch_modules_iax - Inter-Asterisk eXchange (IAX2) endpoint module (mod_iax)
+net-misc/freeswitch:freeswitch_modules_ilbc - iLBC codec module (mod_ilbc)
+net-misc/freeswitch:freeswitch_modules_java - Java language module (mod_java)
+net-misc/freeswitch:freeswitch_modules_lcr - LCR (Least-Cost-Routing) application module (mod_lcr)
+net-misc/freeswitch:freeswitch_modules_limit - Resource limit module (mod_limit) (DEPRECATED: see mod_db + mod_hash)
+net-misc/freeswitch:freeswitch_modules_local_stream - Local file streaming module (mod_local_stream)
+net-misc/freeswitch:freeswitch_modules_logfile - File logger module (mod_logfile)
+net-misc/freeswitch:freeswitch_modules_lua - LUA language module (mod_lua)
+net-misc/freeswitch:freeswitch_modules_managed - .NET managed mode language module (mod_managed)
+net-misc/freeswitch:freeswitch_modules_memcache - Memcache API interface module (mod_memcache)
+net-misc/freeswitch:freeswitch_modules_mp4v - MPEG4 / H.264 Video ES (Elementary Stream) pass-through codec module (mod_mp4v)
+net-misc/freeswitch:freeswitch_modules_nibblebill - Real-time debit module (mod_nibblebill)
+net-misc/freeswitch:freeswitch_modules_opal - H.323 endpoint module based on the Opal library (experimental) (mod_opal)
+net-misc/freeswitch:freeswitch_modules_openmrcp - OpenMRCP module (mod_openmrcp)
+net-misc/freeswitch:freeswitch_modules_openzap - OpenZAP (SS7BOOST, PRI, BRI, Analog) endpoint module (mod_openzap)
+net-misc/freeswitch:freeswitch_modules_osp - Open Settlement Protocol (OSP) module (mod_osp)
+net-misc/freeswitch:freeswitch_modules_perl - Perl language module (mod_perl)
+net-misc/freeswitch:freeswitch_modules_pocketsphinx - Pocketsphinx ASR (Speech-recognition) module (mod_pocketsphinx)
+net-misc/freeswitch:freeswitch_modules_portaudio - Portaudio endpoint module (mod_portaudio)
+net-misc/freeswitch:freeswitch_modules_portaudio_stream - Stream audio from a portaudio source (mod_portaudio_stream)
+net-misc/freeswitch:freeswitch_modules_python - Python language module (mod_python)
+net-misc/freeswitch:freeswitch_modules_radius_cdr - Radius CDR (Call-Detail-Record) module (mod_radius_cdr)
+net-misc/freeswitch:freeswitch_modules_redis - Redis (advanced key-value store: http://code.google.com/p/redis/)-based resource limit module (mod_redis)
+net-misc/freeswitch:freeswitch_modules_rss - RSS feed application (mod_rss)
+net-misc/freeswitch:freeswitch_modules_say_de - German TTS functions (mod_say_de)
+net-misc/freeswitch:freeswitch_modules_say_en - English TTS functions (mod_say_en)
+net-misc/freeswitch:freeswitch_modules_say_es - Spanish TTS functions (mod_say_es)
+net-misc/freeswitch:freeswitch_modules_say_fr - French TTS functions (mod_say_fr)
+net-misc/freeswitch:freeswitch_modules_say_it - Italian TTS functions (mod_say_it)
+net-misc/freeswitch:freeswitch_modules_say_nl - Dutch TTS functions (mod_say_nl)
+net-misc/freeswitch:freeswitch_modules_say_ru - Russian TTS functions (mod_say_ru)
+net-misc/freeswitch:freeswitch_modules_say_zh - Simplified Chinese TTS functions (mod_say_zh)
+net-misc/freeswitch:freeswitch_modules_shell_stream - Stream audio from an external application (mod_shell_stream)
+net-misc/freeswitch:freeswitch_modules_shout - Shoutcast streaming module (mod_shout)
+net-misc/freeswitch:freeswitch_modules_silk - SILK wideband codec module (mod_silk)
+net-misc/freeswitch:freeswitch_modules_siren - G.722.1 (aka "Siren") codec module (mod_siren)
+net-misc/freeswitch:freeswitch_modules_skypiax - Skype endpoint module, using the Skype client remote control API (mod_skypiax)(deprecated, see: mod_skypopen)
+net-misc/freeswitch:freeswitch_modules_skypopen - Skype endpoint module, using the Skype client remote control API (mod_skypopen)
+net-misc/freeswitch:freeswitch_modules_snapshot - Record sliding window (e.g. last 10 seconds) of audio (mod_snapshot)
+net-misc/freeswitch:freeswitch_modules_sndfile - Module to add support for various sound file formats (mod_sndfile)
+net-misc/freeswitch:freeswitch_modules_snom - SNOM VoIP phone helper applications (mod_snom)
+net-misc/freeswitch:freeswitch_modules_sofia - SIP (Session-Initiation-Protocol) endpoint module (mod_sofia)
+net-misc/freeswitch:freeswitch_modules_spandsp - SpanDSP fax applications and VoIP codecs (mod_spandsp)
+net-misc/freeswitch:freeswitch_modules_speex - Speex codec module (mod_speex)
+net-misc/freeswitch:freeswitch_modules_spidermonkey - Spidermonkey javascript language module (mod_spidermonkey)
+net-misc/freeswitch:freeswitch_modules_spidermonkey_core_db - Spidermonkey db extension (mod_spidermonkey_core_db)
+net-misc/freeswitch:freeswitch_modules_spidermonkey_curl - Spidermonkey curl extension (mod_spidermonkey_curl)
+net-misc/freeswitch:freeswitch_modules_spidermonkey_odbc - Spidermonkey ODBC extension (mod_spidermonkey_odbc)
+net-misc/freeswitch:freeswitch_modules_spidermonkey_socket - Spidermonkey socket extension (mod_spidermonkey_socket)
+net-misc/freeswitch:freeswitch_modules_spidermonkey_teletone - Spidermonkey tone detection/generation extension (mod_spidermonkey_teletone)
+net-misc/freeswitch:freeswitch_modules_spy - Spy on a user constantly (mod_spy)
+net-misc/freeswitch:freeswitch_modules_syslog - Syslog logger module (mod_syslog)
+net-misc/freeswitch:freeswitch_modules_tone_stream - (Scriptable) Tone generator module (mod_tone_stream)
+net-misc/freeswitch:freeswitch_modules_tts_commandline - System command TTS (Text-To-Speech) interface (mod_tts_commandline)
+net-misc/freeswitch:freeswitch_modules_unimrcp - MRCP (Media Resource Control Protocol) ASR/TTS client module (mod_unimrcp)
+net-misc/freeswitch:freeswitch_modules_valet_parking - Valet parking (mod_valet_parking)
+net-misc/freeswitch:freeswitch_modules_vmd - Voicemail detection application module (mod_vmd)
+net-misc/freeswitch:freeswitch_modules_voicemail - Voicemail application module (mod_voicemail)
+net-misc/freeswitch:freeswitch_modules_voipcodecs - Collection of most-used codecs (G.711, G.722, G.726, GSM, LPC10) (mod_voipcodecs)(DEPRECATED: see mod_spandsp)
+net-misc/freeswitch:freeswitch_modules_xml_cdr - XML CDR (Call-Detail-Record) module (mod_xml_cdr)
+net-misc/freeswitch:freeswitch_modules_xml_curl - CURL XML Gateway module (mod_xml_curl)
+net-misc/freeswitch:freeswitch_modules_xml_ldap - LDAP XML Gateway module (mod_xml_ldap)
+net-misc/freeswitch:freeswitch_modules_xml_rpc - XML RPC module (mod_xml_rpc)
+net-misc/freeswitch:freeswitch_modules_yaml - YaML (Yet-another-Markup-Language) dialplan module (mod_yaml)
+net-misc/freeswitch:freeswitch_modules_zeroconf - Zeroconf event handler module (mod_zeroconf)
+net-misc/freeswitch:libpri - Build OpenZAP/FreeTDM with libpri module
+net-misc/freeswitch:nosamples - Do not install sample configuration files
+net-misc/freeswitch:resampler - Enable support for up-/downsampling of audio (e.g. 48KHz -> 8KHz)
+net-misc/freeswitch:sctp - Enable SCTP (Stream-Control-Transport-Protocol) support (mod_sofia, ...)

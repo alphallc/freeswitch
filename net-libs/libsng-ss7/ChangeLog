@@ -1,0 +1,63 @@
+# ChangeLog for net-libs/libsng-ss7
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*libsng-ss7-4.1.1 (14 Jul 2011)
+
+  14 Jul 2011; Stefan Knoblich <s.knoblich@axsentis.de>
+  +libsng-ss7-4.1.1.ebuild:
+  libsng-ss7: Add 4.1.1 (amd64 and x86)
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+
+*libsng-ss7-4.0.0 (13 May 2011)
+
+  13 May 2011; Stefan Knoblich <s.knoblich@axsentis.de>
+  +libsng-ss7-4.0.0.ebuild:
+  libsng-ss7: Add 4.0.0 (amd64 and x86)
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+
+*libsng-ss7-3.1.1 (22 Feb 2011)
+
+  22 Feb 2011; Stefan Knoblich <s.knoblich@axsentis.de>
+  +libsng-ss7-3.1.1.ebuild:
+  libsng-ss7: Add 3.1.1 (amd64 and x86)
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+
+*libsng-ss7-3.0.0 (02 Feb 2011)
+
+  02 Feb 2011; Stefan Knoblich <s.knoblich@axsentis.de>
+  +libsng-ss7-3.0.0.ebuild:
+  libsng-ss7: Add 3.0.0 (amd64 and x86)
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+
+*libsng-ss7-2.3.3 (12 Dec 2010)
+
+  12 Dec 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  +libsng-ss7-2.3.3.ebuild:
+  libsng-ss7: add 2.3.3
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+
+*libsng-ss7-2.1.1 (30 Nov 2010)
+
+  30 Nov 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  libsng-ss7-2.0.0.ebuild, +libsng-ss7-2.1.1.ebuild:
+  libsng-ss7: add 2.1.1 and use ldconfig to create SONAME symlinks
+
+  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+
+  29 Oct 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  libsng-ss7-2.0.0.ebuild:
+  libsng-ss7: Add wanpipe runtime dependency, generate libssl.so.6 compat
+  symlink
+
+*libsng-ss7-2.0.0 (29 Oct 2010)
+
+  29 Oct 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  +libsng-ss7-2.0.0.ebuild:
+  Add libsng-ss7 ebuild
+

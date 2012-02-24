@@ -1,0 +1,9 @@
+# ChangeLog for net-misc/freetdm
+# Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
+# $Header: $
+
+*freetdm-1.0.1 (25 Oct 2010)
+
+  25 Oct 2010; Stefan Knoblich <s.knoblich@axsentis.de> +freetdm-1.0.1.ebuild:
+  Add freetdm-1.0.1 ebuild (needs more love)
+

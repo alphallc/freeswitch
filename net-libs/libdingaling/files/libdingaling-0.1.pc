@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libdingaling
+Description: XMPP Jingle library
+Version: 0.1
+Libs: -L${libdir} -ldingaling
+Cflags: -I${includedir}
