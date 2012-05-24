@@ -36,7 +36,7 @@ case ${PV} in
 esac
 
 
-IUSE="esl nosamples odbc +resampler sctp libpri zrtp"
+IUSE="esl samples odbc +resampler sctp libpri zrtp debug"
 
 IUSE_ESL="esl-ruby esl-php esl-perl esl-python esl-lua"
 
@@ -347,7 +347,7 @@ fs_check_core_abi_compat() {
 	fi
 
 	# no need to check anything if there's no previous install...
-	[ ! -e "${ROOT}/usr/share/${PN}/mod" ] && return 0
+	[ ! -e "${ROOT}/usr/$(get_libdir)/${PN}/mod" ] && return 0
 
 	libfreeswitch="$(ls -1 "${ROOT}"/usr/$(get_libdir)/libfreeswitch.so.*.*.*)"
 	if [ ! -f "${libfreeswitch}" ]; then
@@ -404,7 +404,7 @@ fs_check_modules_api_compat() {
 	fi
 
 	# no need to check anything if there's no previous install...
-	[ ! -e "${ROOT}"/usr/share/"${PN}"/mod ] && return 0
+	[ ! -e "${ROOT}/usr/$(get_libdir)/${PN}"/mod ] && return 0
 
 	# create an awk script with the list of "switch_*" symbols exported by libfreeswitch
 	# run the script once for each module, the list of needed "switch_*" symbols is supplied via stdin
@@ -436,13 +436,13 @@ fs_check_modules_api_compat() {
 	EOF
 
 	einfo "Checking for incompatible modules..."
-	for x in "${ROOT}"/usr/share/"${PN}"/mod/mod_*.so; do
+	for x in "${ROOT}/usr/$(get_libdir)/${PN}"/mod/mod_*.so; do
 		mod="$(basename "${x}")"
 		name="$(echo "${mod}" | sed -e 's:^mod_\(.\+\)\.so$:\1:')"
 		need_upgrade="no"
 
 		# no need to check modules that will be overwritten
-		[ -e "${D}/usr/share/${PN}/mod/${mod}" ] && continue
+		[ -e "${D}/usr/$(get_libdir)/${PN}/mod/${mod}" ] && continue
 
 
 		# skip modules that are in our list but disabled (= will be uninstalled)
@@ -685,7 +685,7 @@ esl_dopymod() {
                 insinto $(python_get_sitedir)
 
 		for x in ${@}; do
-			insopts -m644 
+			insopts -m644
 
 			[ "${x}" != "${x%.so}" ] && insopts -m755
 
@@ -847,30 +847,23 @@ src_configure() {
 	# 2. configure (can't use econf thanks to b0rked buildsystem)
 	#
 	einfo "Configuring FreeSWITCH..."
-#	./configure -C \
-#		--prefix=/opt/freeswitch \
-#		--libdir=/opt/freeswitch/lib \
-#		--sysconfdir=/opt/freeswitch/conf \
-#		--mandir=/usr/share/man \
-#		--infodir=/usr/share/info \
-#		--datadir=/usr/share \
+		touch noreg
 		FREESWITCH_HTDOCS="${FREESWITCH_HTDOCS:-${EPREFIX}/var/www/localhost/htdocs/${PN}}"
 		econf \
-		--host=${CHOST} \
 		--disable-option-checking \
-		${CBUILD:+--build=${CBUILD}} \
 		${CTARGET:+--target=${CTARGET}} \
 		--enable-core-libedit-support \
+		--localstatedir="${EPREFIX}/var" \
 		--sysconfdir="${EPREFIX}/etc/${PN}" \
-		--with-modinstdir="${EPREFIX}/usr/share/${PN}/mod" \
-		--with-htdocsdir="${FREESWITCH_HTDOCS}" \
-		--with-soundsdir="${EPREFIX}/usr/share/sounds/${PN}" \
-		--with-recordingsdir="${EPREFIX}/var/lib/${PN}/recordings" \
-		--with-grammardir="${EPREFIX}/var/lib/${PN}/grammar" \
-		--with-scriptsdir="${EPREFIX}/usr/share/${PN}/scripts" \
-		--with-dbdir="${EPREFIX}/var/db/${PN}" \
-		--with-rundir="${EPREFIX}/var/run/${PN}" \
-		--with-logfiledir="${EPREFIX}/var/log/${PN}" \
+                --with-modinstdir="${EPREFIX}/usr/$(get_libdir)/${PN}/mod" \
+                --with-rundir="${EPREFIX}/var/run/${PN}" \
+                --with-logfiledir="${EPREFIX}/var/log/${PN}" \
+                --with-dbdir="${EPREFIX}/var/lib/${PN}/db" \
+                --with-htdocsdir="${EPREFIX}/usr/share/${PN}/htdocs" \
+                --with-soundsdir="${EPREFIX}/usr/share/${PN}/sounds" \
+                --with-grammardir="${EPREFIX}/usr/share/${PN}/grammar" \
+                --with-scriptdir="${EPREFIX}/usr/share/${PN}/scripts" \
+                --with-recordingsdir="${EPREFIX}/var/lib/${PN}/recordings" \
 		--with-pkgconfigdir="${EPREFIX}/usr/$(get_libdir)/pkgconfig" \
 		$(fs_enable sctp) \
 		$(fs_enable zrtp) \
@@ -887,10 +880,7 @@ src_configure() {
 		cd "${S}/libs/freetdm"
 		einfo "Configuring FreeTDM..."
 		econf \
-#			--prefix=/opt/freeswitch \
-#			--libdir=/opt/freeswitch/lib \
-#			--sysconfdir=/opt/freeswitch/conf \
-			--with-modinstdir="/usr/share/${PN}/mod" \
+			--with-modinstdir="/usr/$(get_libdir)/${PN}/mod" \
 			--with-pkgconfigdir=/usr/$(get_libdir)/pkgconfig \
 			${config_opts} || die "failed to configure FreeTDM"
 	fi
@@ -976,12 +966,12 @@ src_install() {
 
 	# remove sample configuration if the user wishes so,
 	# but only if this isn't a fresh installation
-	if use nosamples; then
+	if ! use samples; then
 		if ! has_version "net-misc/freeswitch"; then
 			einfo "No previous installation of FreeSWITCH found, installing sample configuration..."
 		else
 			einfo "Removing sample configuration files..."
-			rm -r "${D}"/etc/"${PN}"/*
+			rm -r "${D}/etc/${PN}"/*
 		fi
 	fi
 
@@ -992,7 +982,7 @@ src_install() {
 #	dosym /etc/freeswitch /opt/freeswitch/conf
 
 	# keep managed subdir
-	fs_use freeswitch_modules_managed && keepdir /usr/share/"${PN}"/mod/managed
+	fs_use freeswitch_modules_managed && keepdir "/usr/$(get_libdir)/${PN}/mod/managed"
 
 	# TODO: install contributed stuff
 
@@ -1013,7 +1003,7 @@ src_install() {
 	#    pkg-config files to /usr/lib/pkgconfig
 	#    remove old pkgconfig dir(s) if empty
 	#
-	dodir "/usr/$(get_libdir)/pkgconfig"
+#	dodir "/usr/$(get_libdir)/pkgconfig"
 #	find "${D}/usr/" \( -name "freeswitch.pc" -or -name "freetdm.pc" \) -exec \
 #		mv "{}" "${D}/usr/$(get_libdir)/pkgconfig" \;
 #	rmdir "${D}"/opt/freeswitch/lib*/pkgconfig 2>/dev/null
@@ -1078,7 +1068,7 @@ pkg_preinst() {
 	#
 	# 2. preserve existing config files
 	#
-	if use nosamples; then
+	if ! use samples; then
 		if has_version "net-voip/freeswitch"; then
 			einfo "Preserving existing configuration..."
 			rm -r "${D}/etc/freeswitch"
