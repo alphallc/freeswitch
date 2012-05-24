@@ -95,7 +95,7 @@ MODULES_RDEPEND="
 	freeswitch_modules_shout? ( media-libs/libogg )
 	freeswitch_modules_osp? ( >=net-libs/osptoolkit-3.5.0 )
 	freeswitch_modules_freetdm? ( libpri? ( >=net-libs/libpri-1.4.0 ) )
-	freeswitch_modules_spandsp? ( virtual/jpeg )
+	freeswitch_modules_spandsp? ( virtual/jpeg media-libs/spandsp )
 	freeswitch_modules_redis? ( dev-db/redis )
 	freeswitch_modules_cdr_pg_csv? ( dev-db/postgresql-base )
 	freeswitch_modules_gsmopen? ( net-libs/ctb app-mobilephone/gsmlib media-libs/spandsp )
