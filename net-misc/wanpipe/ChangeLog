@@ -2,6 +2,61 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+*wanpipe-3.7.0_p8 (24 May 2012)
+*wanpipe-3.5.27 (24 May 2012)
+
+  24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  files/extract_symver.sh, -files/wanpipe-3.5.10-Makefile.patch,
+  -files/wanpipe-3.5.10-QA-fix-const-char-warnings.patch,
+  -files/wanpipe-3.5.10-QA-fix-format-literal-warnings.patch,
+  -files/wanpipe-3.5.10-QA-fix-libstelephony.patch,
+  -files/wanpipe-3.5.10-QA-fix-parallel-make.patch,
+  -files/wanpipe-3.5.10-linux-2.6.31.patch,
+  -files/wanpipe-3.5.10-silence-QA-warnings.patch,
+  -files/wanpipe-3.5.10_p10-Makefile.patch,
+  -files/wanpipe-3.5.11-linux-2.6.35.patch,
+  -files/wanpipe-3.5.12-QA-fix-parallel-make.patch,
+  -files/wanpipe-3.5.14-QA-fix-parallel-make.patch,
+  -files/wanpipe-3.5.14-dahdi-location.patch,
+  -files/wanpipe-3.5.15-QA-fix-parallel-make.patch,
+  -files/wanpipe-3.5.15-dahdi-2.4.0.patch,
+  -files/wanpipe-3.5.15-linux-2.6.36.patch,
+  -files/wanpipe-3.5.16-Makefile.patch,
+  -files/wanpipe-3.5.16-QA-fix-format-literal-warnings.patch,
+  -files/wanpipe-3.5.16-QA-fix-parallel-make.patch,
+  -files/wanpipe-3.5.16-dahdi-location.patch,
+  -files/wanpipe-3.5.17-linux-2.6.37.patch,
+  -files/wanpipe-3.5.18-QA-fix-parallel-make.patch,
+  -files/wanpipe-3.5.19-disable-ldconfig.patch,
+  -files/wanpipe-3.5.20-QA-fix-parallel-make.patch,
+  -files/wanpipe-3.5.20-libstelephony-cleanup.patch,
+  -files/wanpipe-3.5.20-linux-2.6.39.patch,
+  -files/wanpipe-3.5.20-linux-3.0.patch, -files/wanpipe-3.5.22-Makefile.patch,
+  -files/wanpipe-3.5.22-QA-fix-parallel-make.patch,
+  -files/wanpipe-3.5.22-dahdi-location.patch,
+  -files/wanpipe-3.5.22-wancfg_legacy-Makefile.patch,
+  -files/wanpipe-3.5.23-QA-fix-parallel-make.patch,
+  -files/wanpipe-3.5.24-Makefile.patch,
+  -files/wanpipe-3.5.24-QA-fix-const-char-warnings.patch,
+  -files/wanpipe-3.5.24-QA-fix-format-literal-warnings.patch,
+  -files/wanpipe-3.5.24-QA-fix-parallel-make.patch,
+  -files/wanpipe-3.5.24-QA-fix-warn_unused_result-legacy.patch,
+  -files/wanpipe-3.5.24-QA-fix-warn_unused_result.patch,
+  -files/wanpipe-3.5.24-linux-3.1.patch, +files/wanpipe-3.5.27-Makefile.patch,
+  +files/wanpipe-3.5.27-QA-fix-const-char-warnings.patch,
+  +files/wanpipe-3.5.27-QA-fix-format-literal-warnings.patch,
+  +files/wanpipe-3.5.27-QA-fix-parallel-make.patch,
+  +files/wanpipe-3.5.27-QA-fix-warn_unused_result-legacy.patch,
+  +files/wanpipe-3.5.27-QA-fix-warn_unused_result.patch,
+  -wanpipe-3.5.12.ebuild, -wanpipe-3.5.14.ebuild, -wanpipe-3.5.15.ebuild,
+  -wanpipe-3.5.15-r1.ebuild, -wanpipe-3.5.16.ebuild, -wanpipe-3.5.17.ebuild,
+  -wanpipe-3.5.17_p9.ebuild, -wanpipe-3.5.18.ebuild, -wanpipe-3.5.19.ebuild,
+  -wanpipe-3.5.20.ebuild, -wanpipe-3.5.22.ebuild, -wanpipe-3.5.23.ebuild,
+  -wanpipe-3.5.24.ebuild, +wanpipe-3.5.27.ebuild, +wanpipe-3.7.0_p8.ebuild:
+  some fixes
+
+  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
+
   01 Feb 2012; Stefan Knoblich <s.knoblich@axsentis.de>
   files/wanpipe-3.5.24-linux-3.1.patch:
   wanpipe-3.5.24: fix wanrouter script for >=linux-3.1

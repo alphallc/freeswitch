@@ -1,0 +1,22 @@
+virtual/libc lua? ( dev-lang/lua ) php? ( dev-lang/php ) perl? ( dev-lang/perl ) ruby? ( dev-lang/ruby ) python? ( dev-lang/python ) >=sys-devel/autoconf-2.60 >=sys-devel/automake-1.10 dev-vcs/subversion net-misc/rsync || ( >=sys-devel/automake-1.11.1:1.11 ) >=sys-devel/autoconf-2.68 sys-devel/libtool
+virtual/libc lua? ( dev-lang/lua ) php? ( dev-lang/php ) perl? ( dev-lang/perl ) ruby? ( dev-lang/ruby ) python? ( dev-lang/python )
+0
+
+
+http://www.freeswitch.org/
+MPL-1.1
+FreeSWITCH Event-Socket client library and language bindings
+
+autotools eutils flag-o-matic libtool multilib python subversion toolchain-funcs user
+ruby php +perl +python lua
+
+
+
+2
+
+compile configure install postinst preinst prepare unpack
+
+
+
+
+

@@ -1,13 +1,12 @@
-# ChangeLog for net-misc/mod_snmp
+# ChangeLog for net-voip/freeswitch-mod_snmp
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
-  19 Jan 2010; Stefan Knoblich <s.knoblich@axsentis.de> mod_snmp-9999.ebuild:
-  Cleanup: Move freeswitch svn live ebuild into net-misc/freeswitch (part 3/3:
-  Fix DEPEND in mod_{snmp,squirrelfish,ssh})
+*freeswitch-mod_snmp-9999 (24 May 2012)
 
-*mod_snmp-9999 (19 Jan 2010)
+  24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  +freeswitch-mod_snmp-9999.ebuild:
+  some fixes
 
-  19 Jan 2010; Stefan Knoblich <s.knoblich@axsentis.de> +mod_snmp-9999.ebuild:
-  Import everything freeswitch related from axsentis-overlay
+  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
 

@@ -26,7 +26,7 @@ KEYWORDS=""
 
 RDEPEND="virtual/libc
 	 ~net-libs/libisdn-${PV}
-	 net-misc/freeswitch[freeswitch_modules_freetdm]
+	 net-voip/freeswitch[freeswitch_modules_freetdm]
 	 pcap? ( net-libs/libpcap )"
 
 DEPEND="${RDEPEND}

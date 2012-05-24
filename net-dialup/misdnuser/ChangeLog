@@ -2,6 +2,15 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+*misdnuser-2.0.13 (24 May 2012)
+
+  24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  +files/mISDNcapid.initd, +files/misdnuser-2.0.13-udev-rulesd.patch,
+  +misdnuser-2.0.13.ebuild:
+  some fixes
+
+  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
+
 *misdnuser-2.0.2 (07 Jan 2011)
 
   07 Jan 2011; Stefan Knoblich <s.knoblich@axsentis.de>

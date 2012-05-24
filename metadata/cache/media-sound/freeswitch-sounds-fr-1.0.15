@@ -1,0 +1,22 @@
+net-voip/freeswitch
+net-voip/freeswitch
+0
+http://files.freeswitch.org/freeswitch-sounds-fr-ca-june-8000-1.0.15.tar.gz 16k? ( http://files.freeswitch.org/freeswitch-sounds-fr-ca-june-16000-1.0.15.tar.gz ) 32k? ( http://files.freeswitch.org/freeswitch-sounds-fr-ca-june-32000-1.0.15.tar.gz ) 48k? ( http://files.freeswitch.org/freeswitch-sounds-fr-ca-june-48000-1.0.15.tar.gz )
+
+http://www.freeswitch.org/
+MPL-1.1
+French soundfiles for FreeSWITCH
+~amd64 ~x86
+
++16k 32k 48k
+
+
+
+4
+
+install
+
+
+
+
+

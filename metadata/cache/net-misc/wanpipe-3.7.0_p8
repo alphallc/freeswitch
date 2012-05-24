@@ -1,0 +1,22 @@
+dahdi? ( net-misc/dahdi ) sys-devel/gcc[cxx] sys-devel/bison sys-devel/flex kernel_linux? ( virtual/modutils ) sys-apps/sed kernel_linux? ( virtual/linux-sources )
+dahdi? ( net-misc/dahdi ) sys-devel/gcc[cxx] kernel_linux? ( virtual/modutils )
+0
+ftp://ftp.sangoma.com/linux/custom/3.7/wanpipe-3.7.0.8.tgz
+
+http://www.sangoma.com/
+
+Wanpipe driver for Sangoma PCI/PCIe Telephony Cards
+-*
+eutils linux-info linux-mod multilib toolchain-funcs user versionator
++dahdi kernel_linux
+
+
+
+4
+
+compile install postinst postrm preinst prepare setup
+
+
+
+
+

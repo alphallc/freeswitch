@@ -104,7 +104,6 @@ MODULES_RDEPEND="
 "
 # external core dependencies
 CORE_RDEPEND="
-	net-misc/curl
 	odbc? ( dev-db/unixODBC )
 	esl-lua? ( || ( dev-lang/lua dev-lang/luajit:2 ) )
 	esl-php? ( dev-lang/php )
@@ -967,7 +966,7 @@ src_install() {
 	# remove sample configuration if the user wishes so,
 	# but only if this isn't a fresh installation
 	if ! use samples; then
-		if ! has_version "net-misc/freeswitch"; then
+		if ! has_version "net-voip/freeswitch"; then
 			einfo "No previous installation of FreeSWITCH found, installing sample configuration..."
 		else
 			einfo "Removing sample configuration files..."

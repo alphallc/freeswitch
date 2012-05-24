@@ -24,7 +24,7 @@ KEYWORDS="~amd64 ~x86"
 
 RDEPEND="virtual/libc
 	 dev-libs/openssl
-	 net-misc/freeswitch"
+	 net-voip/freeswitch"
 
 DEPEND="${RDEPEND}
 	>=sys-devel/autoconf-2.61

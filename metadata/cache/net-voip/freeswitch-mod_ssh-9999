@@ -1,0 +1,22 @@
+virtual/libc dev-libs/openssl net-voip/freeswitch >=sys-devel/autoconf-2.61 >=sys-devel/automake-1.10 >=dev-vcs/git-1.6
+virtual/libc dev-libs/openssl net-voip/freeswitch
+0
+
+
+http://oss.axsentis.de/
+BSD
+SSH Console module for FreeSWITCH
+~amd64 ~x86
+eutils flag-o-matic git multilib toolchain-funcs user
+
+
+
+
+
+
+compile install unpack
+
+
+
+
+

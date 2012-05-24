@@ -1,0 +1,22 @@
+virtual/libc net-voip/freeswitch
+virtual/libc net-voip/freeswitch
+0
+http://files.freeswitch.org/g729/fsg729-136-installer
+
+http://www.freeswitch.org/node/235
+EULA
+G.729 codec module for FreeSWITCH
+~amd64 ~x86
+
+
+
+
+
+1
+interactive
+compile install postinst unpack
+
+
+
+
+

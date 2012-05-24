@@ -1,0 +1,22 @@
+
+
+0
+https://iftools.com/download/ctb/linux-gpib-3.1.101.tar.gz
+
+
+GPL
+GPIB Library (seems to be usefull only for 2.4 kernel)
+-*
+eutils multilib toolchain-funcs user
+
+
+
+
+4
+
+-
+
+
+
+
+

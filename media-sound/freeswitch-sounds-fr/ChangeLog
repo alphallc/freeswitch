@@ -1,12 +1,13 @@
-# ChangeLog for net-misc/freeswitch-sounds-fr
+# ChangeLog for media-sound/freeswitch-sounds-fr
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
-*freeswitch-sounds-fr-1.0.14 (15 Aug 2011)
+*freeswitch-sounds-fr-1.0.15 (24 May 2012)
+*freeswitch-sounds-fr-1.0.14 (24 May 2012)
 
-  15 Aug 2011; Stefan Knoblich <s.knoblich@axsentis.de>
-  +freeswitch-sounds-fr-1.0.14.ebuild:
-  Add FreeSWITCH fr(_ca) sounds
+  24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  +freeswitch-sounds-fr-1.0.14.ebuild, +freeswitch-sounds-fr-1.0.15.ebuild:
+  some fixes
 
-  Signed-off-by: Stefan Knoblich <s.knoblich@axsentis.de>
+  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
 

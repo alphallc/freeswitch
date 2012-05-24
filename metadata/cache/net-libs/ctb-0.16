@@ -1,0 +1,22 @@
+gpib? ( net-libs/gpib )
+gpib? ( net-libs/gpib )
+0
+https://iftools.com/download/ctb/0.16/libctb-0.16.tar.gz
+
+
+GPL
+Communication toolbox library
+~amd64 ~x86
+eutils multilib toolchain-funcs user
+-gpib debug
+
+
+
+4
+
+install prepare
+
+
+
+
+

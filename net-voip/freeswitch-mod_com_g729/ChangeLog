@@ -1,15 +1,12 @@
-# ChangeLog for net-misc/mod_com_g729
+# ChangeLog for net-voip/freeswitch-mod_com_g729
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
-  08 Apr 2010; Stefan Knoblich <s.knoblich@axsentis.de>
-  mod_com_g729-136.ebuild:
-  FreeSWITCH: Fix mod_com_g729 LICENSE and minor tweaks to output.
+*freeswitch-mod_com_g729-136 (24 May 2012)
 
-*mod_com_g729-136 (08 Apr 2010)
+  24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  +files/freeswitch_license.rc6, +freeswitch-mod_com_g729-136.ebuild:
+  some fixes
 
-  08 Apr 2010; Stefan Knoblich <s.knoblich@axsentis.de>
-  +files/freeswitch_license.rc6, +mod_com_g729-136.ebuild:
-  FreeSWITCH: Add mod_com_g729, the (official) commercial G.729 codec module
-  for FreeSWITCH.
+  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
 

@@ -1,0 +1,22 @@
+sys-libs/ncurses capi? ( >=net-dialup/capi4k-utils-3.2.0 !!>=net-dialup/capi4k-utils-20050718 >=media-libs/spandsp-0.0.6_pre12 ) || ( >=sys-devel/automake-1.11.1:1.11 ) >=sys-devel/autoconf-2.68 sys-devel/libtool dev-vcs/git
+sys-libs/ncurses capi? ( >=net-dialup/capi4k-utils-3.2.0 !!>=net-dialup/capi4k-utils-20050718 >=media-libs/spandsp-0.0.6_pre12 )
+0
+
+
+http://www.mISDN.org/
+GPL-2
+mISDN (modular ISDN) kernel link library and includes
+~amd64 ~x86
+autotools base eutils git-2 libtool multilib toolchain-funcs user
++capi static-libs
+
+
+
+4
+
+compile configure install prepare unpack
+
+
+
+
+

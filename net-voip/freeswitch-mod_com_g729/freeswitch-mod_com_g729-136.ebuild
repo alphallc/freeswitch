@@ -21,7 +21,7 @@ LICENSE="EULA"
 KEYWORDS="~amd64 ~x86"
 
 RDEPEND="virtual/libc
-	 net-misc/freeswitch"
+	 net-voip/freeswitch"
 
 DEPEND="${RDEPEND}"
 

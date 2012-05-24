@@ -1,23 +1,18 @@
-# ChangeLog for net-misc/freeswitch-music
+# ChangeLog for media-sound/freeswitch-music
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
-  19 Jan 2010; Stefan Knoblich <s.knoblich@axsentis.de>
-  freeswitch-music-1.0.3.ebuild, freeswitch-music-1.0.5.ebuild,
-  freeswitch-music-1.0.6.ebuild, freeswitch-music-1.0.7.ebuild,
-  freeswitch-music-1.0.8.ebuild:
-  Cleanup: Move freeswitch svn live ebuild into net-misc/freeswitch (part 2/3:
-  Fix DEPEND in freeswitch-music and -sounds)
+*freeswitch-music-1.0.8 (24 May 2012)
+*freeswitch-music-1.0.7 (24 May 2012)
+*freeswitch-music-1.0.6 (24 May 2012)
+*freeswitch-music-1.0.5 (24 May 2012)
+*freeswitch-music-1.0.3 (24 May 2012)
 
-*freeswitch-music-1.0.8 (19 Jan 2010)
-*freeswitch-music-1.0.7 (19 Jan 2010)
-*freeswitch-music-1.0.6 (19 Jan 2010)
-*freeswitch-music-1.0.5 (19 Jan 2010)
-*freeswitch-music-1.0.3 (19 Jan 2010)
-
-  19 Jan 2010; Stefan Knoblich <s.knoblich@axsentis.de>
+  24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
   +freeswitch-music-1.0.3.ebuild, +freeswitch-music-1.0.5.ebuild,
   +freeswitch-music-1.0.6.ebuild, +freeswitch-music-1.0.7.ebuild,
   +freeswitch-music-1.0.8.ebuild:
-  Import everything freeswitch related from axsentis-overlay
+  some fixes
+
+  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
 

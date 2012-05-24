@@ -7,14 +7,14 @@ http://yate.null.ro/
 GPL-2
 Based on the subversion eclass
 ~amd64
-eutils flag-o-matic multilib portability subversion toolchain-funcs user
-alsa dahdi debug doc gsm mysql postgres sctp speex ssl
+eutils flag-o-matic multilib subversion toolchain-funcs user
+dahdi debug doc gsm mysql postgres sctp speex ssl h323 ilbc qt4 spandsp amr zaptel wanpipe sse2
 
 
 
 3
 
-compile configure install preinst prepare unpack
+configure install preinst prepare unpack
 
 
 
