@@ -100,7 +100,6 @@ MODULES_RDEPEND="
 	freeswitch_modules_cdr_pg_csv? ( dev-db/postgresql-base )
 	freeswitch_modules_gsmopen? ( net-libs/ctb app-mobilephone/gsmlib media-libs/spandsp )
 	freeswitch_modules_squirrelfish? ( net-voip/freeswitch-mod_squirrelfish )
-	freeswitch_modules_ssh? ( net-voip/freeswitch-mod_ssh )
 "
 # external core dependencies
 CORE_RDEPEND="
@@ -122,7 +121,8 @@ DEPEND="${RDEPEND}
 	sctp? ( kernel_linux? ( net-misc/lksctp-tools ) )"
 
 PDEPEND=">=media-sound/freeswitch-sounds-1.0.18
-	 >=media-sound/freeswitch-music-1.0.8"
+	 >=media-sound/freeswitch-music-1.0.8
+	freeswitch_modules_ssh? ( net-voip/freeswitch-mod_ssh )"
 
 ###
 # IUSE merging
