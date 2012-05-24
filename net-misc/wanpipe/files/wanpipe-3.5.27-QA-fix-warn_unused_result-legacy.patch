@@ -1,0 +1,174 @@
+--- util/wanpipemon_legacy/prot_trace.c	2011-11-17 16:11:52.875800977 +0100
++++ util/wanpipemon_legacy/prot_trace.c	2011-11-17 16:14:34.835672162 +0100
+@@ -1495,6 +1495,7 @@ static void decode_annexg_x25_pkt (wp_tr
+ static void print_pcap_file_header (wp_trace_output_iface_t *trace_iface)
+ {
+     struct pcap_hdr fh;
++    int err;
+ 
+     fh.magic = PCAP_MAGIC;
+     fh.version_major = 2;
+@@ -1504,12 +1505,13 @@ static void print_pcap_file_header (wp_t
+     fh.snaplen = 102400;
+     fh.network = trace_iface->link_type;
+ 
+-    fwrite(&fh, sizeof(fh), 1, trace_iface->output_file);
++    err = fwrite(&fh, sizeof(fh), 1, trace_iface->output_file);
+ }
+ 
+ static void print_pcap_record_header(wp_trace_output_iface_t *trace_iface)
+ {
+ 	struct pcaprec_hdr ph;
++	int err;
+ 	
+  	/* Write PCap header */
+         ph.ts_sec = trace_iface->pkts_written;
+@@ -1517,7 +1519,7 @@ static void print_pcap_record_header(wp_
+         ph.incl_len =  trace_iface->len;
+         ph.orig_len = trace_iface->len;
+ 
+-	fwrite(&ph, sizeof(ph), 1, trace_iface->output_file);
++	err = fwrite(&ph, sizeof(ph), 1, trace_iface->output_file);
+ }
+ 
+ static void get_ppp_magic_number(unsigned char* data, int len, char* outstr, int max_len, char offset_flag)
+@@ -1741,6 +1743,7 @@ void wp_trace_output(wp_trace_output_ifa
+ {
+ 	//int num_chars;
+ 	//int j;
++	int err;
+ 	int trace_started=0;
+ 
+ try_trace_again:
+@@ -1838,7 +1841,7 @@ try_trace_again:
+ 		
+ 		print_pcap_record_header(trace_iface);
+ 
+-		fwrite(&trace_iface->data[0], trace_iface->len, 1, trace_iface->output_file);
++		err = fwrite(&trace_iface->data[0], trace_iface->len, 1, trace_iface->output_file);
+ 
+ 		printf("\rTotal Captured=%-5u (Len=%i)",trace_iface->pkts_written+1,trace_iface->len);
+ 		
+--- util/wanpipemon_legacy/wangui.c	2008-08-01 15:00:00.000000000 +0200
++++ util/wanpipemon_legacy/wangui.c	2011-11-17 16:12:55.978697494 +0100
+@@ -182,7 +182,7 @@ static int wan_if_ip_menu(void)
+ 	
+ 	pid=waitpid(pid,&stat,WUNTRACED);
+ 	
+-	read(pipefds[0],data,50);
++	err=read(pipefds[0],data,50);
+ 	data[strlen(data)-1]='\0';
+ 
+ 	close(pipefds[0]);
+@@ -237,7 +237,7 @@ static int wan_ip_menu(void)
+ 
+ 	pid=waitpid(pid,&stat,WUNTRACED);
+ 	
+-	read(pipefds[0],data,99);
++	err=read(pipefds[0],data,99);
+ 	
+ 	if (stat==SELECT_OK){
+ 		struct in_addr *ip_str = NULL;
+@@ -274,12 +274,12 @@ static int wan_ip_menu(void)
+ 
+ 	memset(data,0,100);
+ 	
+-	read(pipefds[0],data,99);
++	err=read(pipefds[0],data,99);
+ 
+ 	close(pipefds[0]);
+ 	close(pipefds[1]);
+ 
+-	if (err==SELECT_OK){
++	if (stat==SELECT_OK){
+ 		udp_port=atoi(data);
+ 		return 0;
+ 	}
+@@ -411,7 +411,7 @@ static int wan_iface_menu(void)
+ 
+ 	pid=waitpid(pid,&stat,WUNTRACED);
+ 	
+-	read(pipefds[0],data,50);
++	err=read(pipefds[0],data,50);
+ 	data[strlen(data)-1]='\0';
+ 
+ 	close(pipefds[0]);
+@@ -474,7 +474,7 @@ static void wan_main_menu(void)
+ 	
+ 		pid=waitpid(pid,&stat,WUNTRACED);
+ 		
+-		read(pipefds[0],data,50);
++		err=read(pipefds[0],data,50);
+ 		data[strlen(data)-1]='\0';
+ 
+ 		if (stat == SELECT_OK){
+@@ -508,13 +508,13 @@ static void wan_main_menu(void)
+ 
+ 				memset(cmd_data,0,100);
+ 				pid=waitpid(pid,&stat,WUNTRACED);
+-				read(pipefds[0],cmd_data,50);
++				err=read(pipefds[0],cmd_data,50);
+ 				cmd_data[strlen(cmd_data)-1]='\0';
+ 				
+ 				if (stat == SELECT_OK){
+ 
+ exec_cmd_again:
+-					system("clear");	
++					err=system("clear");	
+ 					EXEC_PROT_FUNC(main,wan_protocol,err,(cmd_data, 0, NULL));
+ 					
+ 					hit_enter_or_space_key();
+@@ -540,11 +540,12 @@ static int if_system = UNKNOWN_SYS;
+ int wan_main_gui(void)
+ {
+ 	int local=0;
++	int err;
+ #ifdef LOCALE
+     	(void) setlocale (LC_ALL, "");
+ #endif	
+ 	
+-	system("clear");
++	err = system("clear");
+ 
+ if_ip_menu:
+ 	if (if_system == UNKNOWN_SYS){
+@@ -558,7 +559,7 @@ if_local_remote_sys:
+ 	switch(if_system){
+ 	case LOCAL_SYS:
+ 		if (wan_iface_menu() != 0){
+-			system("clear");
++			err = system("clear");
+ 			if_system = UNKNOWN_SYS;
+ 			goto if_ip_menu;
+ 		}
+@@ -569,7 +570,7 @@ if_local_remote_sys:
+ 
+ 	case REMOTE_SYS:
+ 		if (wan_ip_menu() != 0){
+-			system("clear");
++			err = system("clear");
+ 			if_system = UNKNOWN_SYS;
+ 			goto if_ip_menu;
+ 		}
+@@ -589,6 +590,6 @@ main_menu:
+ 	local = 0;
+ 	goto if_local_remote_sys;
+ 
+-	system("clear");
++	err = system("clear");
+ 	return WAN_TRUE;
+ }
+--- util/wanpipemon_legacy/xml_lib.c	2008-08-01 15:00:00.000000000 +0200
++++ util/wanpipemon_legacy/xml_lib.c	2011-11-17 16:12:55.979697556 +0100
+@@ -47,7 +47,10 @@ int output_start_xml_router (void)
+ 	if (!pipe_fd)
+ 		return 1;
+ 	
+-	fgets(host,sizeof(host)-1,pipe_fd);
++	if (fgets(host,sizeof(host)-1,pipe_fd) < 0) {
++		pclose(pipe_fd);
++		return 1;
++	}
+ 	pclose(pipe_fd);
+ 	host[strlen(host)-1]='\0';
+ 

@@ -1,0 +1,150 @@
+--- patches/kdrivers/src/net/sdladrv_usb.c	2008-08-01 15:00:00.000000000 +0200
++++ patches/kdrivers/src/net/sdladrv_usb.c	2011-11-17 15:10:05.200560777 +0100
+@@ -188,7 +188,7 @@ struct sdla_usb_desc {
+ ****               F U N C T I O N   P R O T O T Y P E S                ****
+ ***************************************************************************/
+ extern sdlahw_t* sdla_find_adapter(wandev_conf_t* conf, char* devname);
+-extern sdlahw_cpu_t* sdla_hwcpu_search(u8, int, int, int, int);
++extern sdlahw_cpu_t* sdla_hwcpu_search(u8, int, int, int, int, const char *);
+ extern sdlahw_t* sdla_hw_search(sdlahw_cpu_t*, int);
+ extern int sdla_hw_fe_test_and_set_bit(void *phw,int value);
+ extern int sdla_hw_fe_test_bit(void *phw,int value);
+--- api/libsangoma/libsangoma_hwec.c	2008-08-01 15:00:00.000000000 +0200
++++ api/libsangoma/libsangoma_hwec.c	2011-11-17 14:54:30.976639794 +0100
+@@ -70,7 +70,7 @@ static sangoma_status_t sangoma_hwec_byp
+ static int sangoma_hwec_is_numeric_parameter(char *parameter)
+ {
+ 	int i;
+-	static char *WANEC_numeric_params[] = {
++	static const char *WANEC_numeric_params[] = {
+ 		"WANEC_TailDisplacement",
+ 		"WANEC_MaxPlayoutBuffers",
+ 		"WANEC_MaxConfBridges",
+--- api/libsangoma/wanec/wanec_api_lib.c	2008-08-01 15:00:00.000000000 +0200
++++ api/libsangoma/wanec/wanec_api_lib.c	2011-11-17 14:56:45.543661831 +0100
+@@ -132,8 +132,8 @@ typedef struct {
+ 	UINT32	max_channels;
+ 	UINT32	memory_chip_size;
+ 	UINT32	debug_data_mode;
+-	char	*image_name;	
+-	char	*image_path;
++	const char	*image_name;	
++	const char	*image_path;
+ } wanec_image_info_t;
+ 
+ wanec_image_info_t	wanec_image_32 = 
+@@ -184,8 +184,8 @@ struct wan_ec_image
+ 	UINT32	max_channels;
+ 	UINT32	memory_chip_size;
+ 	UINT32	debug_data_mode;
+-	char	*image;	
+-	char	*image_path;
++	const char	*image;	
++	const char	*image_path;
+ 	int	hwec_opt_no;
+ 	int	hwec_opt[5];
+ } wan_ec_image_list[] =
+@@ -222,7 +222,7 @@ struct wan_ec_image
+ #endif
+ 
+ #if !defined(__WINDOWS__)	
+-CHAR *ToneBufferPaths[WAN_NUM_PLAYOUT_TONES] = 
++const CHAR *ToneBufferPaths[WAN_NUM_PLAYOUT_TONES] = 
+ {
+ 	WAN_EC_BUFFERS "/DTMF_0_ulaw.pcm",
+ 	WAN_EC_BUFFERS "/DTMF_1_ulaw.pcm",
+@@ -436,7 +436,7 @@ int wanec_api_lib_ioctl(HANDLE dev, wan_
+ **/
+ static int
+ wanec_api_lib_loadImageFile(	wan_ec_api_t 	*ec_api,
+-				char		*path,
++				const char	*path,
+ 				UINT8		**WP_POINTER_64 pData,
+ 				UINT32		*file_size)
+ {
+--- firmware/wan_aftup/wan_usb_fwupdate.cpp	2011-11-17 10:27:41.214136518 +0100
++++ firmware/wan_aftup/wan_usb_fwupdate.cpp	2011-11-17 10:26:30.853064433 +0100
+@@ -32,7 +32,7 @@ int CloseConnection(char *ifname);
+ int wan_usbfxo_fwupdate(void*, char *ifname, int);
+ int exec_usb_data_write(void*, int off, char *data, int len);
+ int exec_usb_data_read(void*, char *data, int len);
+-int progress_bar(char *msg, int ci, int mi);
++int progress_bar(const char *msg, int ci, int mi);
+ void hit_any_key(void);
+ }
+ 
+--- firmware/wan_aftup/wan_aft_flash.c	2009-12-16 21:31:07.000000000 +0000
++++ firmware/wan_aftup/wan_aft_flash.c	2010-03-14 02:05:34.252063454 +0000
+@@ -74,7 +74,7 @@ extern int	card_type;
+ extern int	exec_read_cmd(void*,unsigned int, unsigned int, unsigned int*);
+ extern int	exec_write_cmd(void*,unsigned int, unsigned int, unsigned int);
+ extern void	hit_any_key(void);
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ 
+ static int aft_reset_flash(wan_aft_cpld_t *cpld);
+ static int aft_is_protected(wan_aft_cpld_t *cpld, int stype);
+--- firmware/wan_aftup/wan_aft_flash_a600.c	2009-12-16 21:31:02.000000000 +0000
++++ firmware/wan_aftup/wan_aft_flash_a600.c	2010-03-14 02:07:55.154064039 +0000
+@@ -48,7 +48,7 @@ aftup_flash_t	aft_a600_flash = {  0x014F
+ 
+ extern int	verbose;
+ 
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ /*
+  ******************************************************************************
+ 			  FUNCTION PROTOTYPES
+--- firmware/wan_aftup/wan_aft_flash_shark.c	2009-12-16 21:31:13.000000000 +0000
++++ firmware/wan_aftup/wan_aft_flash_shark.c	2010-03-14 02:07:43.642063949 +0000
+@@ -114,7 +114,7 @@ aftup_flash_t	aft_shark_flash = {  0x014
+ 
+ extern int	verbose;
+ 
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ /*
+  ******************************************************************************
+ 			  FUNCTION PROTOTYPES
+--- firmware/wan_aftup/wan_aft_flash_shark_ds.c	2009-08-25 20:44:41.000000000 +0000
++++ firmware/wan_aftup/wan_aft_flash_shark_ds.c	2010-03-14 02:06:53.803063891 +0000
+@@ -98,7 +98,7 @@ aftup_flash_t	aft_shark_ds_flash = {  0x
+ 
+ extern int	verbose;
+ 
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ /*
+  ******************************************************************************
+ 			  FUNCTION PROTOTYPES
+--- firmware/wan_aftup/wan_aft_prg.c	2009-10-23 15:35:21.000000000 +0000
++++ firmware/wan_aftup/wan_aft_prg.c	2010-03-14 02:07:39.029064002 +0000
+@@ -180,7 +180,7 @@ struct flash_spec_t {
+ extern int	verbose;
+ extern int	card_type;
+ 
+-extern int	progress_bar(char*,int,int);
++extern int	progress_bar(const char*,int,int);
+ 
+ extern int exec_read_cmd(void*,unsigned int, unsigned int, unsigned int*);
+ extern int exec_write_cmd(void*,unsigned int, unsigned int, unsigned int);
+--- firmware/wan_aftup/wan_aftup.c	2009-12-16 21:31:17.000000000 +0000
++++ firmware/wan_aftup/wan_aftup.c	2010-03-14 02:06:22.372438749 +0000
+@@ -203,7 +203,7 @@ aft_core_info_t aft_core_table[] = {
+ /******************************************************************************
+ 			  FUNCTION PROTOTYPES
+ ******************************************************************************/
+-int progress_bar(char*,int,int);
++int progress_bar(const char*,int,int);
+ void main_menu(void);
+ void read_chip_control_menu(void);
+ void registers_and_internal_ram_test_menu(void);
+@@ -232,7 +232,7 @@ extern int wan_usbfxo_fwupdate(void*, ch
+ *			  FUNCTION DEFINITION	
+ ******************************************************************************/
+ 
+-int progress_bar(char *msg, int ci, int mi)
++int progress_bar(const char *msg, int ci, int mi)
+ {
+ 	static int index = 0;
+ 

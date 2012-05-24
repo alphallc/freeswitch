@@ -1,0 +1,596 @@
+--- util/lxdialog/lxdialog.c	2009-08-25 20:44:41.000000000 +0000
++++ util/lxdialog/lxdialog.c	2010-03-14 01:11:50.958063750 +0000
+@@ -240,7 +240,7 @@ j_inputbox (const char *t, int ac, const
+     int ret = dialog_inputbox (t, av[2], atoi (av[3]), atoi (av[4]),
+                             ac == 6 ? av[5] : (char *) NULL);
+     if (ret == 0)
+-        fprintf(stderr, (char*)dialog_input_result);
++        fprintf(stderr, "%s", (char*)dialog_input_result);
+     return ret;
+ }
+ 
+--- util/wancfg/conf_file_reader.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/conf_file_reader.cpp	2010-03-14 01:45:40.372313586 +0000
+@@ -1624,7 +1624,7 @@ int conf_file_reader::read_interfaces_se
+ 
+     //use copy of the name because 'strstr()' inserts nulls and it
+     //will break things.
+-    snprintf(dev_name_backup, LEN_OF_DBG_BUFF, token[0]); 
++    snprintf(dev_name_backup, LEN_OF_DBG_BUFF, "%s", token[0]); 
+     
+     if(parent_dev_name != NULL){
+ 	    
+@@ -1661,8 +1661,8 @@ int conf_file_reader::read_interfaces_se
+     chandef = &list_el_chan_def->data;
+     chanconf = chandef->chanconf;
+ 
+-    snprintf(chandef->name, WAN_IFNAME_SZ, token[0]);
+-    snprintf(chandef->addr, MAX_ADDR_STR_LEN, token[2]);
++    snprintf(chandef->name, WAN_IFNAME_SZ, "%s", token[0]);
++    snprintf(chandef->addr, MAX_ADDR_STR_LEN, "%s", token[2]);
+    
+     //NOTE: 'atoi()' returns zero if it failes AND if number
+     //is actually zero.
+@@ -1873,7 +1873,7 @@ int conf_file_reader::set_conf_param (ch
+ 
+     if(strcmp(key, "FIRMWARE") == 0){
+       Debug(DBG_CONF_FILE_READER, ("file name: %s\n", val));
+-      snprintf(lnks_def->firmware_file_path, MAX_PATH_LENGTH, val);
++      snprintf(lnks_def->firmware_file_path, MAX_PATH_LENGTH, "%s", val);
+     }
+     return 0;
+   }
+--- util/wancfg/cpp_string.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/cpp_string.cpp	2010-03-14 01:42:53.133063682 +0000
+@@ -37,7 +37,7 @@ cpp_string::cpp_string(char* param)
+ {
+   Debug(DBG_CPP_STR, ("cpp_string::cpp_string(char* param)\n"));
+ 
+-  snprintf(cstr, MAX_STR, param);
++  snprintf(cstr, MAX_STR, "%s", param);
+ }
+ 
+ 
+@@ -54,7 +54,7 @@ void cpp_string::operator= (char* param)
+ 
+   char tmp[MAX_STR];
+ 
+-  snprintf(tmp, MAX_STR, param);
++  snprintf(tmp, MAX_STR, "%s", param);
+   strlcpy(cstr, tmp, MAX_STR);
+ 
+   Debug(DBG_CPP_STR, ("end of 'operator=' cstr: %s\n", cstr));
+@@ -67,7 +67,7 @@ void cpp_string::operator= (const char* 
+   Debug(DBG_CPP_STR, ("strlen(cstr): %d\n", strlen(cstr)));
+ 
+ //  *this = (char*)param;
+-  snprintf(cstr, MAX_STR, (char*)param);
++  snprintf(cstr, MAX_STR, "%s", (char*)param);
+ 
+   Debug(DBG_CPP_STR, ("end of 'operator=' cstr: %s\n", cstr));
+ }
+@@ -79,7 +79,7 @@ char* cpp_string::operator+ (char* param
+   Debug(DBG_CPP_STR, ("strlen(param): %d\n", strlen(param)));
+   Debug(DBG_CPP_STR, ("strlen(cstr): %d\n", strlen(cstr)));
+ 
+-  snprintf(&cstr[strlen(cstr)], MAX_STR - strlen(cstr), param);
++  snprintf(&cstr[strlen(cstr)], MAX_STR - strlen(cstr), "%s", param);
+ 
+   Debug(DBG_CPP_STR, ("end of 'operator+' cstr: %s\n", cstr));
+ 
+@@ -120,7 +120,7 @@ char* cpp_string::operator+= (cpp_string
+ 
+   char tmp[MAX_STR];
+ 
+-  snprintf(tmp, MAX_STR, param.c_str());
++  snprintf(tmp, MAX_STR, "%s", param.c_str());
+ 
+   *this = *this + tmp;
+ 
+--- util/wancfg/main.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/main.cpp	2010-03-14 01:30:55.980090540 +0000
+@@ -1410,8 +1410,7 @@ void err_printf(char* format, ...)
+   vsnprintf(dbg_tmp_buff, LEN_OF_DBG_BUFF, format, ap);
+   va_end(ap);
+ 
+-  printf(dbg_tmp_buff);
+-  printf("\n");
++  puts(dbg_tmp_buff);
+ }
+ 
+ /*
+@@ -1664,7 +1663,7 @@ void tokenize_string(char* input_buff, c
+ 
+   while(p != NULL){
+     //printf(p);
+-    snprintf(&output_buff[strlen(output_buff)], buff_length - strlen(output_buff), p);
++    snprintf(&output_buff[strlen(output_buff)], buff_length - strlen(output_buff), "%s", p);
+     p = strtok(NULL, delimeter_str);
+   }
+   Debug(DBG_WANCFG_MAIN, ("\ntokenized str: %s\n", output_buff));
+@@ -2085,7 +2084,7 @@ char* replace_numeric_with_char(char* st
+ 	unsigned int original_len = strlen(str);
+ 	static char new_str[1024];
+ 		
+-	snprintf(new_str, 1024, str);
++	snprintf(new_str, 1024, "%s", str);
+ 		
+ 	for(i=0; i < original_len; i++){
+ 
+@@ -2152,7 +2151,7 @@ void cleanup()
+ 
+   //remove 'date_and_time_file_name' file
+   snprintf(command_line, MAX_PATH_LENGTH, "rm -rf ");
+-  snprintf(&command_line[strlen(command_line)], MAX_PATH_LENGTH - strlen(command_line),
++  snprintf(&command_line[strlen(command_line)], MAX_PATH_LENGTH - strlen(command_line), "%s",
+ 		 date_and_time_file_name);
+   system(command_line);
+ }
+--- util/wancfg/menu_adsl_advanced_cfg.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/menu_adsl_advanced_cfg.cpp	2010-03-14 01:49:29.238063542 +0000
+@@ -475,7 +475,7 @@ int menu_adsl_advanced_cfg::
+   unsigned int int_tmp;
+   
+ again:
+-  snprintf(explanation_text, MAX_PATH_LENGTH, prompt_text);
++  snprintf(explanation_text, MAX_PATH_LENGTH, "%s", prompt_text);
+   if(is_hexadecimal == NO){
+     snprintf(initial_text, MAX_PATH_LENGTH, "%u", *initial_value);
+   }else{
+--- util/wancfg/menu_aft_logical_channel_cfg.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/menu_aft_logical_channel_cfg.cpp	2010-03-14 01:23:07.548063423 +0000
+@@ -230,7 +230,7 @@ show_analog_chan_input_box:
+       switch(*selection_index)
+       {
+       case INPUT_BOX_BUTTON_OK:
+-        snprintf(tmp_buff, MAX_PATH_LENGTH, input_bx.get_lxdialog_output_string());
++        snprintf(tmp_buff, MAX_PATH_LENGTH, "%s", input_bx.get_lxdialog_output_string());
+ 
+         str_tolower(tmp_buff);
+       
+@@ -243,7 +243,7 @@ show_analog_chan_input_box:
+ 		if(chan >= 1 && chan <= MAX_FXOFXS_CHANNELS){
+           		logical_ch_cfg->data.chanconf->active_ch = chan;
+ 			snprintf(logical_ch_cfg->data.active_channels_string,
+-					MAX_LEN_OF_ACTIVE_CHANNELS_STRING, tmp_buff);
++					MAX_LEN_OF_ACTIVE_CHANNELS_STRING, "%s", tmp_buff);
+ 		}else{
+ 			tb.show_error_message(lxdialog_path, NO_PROTOCOL_NEEDED, "Invalid input: %s!",
+ 				input_bx.get_lxdialog_output_string());
+@@ -270,7 +270,7 @@ show_analog_chan_input_box:
+         switch(*selection_index)
+         {
+         case INPUT_BOX_BUTTON_OK:
+-          snprintf(logical_ch_cfg->data.active_channels_string, MAX_LEN_OF_ACTIVE_CHANNELS_STRING,
++          snprintf(logical_ch_cfg->data.active_channels_string, MAX_LEN_OF_ACTIVE_CHANNELS_STRING, "%s",
+                 act_channels_ip.get_lxdialog_output_string());
+ 
+           logical_ch_cfg->data.chanconf->active_ch = act_channels_ip.active_ch;
+--- util/wancfg/menu_device_miscellaneous_options.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/menu_device_miscellaneous_options.cpp	2010-03-14 01:28:51.172188232 +0000
+@@ -459,7 +459,7 @@ show_firmware_path_input_box:
+         Debug(DBG_MENU_DEVICE_MISCELLANEOUS_OPTIONS,
+           ("firmware path on return: %s\n", inb.get_lxdialog_output_string()));
+ 
+-        snprintf( link_def->firmware_file_path, MAX_PATH_LENGTH,
++        snprintf( link_def->firmware_file_path, MAX_PATH_LENGTH, "%s",
+                   inb.get_lxdialog_output_string());
+         break;
+ 
+--- util/wancfg/menu_hardware_te1_card_advanced_options.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/menu_hardware_te1_card_advanced_options.cpp	2010-03-14 01:20:32.838063458 +0000
+@@ -689,7 +689,7 @@ If this option is used, TE1 Clock MUST b
+ 		switch(*selection_index)
+ 		{
+ 		case INPUT_BOX_BUTTON_OK:
+-		  snprintf(link_def->active_channels_string, MAX_LEN_OF_ACTIVE_CHANNELS_STRING,
++		  snprintf(link_def->active_channels_string, MAX_LEN_OF_ACTIVE_CHANNELS_STRING, "%s",
+ 				act_channels_ip.get_lxdialog_output_string());
+ 
+ 		  break;
+--- util/wancfg/menu_net_interface_ip_configuration.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/menu_net_interface_ip_configuration.cpp	2010-03-14 01:48:51.406063789 +0000
+@@ -266,14 +266,14 @@ show_local_ip_input_box:
+         Debug(DBG_MENU_NET_INTERFACE_IP_CONFIGURATION,
+           ("Local IP on return: %s\n", inb.get_lxdialog_output_string()));
+ 
+-        snprintf(tmp_buff, MAX_PATH_LENGTH, inb.get_lxdialog_output_string());
++        snprintf(tmp_buff, MAX_PATH_LENGTH, "%s", inb.get_lxdialog_output_string());
+         ip_validation_result = validate_ipv4_address_string(tmp_buff);
+         if(ip_validation_result != NULL){
+           tb.show_error_message(lxdialog_path, NO_PROTOCOL_NEEDED, ip_validation_result);
+           goto show_local_ip_input_box;
+         }
+ 
+-        snprintf(interface_file_reader.if_config.ipaddr, IF_CONFIG_BUF_LEN,
++        snprintf(interface_file_reader.if_config.ipaddr, IF_CONFIG_BUF_LEN, "%s",
+           inb.get_lxdialog_output_string());
+         break;
+ 
+@@ -307,14 +307,14 @@ show_point_to_point_ip_input_box:
+         Debug(DBG_MENU_NET_INTERFACE_IP_CONFIGURATION,
+           ("Point-to-point IP on return: %s\n", inb.get_lxdialog_output_string()));
+ 
+-        snprintf(tmp_buff, MAX_PATH_LENGTH, inb.get_lxdialog_output_string());
++        snprintf(tmp_buff, MAX_PATH_LENGTH, "%s", inb.get_lxdialog_output_string());
+         ip_validation_result = validate_ipv4_address_string(tmp_buff);
+         if(ip_validation_result != NULL){
+           tb.show_error_message(lxdialog_path, NO_PROTOCOL_NEEDED, ip_validation_result);
+           goto show_point_to_point_ip_input_box;
+         }
+ 
+-        snprintf(interface_file_reader.if_config.point_to_point_ipaddr, IF_CONFIG_BUF_LEN,
++        snprintf(interface_file_reader.if_config.point_to_point_ipaddr, IF_CONFIG_BUF_LEN, "%s",
+           inb.get_lxdialog_output_string());
+         break;
+ 
+@@ -349,14 +349,14 @@ show_netmask_input_box:
+         Debug(DBG_MENU_NET_INTERFACE_IP_CONFIGURATION,
+           ("Netmask on return: %s\n", inb.get_lxdialog_output_string()));
+ 
+-        snprintf(tmp_buff, MAX_PATH_LENGTH, inb.get_lxdialog_output_string());
++        snprintf(tmp_buff, MAX_PATH_LENGTH, "%s", inb.get_lxdialog_output_string());
+         ip_validation_result = validate_ipv4_address_string(tmp_buff);
+         if(ip_validation_result != NULL){
+           tb.show_error_message(lxdialog_path, NO_PROTOCOL_NEEDED, ip_validation_result);
+           goto show_netmask_input_box;
+         }
+ 
+-        snprintf(interface_file_reader.if_config.netmask, IF_CONFIG_BUF_LEN,
++        snprintf(interface_file_reader.if_config.netmask, IF_CONFIG_BUF_LEN, "%s",
+           inb.get_lxdialog_output_string());
+         break;
+ 
+@@ -451,14 +451,14 @@ show_gateway_ip_input_box:
+         Debug(DBG_MENU_NET_INTERFACE_IP_CONFIGURATION,
+           ("Gateway IP on return: %s\n", inb.get_lxdialog_output_string()));
+ 
+-        snprintf(tmp_buff, MAX_PATH_LENGTH, inb.get_lxdialog_output_string());
++        snprintf(tmp_buff, MAX_PATH_LENGTH, "%s", inb.get_lxdialog_output_string());
+         ip_validation_result = validate_ipv4_address_string(tmp_buff);
+         if(ip_validation_result != NULL){
+           tb.show_error_message(lxdialog_path, NO_PROTOCOL_NEEDED, ip_validation_result);
+           goto show_gateway_ip_input_box;
+         }
+ 
+-        snprintf(interface_file_reader.if_config.gateway, IF_CONFIG_BUF_LEN,
++        snprintf(interface_file_reader.if_config.gateway, IF_CONFIG_BUF_LEN, "%s",
+           inb.get_lxdialog_output_string());
+         break;
+ 
+--- util/wancfg/menu_net_interface_setup.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/menu_net_interface_setup.cpp	2010-03-14 01:25:29.673063441 +0000
+@@ -447,7 +447,7 @@ WAN_IFNAME_SZ
+ );
+           goto show_if_name_input_box;
+         }else{
+-          snprintf(chandef->name, WAN_IFNAME_SZ, inb.get_lxdialog_output_string());
++          snprintf(chandef->name, WAN_IFNAME_SZ, "%s", inb.get_lxdialog_output_string());
+           //list_el_chan_def->data.name
+           Debug(DBG_MENU_NET_INTERFACE_SETUP,("menu_net_interface_setup: chan_def: %p\n", chandef));
+         }
+@@ -830,7 +830,7 @@ show_hwec_map_input_box:
+       {
+       case INPUT_BOX_BUTTON_OK:
+ 	snprintf(chandef->active_hwec_channels_string,
+-		MAX_LEN_OF_ACTIVE_CHANNELS_STRING, inb.get_lxdialog_output_string());
++		MAX_LEN_OF_ACTIVE_CHANNELS_STRING, "%s", inb.get_lxdialog_output_string());
+ 	break;
+ 
+       case INPUT_BOX_BUTTON_HELP:
+--- util/wancfg/menu_ppp_basic_cfg.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/menu_ppp_basic_cfg.cpp	2010-03-14 01:24:59.186063452 +0000
+@@ -336,7 +336,7 @@ show_user_id_input_box:
+           goto show_user_id_input_box;
+         }
+         snprintf( (char*)list_el_chan_def->data.chanconf->u.ppp.userid,
+-                  MAX_PPP_AUTHENTICATION_STR_LEN,
++                  MAX_PPP_AUTHENTICATION_STR_LEN, "%s",
+                   inb.get_lxdialog_output_string());
+         break;
+ 
+@@ -382,7 +382,7 @@ show_password_input_box:
+         }
+ 
+         snprintf( (char*)list_el_chan_def->data.chanconf->u.ppp.passwd,
+-                  MAX_PPP_AUTHENTICATION_STR_LEN,
++                  MAX_PPP_AUTHENTICATION_STR_LEN, "%s",
+                   inb.get_lxdialog_output_string());
+         break;
+ 
+@@ -427,7 +427,7 @@ show_sysname_input_box:
+         }
+ 
+         snprintf( (char*)list_el_chan_def->data.chanconf->u.ppp.sysname,
+-                  MAX_PPP_AUTHENTICATION_STR_LEN,
++                  MAX_PPP_AUTHENTICATION_STR_LEN, "%s",
+                   inb.get_lxdialog_output_string());
+         break;
+ 
+--- util/wancfg/net_interface_file_reader.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/net_interface_file_reader.cpp	2010-03-14 01:46:49.184063542 +0000
+@@ -81,25 +81,25 @@ int net_interface_file_reader::parse_net
+ 
+       tmp = strstr(tmp_read_buffer, "DEVICE=");
+       if(tmp != NULL){
+-        snprintf(if_config.device, WAN_IFNAME_SZ, tmp += strlen("DEVICE="));
++        snprintf(if_config.device, WAN_IFNAME_SZ, "%s", tmp += strlen("DEVICE="));
+         Debug(DBG_NET_INTERFACE_FILE_READER, ("if_config.device: %s\n", if_config.device));
+       }
+ 
+       tmp = strstr(tmp_read_buffer, "IPADDR=");
+       if(tmp != NULL){
+-        snprintf(if_config.ipaddr, IF_CONFIG_BUF_LEN, tmp += strlen("IPADDR="));
++        snprintf(if_config.ipaddr, IF_CONFIG_BUF_LEN, "%s", tmp += strlen("IPADDR="));
+         Debug(DBG_NET_INTERFACE_FILE_READER, ("if_config.ipaddr: %s\n", if_config.ipaddr));
+       }
+ 
+       tmp = strstr(tmp_read_buffer, "NETMASK=");
+       if(tmp != NULL){
+-        snprintf(if_config.netmask, IF_CONFIG_BUF_LEN, tmp += strlen("NETMASK="));
++        snprintf(if_config.netmask, IF_CONFIG_BUF_LEN, "%s", tmp += strlen("NETMASK="));
+         Debug(DBG_NET_INTERFACE_FILE_READER, ("if_config.netmask: %s\n", if_config.netmask));
+       }
+ 
+       tmp = strstr(tmp_read_buffer, "POINTOPOINT=");
+       if(tmp != NULL){
+-        snprintf(if_config.point_to_point_ipaddr, IF_CONFIG_BUF_LEN, tmp += strlen("POINTOPOINT="));
++        snprintf(if_config.point_to_point_ipaddr, IF_CONFIG_BUF_LEN, "%s", tmp += strlen("POINTOPOINT="));
+         Debug(DBG_NET_INTERFACE_FILE_READER, ("if_config.point_to_point_ipaddr: %s\n",
+           if_config.point_to_point_ipaddr));
+       }
+@@ -121,7 +121,7 @@ int net_interface_file_reader::parse_net
+ 
+       tmp = strstr(tmp_read_buffer, "GATEWAY=");
+       if(tmp != NULL){
+-        snprintf(if_config.gateway, IF_CONFIG_BUF_LEN, tmp += strlen("GATEWAY="));
++        snprintf(if_config.gateway, IF_CONFIG_BUF_LEN, "%s", tmp += strlen("GATEWAY="));
+         Debug(DBG_NET_INTERFACE_FILE_READER, ("if_config.gateway: %s\n",
+           if_config.gateway));
+       }
+--- util/wancfg/text_box_help.h	2009-08-25 20:44:41.000000000 +0000
++++ util/wancfg/text_box_help.h	2010-03-14 01:45:59.729063764 +0000
+@@ -43,7 +43,7 @@ public: 
+   {
+     Debug(DBG_TEXT_BOX_HELP, ("text_box_help::text_box_help()\n"));
+ 
+-    snprintf(this->lxdialog_path, MAX_PATH_LENGTH, lxdialog_path);
++    snprintf(this->lxdialog_path, MAX_PATH_LENGTH, "%s", lxdialog_path);
+     this->help_text_type = help_text_type;
+   }
+ 
+--- util/wanconfig/wanconfig.c	2009-11-16 22:50:30.000000000 +0000
++++ util/wanconfig/wanconfig.c	2010-03-14 01:14:48.999189553 +0000
+@@ -1935,7 +1935,7 @@ void show_help(void) {
+  * Show usage text
+  */
+ void show_usage(void) {
+-	fprintf(stderr, usagetext);
++	fputs(usagetext, stderr);
+ 	exit(1);
+ }
+ 
+@@ -1987,7 +1987,7 @@ int gencat (char *filename) 
+ 	}
+ 	
+ 	while(fgets(buf, sizeof(buf) -1, file)) {
+-		printf(buf);
++		printf("%s", buf);
+ 	}	
+ 
+ 	fclose(file);
+@@ -5079,7 +5079,7 @@ void update_adsl_vci_vpi_list(wan_adsl_v
+ 		if (buf[0] != '#'){
+ 			break;
+ 		}else{
+-			fprintf(tmp_file, buf);
++			fprintf(tmp_file, "%s", buf);
+ 		}
+ 	}	
+ 	for(x = 0; x < vcivpi_num; x++){
+--- util/wanctl/cpp_string.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wanctl/cpp_string.cpp	2010-03-14 01:18:14.224313496 +0000
+@@ -37,7 +37,7 @@ cpp_string::cpp_string(char* param)
+ {
+   Debug(DBG_CPP_STR, ("cpp_string::cpp_string(char* param)\n"));
+ 
+-  snprintf(cstr, MAX_STR, param);
++  snprintf(cstr, MAX_STR, "%s", param);
+ }
+ 
+ 
+@@ -54,7 +54,7 @@ void cpp_string::operator= (char* param)
+ 
+   char tmp[MAX_STR];
+ 
+-  snprintf(tmp, MAX_STR, param);
++  snprintf(tmp, MAX_STR, "%s", param);
+   strcpy(cstr, tmp);
+ 
+   Debug(DBG_CPP_STR, ("end of 'operator=' cstr: %s\n", cstr));
+@@ -67,7 +67,7 @@ void cpp_string::operator= (const char* 
+   Debug(DBG_CPP_STR, ("strlen(cstr): %d\n", strlen(cstr)));
+ 
+ //  *this = (char*)param;
+-  snprintf(cstr, MAX_STR, (char*)param);
++  snprintf(cstr, MAX_STR, "%s", (char*)param);
+ 
+   Debug(DBG_CPP_STR, ("end of 'operator=' cstr: %s\n", cstr));
+ }
+@@ -79,7 +79,7 @@ char* cpp_string::operator+ (char* param
+   Debug(DBG_CPP_STR, ("strlen(param): %d\n", strlen(param)));
+   Debug(DBG_CPP_STR, ("strlen(cstr): %d\n", strlen(cstr)));
+ 
+-  snprintf(&cstr[strlen(cstr)], MAX_STR - strlen(cstr), param);
++  snprintf(&cstr[strlen(cstr)], MAX_STR - strlen(cstr), "%s", param);
+ 
+   Debug(DBG_CPP_STR, ("end of 'operator+' cstr: %s\n", cstr));
+ 
+@@ -120,7 +120,7 @@ char* cpp_string::operator+= (cpp_string
+ 
+   char tmp[MAX_STR];
+ 
+-  snprintf(tmp, MAX_STR, param.c_str());
++  snprintf(tmp, MAX_STR, "%s", param.c_str());
+ 
+   *this = *this + tmp;
+ 
+--- util/wanctl/menu_net_interface_ip_configuration.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wanctl/menu_net_interface_ip_configuration.cpp	2010-03-14 01:28:29.733080770 +0000
+@@ -252,14 +252,14 @@ show_local_ip_input_box:
+         Debug(DBG_MENU_NET_INTERFACE_IP_CONFIGURATION,
+           ("Local IP on return: %s\n", inb.get_lxdialog_output_string()));
+ 
+-        snprintf(tmp_buff, MAX_PATH_LENGTH, inb.get_lxdialog_output_string());
++        snprintf(tmp_buff, MAX_PATH_LENGTH, "%s", inb.get_lxdialog_output_string());
+         ip_validation_result = validate_ipv4_address_string(tmp_buff);
+         if(ip_validation_result != NULL){
+           tb.show_error_message(lxdialog_path, NO_PROTOCOL_NEEDED, ip_validation_result);
+           goto show_local_ip_input_box;
+         }
+ 
+-        snprintf(interface_file_reader.if_config.ipaddr, IF_CONFIG_BUF_LEN,
++        snprintf(interface_file_reader.if_config.ipaddr, IF_CONFIG_BUF_LEN, "%s",
+           inb.get_lxdialog_output_string());
+         break;
+ 
+@@ -293,14 +293,14 @@ show_point_to_point_ip_input_box:
+         Debug(DBG_MENU_NET_INTERFACE_IP_CONFIGURATION,
+           ("Point-to-point IP on return: %s\n", inb.get_lxdialog_output_string()));
+ 
+-        snprintf(tmp_buff, MAX_PATH_LENGTH, inb.get_lxdialog_output_string());
++        snprintf(tmp_buff, MAX_PATH_LENGTH, "%s", inb.get_lxdialog_output_string());
+         ip_validation_result = validate_ipv4_address_string(tmp_buff);
+         if(ip_validation_result != NULL){
+           tb.show_error_message(lxdialog_path, NO_PROTOCOL_NEEDED, ip_validation_result);
+           goto show_point_to_point_ip_input_box;
+         }
+ 
+-        snprintf(interface_file_reader.if_config.point_to_point_ipaddr, IF_CONFIG_BUF_LEN,
++        snprintf(interface_file_reader.if_config.point_to_point_ipaddr, IF_CONFIG_BUF_LEN, "%s",
+           inb.get_lxdialog_output_string());
+         break;
+ 
+@@ -335,14 +335,14 @@ show_netmask_input_box:
+         Debug(DBG_MENU_NET_INTERFACE_IP_CONFIGURATION,
+           ("Netmask on return: %s\n", inb.get_lxdialog_output_string()));
+ 
+-        snprintf(tmp_buff, MAX_PATH_LENGTH, inb.get_lxdialog_output_string());
++        snprintf(tmp_buff, MAX_PATH_LENGTH, "%s", inb.get_lxdialog_output_string());
+         ip_validation_result = validate_ipv4_address_string(tmp_buff);
+         if(ip_validation_result != NULL){
+           tb.show_error_message(lxdialog_path, NO_PROTOCOL_NEEDED, ip_validation_result);
+           goto show_netmask_input_box;
+         }
+ 
+-        snprintf(interface_file_reader.if_config.netmask, IF_CONFIG_BUF_LEN,
++        snprintf(interface_file_reader.if_config.netmask, IF_CONFIG_BUF_LEN, "%s",
+           inb.get_lxdialog_output_string());
+         break;
+ 
+@@ -427,14 +427,14 @@ show_gateway_ip_input_box:
+         Debug(DBG_MENU_NET_INTERFACE_IP_CONFIGURATION,
+           ("Gateway IP on return: %s\n", inb.get_lxdialog_output_string()));
+ 
+-        snprintf(tmp_buff, MAX_PATH_LENGTH, inb.get_lxdialog_output_string());
++        snprintf(tmp_buff, MAX_PATH_LENGTH, "%s", inb.get_lxdialog_output_string());
+         ip_validation_result = validate_ipv4_address_string(tmp_buff);
+         if(ip_validation_result != NULL){
+           tb.show_error_message(lxdialog_path, NO_PROTOCOL_NEEDED, ip_validation_result);
+           goto show_gateway_ip_input_box;
+         }
+ 
+-        snprintf(interface_file_reader.if_config.gateway, IF_CONFIG_BUF_LEN,
++        snprintf(interface_file_reader.if_config.gateway, IF_CONFIG_BUF_LEN, "%s",
+           inb.get_lxdialog_output_string());
+         break;
+ 
+--- util/wanctl/net_interface_file_reader.cpp	2009-08-25 20:44:41.000000000 +0000
++++ util/wanctl/net_interface_file_reader.cpp	2010-03-14 01:23:55.514313075 +0000
+@@ -81,25 +81,25 @@ int net_interface_file_reader::parse_net
+ 
+       tmp = strstr(tmp_read_buffer, "DEVICE=");
+       if(tmp != NULL){
+-        snprintf(if_config.device, WAN_IFNAME_SZ, tmp += strlen("DEVICE="));
++        snprintf(if_config.device, WAN_IFNAME_SZ, "%s", tmp += strlen("DEVICE="));
+         Debug(DBG_NET_INTERFACE_FILE_READER, ("if_config.device: %s\n", if_config.device));
+       }
+ 
+       tmp = strstr(tmp_read_buffer, "IPADDR=");
+       if(tmp != NULL){
+-        snprintf(if_config.ipaddr, IF_CONFIG_BUF_LEN, tmp += strlen("IPADDR="));
++        snprintf(if_config.ipaddr, IF_CONFIG_BUF_LEN, "%s", tmp += strlen("IPADDR="));
+         Debug(DBG_NET_INTERFACE_FILE_READER, ("if_config.ipaddr: %s\n", if_config.ipaddr));
+       }
+ 
+       tmp = strstr(tmp_read_buffer, "NETMASK=");
+       if(tmp != NULL){
+-        snprintf(if_config.netmask, IF_CONFIG_BUF_LEN, tmp += strlen("NETMASK="));
++        snprintf(if_config.netmask, IF_CONFIG_BUF_LEN, "%s", tmp += strlen("NETMASK="));
+         Debug(DBG_NET_INTERFACE_FILE_READER, ("if_config.netmask: %s\n", if_config.netmask));
+       }
+ 
+       tmp = strstr(tmp_read_buffer, "POINTOPOINT=");
+       if(tmp != NULL){
+-        snprintf(if_config.point_to_point_ipaddr, IF_CONFIG_BUF_LEN, tmp += strlen("POINTOPOINT="));
++        snprintf(if_config.point_to_point_ipaddr, IF_CONFIG_BUF_LEN, "%s", tmp += strlen("POINTOPOINT="));
+         Debug(DBG_NET_INTERFACE_FILE_READER, ("if_config.point_to_point_ipaddr: %s\n",
+           if_config.point_to_point_ipaddr));
+       }
+@@ -121,7 +121,7 @@ int net_interface_file_reader::parse_net
+ 
+       tmp = strstr(tmp_read_buffer, "GATEWAY=");
+       if(tmp != NULL){
+-        snprintf(if_config.gateway, IF_CONFIG_BUF_LEN, tmp += strlen("GATEWAY="));
++        snprintf(if_config.gateway, IF_CONFIG_BUF_LEN, "%s", tmp += strlen("GATEWAY="));
+         Debug(DBG_NET_INTERFACE_FILE_READER, ("if_config.point_to_point_ipaddr: %s\n",
+           if_config.point_to_point_ipaddr));
+       }
+--- util/wanctl/text_box_help.h	2009-08-25 20:44:41.000000000 +0000
++++ util/wanctl/text_box_help.h	2010-03-14 01:24:16.425313082 +0000
+@@ -43,7 +43,7 @@ public: 
+   {
+     Debug(DBG_TEXT_BOX_HELP, ("text_box_help::text_box_help()\n"));
+ 
+-    snprintf(this->lxdialog_path, MAX_PATH_LENGTH, lxdialog_path);
++    snprintf(this->lxdialog_path, MAX_PATH_LENGTH, "%s", lxdialog_path);
+     this->help_text_type = help_text_type;
+   }
+ 
+--- util/wanpipemon/prot_trace.c	2009-11-16 22:50:37.000000000 +0000
++++ util/wanpipemon/prot_trace.c	2010-03-14 01:16:31.331063406 +0000
+@@ -1805,8 +1805,8 @@ static int decode_ppp(wp_trace_output_if
+ 		break;
+ 	}
+ 
+-	printf(outstr);
+-	printf("\n\n");
++	puts(outstr);
++	printf("\n");
+ 	return inf_frame;
+ }
+ 
+--- util/wanpipemon_legacy/prot_trace.c	2009-08-25 20:44:41.000000000 +0000
++++ util/wanpipemon_legacy/prot_trace.c	2010-03-14 01:16:42.435063486 +0000
+@@ -1731,8 +1731,8 @@ static int decode_ppp(wp_trace_output_if
+ 		break;
+ 	}
+ 
+-	printf(outstr);
+-	printf("\n\n");
++	puts(outstr);
++	printf("\n");
+ 	return inf_frame;
+ }
+ 
+--- api/libsangoma/libsangoma-pvt.h	2008-08-01 15:00:00.000000000 +0200
++++ api/libsangoma/libsangoma-pvt.h	2011-11-17 14:49:46.828255406 +0100
+@@ -134,7 +134,7 @@ static void libsng_dbg(const char * fmt,
+ #if defined(__WINDOWS__)
+ 	OutputDebugString(buf);
+ #else
+-	printf(buf);
++	printf("%s", buf);
+ #endif
+ 	va_end(args);
+ }

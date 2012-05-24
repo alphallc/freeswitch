@@ -1,0 +1,17 @@
+#!/sbin/runscript
+# Copyright 2007 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License, v2 or later
+# $Header: $
+
+
+start() {
+	ebegin "Starting mISDNcapid"
+	start-stop-daemon --start --quiet --exec /usr/sbin/mISDNcapid
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping mISDNcapid"
+	start-stop-daemon --stop --quiet --exec /usr/sbin/mISDNcapid
+	eend $?
+}

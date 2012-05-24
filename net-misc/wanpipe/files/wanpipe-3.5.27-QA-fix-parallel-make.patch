@@ -1,0 +1,265 @@
+--- util/Makefile.orig	2008-08-01 15:00:00.000000000 +0200
++++ util/Makefile	2011-11-17 10:14:18.598507617 +0100
+@@ -17,66 +17,66 @@
+ ARCH=$(shell uname -m)
+ 
+ all:
+-	make -C lxdialog all CC=$(CC) SYSINC=$(SYSINC) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
+-	make -C libsangoma CC=$(CC) SYSINC=$(SYSINC) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
+-	make -C libsangoma install DESTDIR=$(PWD)/.lib
+-	make -C wanconfig all CC=$(CC) SYSINC=$(SYSINC) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
+-	make -C wanec_client all CC=$(CC)  SYSINC=$(SYSINC) WANINCDIR=$(WANINCDIR) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
+-	make -C wan_plxctrl all CC=$(CC)  SYSINC=$(SYSINC) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
+-	make -C wanpipemon all  CC=$(CC) SYSINC=$(SYSINC) PROTOCOL_DEFS="$(PROTOCOL_DEFS)" ENABLE_WANPIPEMON_ZAP=$(ENABLE_WANPIPEMON_ZAP) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
+-	make -C wanpipemon_legacy all CC=$(CC) SYSINC=$(SYSINC) PROTOCOL_DEFS="$(PROTOCOL_DEFS)" EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
+-	make -C bwm all SYSINC=$(SYSINC) CC=$(CC) PROTOCOL_DEFS="$(PROTOCOL_DEFS)" EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
+-	make -C wan_aftup all CC=$(CC) SYSINC=$(SYSINC) PROTOCOL_DEFS="$(PROTOCOL_DEFS)" EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
++	$(MAKE) -C lxdialog all CC=$(CC) SYSINC=$(SYSINC) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
++	$(MAKE) -C libsangoma CC=$(CC) SYSINC=$(SYSINC) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
++	$(MAKE) -C libsangoma install DESTDIR=$(PWD)/.lib
++	$(MAKE) -C wanconfig all CC=$(CC) SYSINC=$(SYSINC) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
++	$(MAKE) -C wanec_client all CC=$(CC)  SYSINC=$(SYSINC) WANINCDIR=$(WANINCDIR) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
++	$(MAKE) -C wan_plxctrl all CC=$(CC)  SYSINC=$(SYSINC) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
++	$(MAKE) -C wanpipemon all  CC=$(CC) SYSINC=$(SYSINC) PROTOCOL_DEFS="$(PROTOCOL_DEFS)" ENABLE_WANPIPEMON_ZAP=$(ENABLE_WANPIPEMON_ZAP) EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
++	$(MAKE) -C wanpipemon_legacy all CC=$(CC) SYSINC=$(SYSINC) PROTOCOL_DEFS="$(PROTOCOL_DEFS)" EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
++	$(MAKE) -C bwm all SYSINC=$(SYSINC) CC=$(CC) PROTOCOL_DEFS="$(PROTOCOL_DEFS)" EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
++	$(MAKE) -C wan_aftup all CC=$(CC) SYSINC=$(SYSINC) PROTOCOL_DEFS="$(PROTOCOL_DEFS)" EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH)
+ 
+ all_wancfg:
+-	make -C wancfg all CC=$(CC) SYSINC=$(SYSINC) PROTOCOL_DEFS="$(PROTOCOL_DEFS)" EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH) 2> /dev/null
++	$(MAKE) -C wancfg all CC=$(CC) SYSINC=$(SYSINC) PROTOCOL_DEFS="$(PROTOCOL_DEFS)" EXTRA_FLAGS="$(EXTRA_FLAGS)" ARCH=$(ARCH) 2> /dev/null
+ 
+ install:
+ 	@if [ ! -e $(WAN_VIRTUAL)/etc/wanpipe ]; then \
+ 		mkdir -p $(WAN_VIRTUAL)/etc/wanpipe; \
+ 	fi
+-	make -C wancfg_legacy install WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C lxdialog install WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wanconfig install WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wanec_client install WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wan_plxctrl install WAN_VIRTUAL=$(WAN_VIRTUAL) 
+-	make -C wanpipemon install WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wanpipemon_legacy install WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wan_aftup install WAN_VIRTUAL=$(WAN_VIRTUAL) 
+-	make -C bwm install WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wancfg_zaptel install WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C libsangoma install DESTDIR=$(WAN_VIRTUAL)
++	$(MAKE) -C wancfg_legacy install WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C lxdialog install WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wanconfig install WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wanec_client install WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wan_plxctrl install WAN_VIRTUAL=$(WAN_VIRTUAL) 
++	$(MAKE) -C wanpipemon install WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wanpipemon_legacy install WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wan_aftup install WAN_VIRTUAL=$(WAN_VIRTUAL) 
++	$(MAKE) -C bwm install WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wancfg_zaptel install WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C libsangoma install DESTDIR=$(WAN_VIRTUAL)
+ 
+ install_wancfg:
+-	make -C wancfg install WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wancfg install WAN_VIRTUAL=$(WAN_VIRTUAL)
+ 
+ uninstall:
+-	make -C ft1 uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wancfg_legacy uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C lxdialog uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C sdladump uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wanconfig uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wanec_client uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wan_plxctrl uninstall WAN_VIRTUAL=$(WAN_VIRTUAL) 
+-	make -C wanpipemon uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wanpipemon_legacy uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wancfg uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wan_aftup uninstall WAN_VIRTUAL=$(WAN_VIRTUAL) 
+-	make -C bwm uninstall   WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wancfg_zaptel uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)  
++	$(MAKE) -C ft1 uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wancfg_legacy uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C lxdialog uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C sdladump uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wanconfig uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wanec_client uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wan_plxctrl uninstall WAN_VIRTUAL=$(WAN_VIRTUAL) 
++	$(MAKE) -C wanpipemon uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wanpipemon_legacy uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wancfg uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wan_aftup uninstall WAN_VIRTUAL=$(WAN_VIRTUAL) 
++	$(MAKE) -C bwm uninstall   WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wancfg_zaptel uninstall WAN_VIRTUAL=$(WAN_VIRTUAL)  
+ 
+ clean:
+-	make -C ft1 clean WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C lxdialog clean WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C sdladump clean WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wanconfig clean WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wanec_client clean WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wan_plxctrl clean WAN_VIRTUAL=$(WAN_VIRTUAL) 
+-	make -C wanpipemon clean WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wanpipemon_legacy clean WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wancfg clean WAN_VIRTUAL=$(WAN_VIRTUAL)
+-	make -C wan_aftup clean WAN_VIRTUAL=$(WAN_VIRTUAL) 
+-	make -C bwm clean  WAN_VIRTUAL=$(WAN_VIRTUAL) 
+-	make -C wanctl clean  WAN_VIRTUAL=$(WAN_VIRTUAL) 
+-	make -C wan_fxotune clean  WAN_VIRTUAL=$(WAN_VIRTUAL) 
++	$(MAKE) -C ft1 clean WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C lxdialog clean WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C sdladump clean WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wanconfig clean WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wanec_client clean WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wan_plxctrl clean WAN_VIRTUAL=$(WAN_VIRTUAL) 
++	$(MAKE) -C wanpipemon clean WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wanpipemon_legacy clean WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wancfg clean WAN_VIRTUAL=$(WAN_VIRTUAL)
++	$(MAKE) -C wan_aftup clean WAN_VIRTUAL=$(WAN_VIRTUAL) 
++	$(MAKE) -C bwm clean  WAN_VIRTUAL=$(WAN_VIRTUAL) 
++	$(MAKE) -C wanctl clean  WAN_VIRTUAL=$(WAN_VIRTUAL) 
++	$(MAKE) -C wan_fxotune clean  WAN_VIRTUAL=$(WAN_VIRTUAL) 
+ 	@rm -rf .lib
+--- api/legacy/Makefile.orig	2010-09-07 21:10:25.000000000 +0200
++++ api/legacy/Makefile	2010-10-07 00:55:43.426893259 +0200
+@@ -13,18 +13,18 @@
+ ####### RULES ################################################################
+ 
+ all:	
+-	make -C x25 all  WANINCDIR=$(WANINCDIR)
+-	make -C chdlc all  WANINCDIR=$(WANINCDIR)
+-	make -C fr all  WANINCDIR=$(WANINCDIR)
+-	make -C bitstrm all WANINCDIR=$(WANINCDIR)
+-	make -C bisync all WANINCDIR=$(WANINCDIR)
+-	make -C aft all WANINCDIR=$(WANINCDIR)
++	$(MAKE) -C x25 all  WANINCDIR=$(WANINCDIR)
++	$(MAKE) -C chdlc all  WANINCDIR=$(WANINCDIR)
++	$(MAKE) -C fr all  WANINCDIR=$(WANINCDIR)
++	$(MAKE) -C bitstrm all WANINCDIR=$(WANINCDIR)
++	$(MAKE) -C bisync all WANINCDIR=$(WANINCDIR)
++	$(MAKE) -C aft all WANINCDIR=$(WANINCDIR)
+ 
+ clean:
+-	make -C x25 clean 
+-	make -C chdlc clean 
+-	make -C fr clean 
+-	make -C bitstrm clean
+-	make -C aft clean
+-	make -C bisync clean
++	$(MAKE) -C x25 clean 
++	$(MAKE) -C chdlc clean 
++	$(MAKE) -C fr clean 
++	$(MAKE) -C bitstrm clean
++	$(MAKE) -C aft clean
++	$(MAKE) -C bisync clean
+ 
+--- api/Makefile.orig	2010-09-07 21:10:25.000000000 +0200
++++ api/Makefile	2010-10-07 00:56:02.250615436 +0200
+@@ -14,14 +14,14 @@
+ ####### RULES ################################################################
+ 
+ all:	
+-	make -C tdm_api WANINCDIR=$(WANINCDIR)
+-	make -C legacy WANINCDIR=$(WANINCDIR)
+-	make -C sample_c WANINCDIR=$(WANINCDIR)
+-	make -C sample_cpp WANINCDIR=$(WANINCDIR)
++	$(MAKE) -C tdm_api WANINCDIR=$(WANINCDIR)
++	$(MAKE) -C legacy WANINCDIR=$(WANINCDIR)
++	$(MAKE) -C sample_c WANINCDIR=$(WANINCDIR)
++	$(MAKE) -C sample_cpp WANINCDIR=$(WANINCDIR)
+ 
+ clean:
+-	make -C tdm_api clean
+-	make -C legacy clean
+-	make -C lib/hdlc clean
+-	make -C sample_c clean
+-	make -C sample_cpp clean
++	$(MAKE) -C tdm_api clean
++	$(MAKE) -C legacy clean
++	$(MAKE) -C lib/hdlc clean
++	$(MAKE) -C sample_c clean
++	$(MAKE) -C sample_cpp clean
+--- ssmg/sangoma_mgd.trunk/Makefile.orig	2010-02-26 01:13:02.000000000 +0100
++++ ssmg/sangoma_mgd.trunk/Makefile	2010-10-07 00:54:28.766927151 +0200
+@@ -128,7 +128,7 @@
+ clean:  old_cleanup
+ 	find . -name '*.o' | xargs rm -f
+ 	rm -fr sangoma_mgd pritest *.o *.so *~ *core* *.so* *.a
+-	make -C lib/libteletone clean
++	$(MAKE) -C lib/libteletone clean
+ 
+ distclean: clean
+ 	@echo OK
+--- patches/kdrivers/src/lip/Makefile.orig	2009-08-25 22:44:41.000000000 +0200
++++ patches/kdrivers/src/lip/Makefile	2010-10-07 00:54:28.775926062 +0200
+@@ -190,37 +190,37 @@
+ 
+ 
+ $(FRDIR)/wanpipe_fr.o:
+-	make -C $(FRDIR) clean
+-	make -C $(FRDIR) all REGPARM=$(REGPARM)
++	$(MAKE) -C $(FRDIR) clean
++	$(MAKE) -C $(FRDIR) all REGPARM=$(REGPARM)
+ 
+ $(LIP_ATM_DIR)/wanpipe_lip_atm.o:
+-	make -C $(LIP_ATM_DIR) clean
+-	make -C $(LIP_ATM_DIR) all REGPARM=$(REGPARM)
++	$(MAKE) -C $(LIP_ATM_DIR) clean
++	$(MAKE) -C $(LIP_ATM_DIR) all REGPARM=$(REGPARM)
+ 
+ 
+ $(LAPBDIR)/wanpipe_lapb.o: 
+-	make -C $(LAPBDIR) clean
+-	make -C $(LAPBDIR) all REGPARM=$(REGPARM)
++	$(MAKE) -C $(LAPBDIR) clean
++	$(MAKE) -C $(LAPBDIR) all REGPARM=$(REGPARM)
+ 	
+ $(LAPDDIR)/wanpipe_lapd.o: 
+-	make -C $(LAPDDIR) clean
+-	make -C $(LAPDDIR) all REGPARM=$(REGPARM)
++	$(MAKE) -C $(LAPDDIR) clean
++	$(MAKE) -C $(LAPDDIR) all REGPARM=$(REGPARM)
+ 
+ $(XDLCDIR)/wanpipe_xdlc.o:
+-	make -C $(XDLCDIR) clean
+-	make -C $(XDLCDIR) all REGPARM=$(REGPARM)
++	$(MAKE) -C $(XDLCDIR) clean
++	$(MAKE) -C $(XDLCDIR) all REGPARM=$(REGPARM)
+ 
+ $(SPPPDIR)/wanpipe_sppp.o:
+-	make -C $(SPPPDIR) clean
+-	make -C $(SPPPDIR) all REGPARM=$(REGPARM)
++	$(MAKE) -C $(SPPPDIR) clean
++	$(MAKE) -C $(SPPPDIR) all REGPARM=$(REGPARM)
+ 
+ $(XMTP2DIR)/wanpipe_xmtp2.o:
+-	make -C $(XMTP2DIR) clean
+-	make -C $(XMTP2DIR) all REGPARM=$(REGPARM)
++	$(MAKE) -C $(XMTP2DIR) clean
++	$(MAKE) -C $(XMTP2DIR) all REGPARM=$(REGPARM)
+ 
+ $(X25DIR)/wanpipe_x25.o:
+-	make -C $(X25DIR) clean
+-	make -C $(X25DIR) all REGPARM=$(REGPARM)
++	$(MAKE) -C $(X25DIR) clean
++	$(MAKE) -C $(X25DIR) all REGPARM=$(REGPARM)
+ 
+ clean:
+ 	rm -f wanpipe_lip.$(MODTYPE)
+@@ -228,13 +228,13 @@
+ 	rm -f mod/*.*o
+ 	rm -f tmp/*.*o
+ 	rm -f modinfo/*.*o
+-	make -C ../fr clean
+-	make -C ../lapb clean
+-	make -C ../lapd clean
+-	make -C ../xdlc clean
+-	make -C $(SPPPDIR) clean
+-	make -C $(XMTP2DIR) clean
+-	make -C ../x25 clean
++	$(MAKE) -C ../fr clean
++	$(MAKE) -C ../lapb clean
++	$(MAKE) -C ../lapd clean
++	$(MAKE) -C ../xdlc clean
++	$(MAKE) -C $(SPPPDIR) clean
++	$(MAKE) -C $(XMTP2DIR) clean
++	$(MAKE) -C ../x25 clean
+ 
+ install:
+ 	install -D $(OUTDIR)/wanpipe_lip.${MODTYPE} /lib/modules/$(shell uname -r)/kernel/net/wanrouter/wanpipe_lip.${MODTYPE}

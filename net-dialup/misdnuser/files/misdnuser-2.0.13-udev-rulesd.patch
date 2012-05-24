@@ -1,0 +1,11 @@
+--- mISDNuser/Makefile.am.orig	2012-05-15 22:18:19.955087141 +0200
++++ mISDNuser/Makefile.am	2012-05-15 22:18:33.063944079 +0200
+@@ -38,6 +38,6 @@
+ endif
+ 
+ install-data-local:
+-	install -d $(DESTDIR)/etc/udev/rules.d
+-	install -m 644 45-misdn.rules $(DESTDIR)/etc/udev/rules.d/45-misdn.rules
++	install -d $(DESTDIR)/lib/udev/rules.d
++	install -m 644 45-misdn.rules $(DESTDIR)/lib/udev/rules.d/45-misdn.rules
+ 

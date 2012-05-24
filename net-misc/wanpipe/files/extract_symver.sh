@@ -40,6 +40,21 @@ while read fn; do
 	[ "${prefix}" != "${prefix#/lib/modules/*/}" ] && \
 		prefix="${prefix#/lib/modules/*/}"
 
+	# extract version information from non-GPL symbols (__kcrctab + .rela__kcrctab)	
+	readelf -W -r "$fn" |\
+	awk -v sym_module="${prefix}`basename ${fn/.ko}`" -v sym_license="${license}" '
+		#
+		# sample readelf output:
+		#
+		/__crc_/{
+			sym_crc  = strtonum("0x"$4);
+			sym_name = substr($5, length("__crc_") + 1);
+
+			printf "0x%08x\t%s\t%s\tEXPORT_SYMBOL%s\n", sym_crc, sym_name, sym_module, sym_license
+		}
+	'
+
+	# extract regular version information
 	readelf -x __versions "$fn" |\
 	awk -v sym_module="${prefix}`basename ${fn/.ko}`" -v sym_license="${license}" -v elf_class="${elfclass}" '
 		#
