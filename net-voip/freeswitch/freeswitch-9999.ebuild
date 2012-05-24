@@ -780,10 +780,11 @@ src_prepare() {
 
 	if [ -n "${EGIT_REPO_URI}" ]; then
 		# multi-threaded bootstrap
-		[ "${MAKEOPTS}" != "${MAKEOPTS/-j}" ] && {
-			einfo "Using parallel bootstrap..."
-			BOOTSTRAP_OPTS="-j"
-		}
+#seems to generate HEAVY load with multiplying same tasks on bootstrap stage
+#		[ "${MAKEOPTS}" != "${MAKEOPTS/-j}" ] && {
+#			einfo "Using parallel bootstrap..."
+#			BOOTSTRAP_OPTS="-j"
+#		}
 		./bootstrap.sh ${BOOTSTRAP_OPTS}
 	fi
 
