@@ -6,7 +6,7 @@
 # more information
 #
 
-EAPI="2"
+EAPI="4"
 
 inherit subversion autotools flag-o-matic python
 
@@ -34,7 +34,7 @@ IUSE="${IUSE_LANG}"
 #
 #
 RDEPEND="virtual/libc
-	lua? ( dev-lang/lua )
+	lua? ( || ( dev-lang/lua dev-lang/luajit:2 ) )
 	php? ( dev-lang/php )
 	perl? ( dev-lang/perl )
 	ruby? ( dev-lang/ruby )
