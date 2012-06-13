@@ -701,7 +701,7 @@ pkg_preinst() {
 
 pkg_postinst() {
 	enewgroup "${FREESWITCH_GROUP}"
-	enewuser "${FREESWITCH_USER}" -1 -1 "/var/lib/run/${PN}" "${FREESWITCH_GROUP}"
+	enewuser "${FREESWITCH_USER}" -1 -1 "/var/lib/${PN}" "${FREESWITCH_GROUP}"
 
 	einfo
 	einfo "FreeSWITCH has been successfully emerged!"
