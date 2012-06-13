@@ -1,8 +1,8 @@
-# Portions Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-libs/sofia-sip/sofia-sip-1.12.8.ebuild,v 1.1 2008/04/10 23:38:34 tester Exp $
+# $Header: This ebuild is from freeswitch overlay; Bumped by mva; $
 
-EAPI="1"
+EAPI="4"
 
 DESCRIPTION="RFC3261 compliant SIP User-Agent library"
 HOMEPAGE="http://sofia-sip.sourceforge.net/"

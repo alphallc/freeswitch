@@ -1,5 +1,5 @@
-DESCRIPTION="an open-source implementation of the Secure Real-time Transport Protocol (SRTP)"
-HOMEPAGE="http://srtp.sourceforge.net/srtp.html"
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 LICENSE="BSD-Cisco"
 
 SRC_URI="http://srtp.sourceforge.net/srtp-${PV}.tgz"

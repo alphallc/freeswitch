@@ -1,5 +1,5 @@
-
-EAPI="3"
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 
 IUSE="dahdi debug doc gsm mysql postgres sctp speex ssl h323 ilbc qt4 spandsp amr zaptel wanpipe sse2"
 

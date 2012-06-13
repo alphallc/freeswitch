@@ -1,5 +1,5 @@
-EAPI="4"
-
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 inherit eutils
 
 DESCRIPTION="Library implementing unified high level API for both signaling and I/O for multiple telephony boards"

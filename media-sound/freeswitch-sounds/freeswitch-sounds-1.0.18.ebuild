@@ -1,26 +1,23 @@
-#
-# Copyright (C) 2008-2010 Stefan Knoblich <s.knoblich@axsentis.de>
-#
-# Distributed under the terms of the GNU General Public License 2
-# see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt for
-# more information
-#
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: This ebuild is from freeswitch overlay; Bumped by mva; $
+
 EAPI="4"
 
-IUSE="+linguas_en linguas_es linguas_fr linguas_pt_BR linguas_ru"
-
-URI_BASE="http://files.freeswitch.org/freeswitch-sounds"
+DESCRIPTION="Sounds for FreeSWITCH (Meta package)"
+HOMEPAGE="http://www.freeswitch.org/"
+LICENSE="MPL-1.1"
+KEYWORDS="~amd64 ~x86"
+SLOT="0"
+IUSE="linguas_en linguas_es linguas_fr linguas_pt_BR linguas_ru"
+REQUIRED_USE=" || ( linguas_en linguas_es linguas_fr linguas_pt_BR linguas_ru )"
+SRC_URI=""
 
 RU_VERSION="1.0.13"
 FR_VERSION="1.0.15"
 ES_VERSION="1.0.14"
 PT_VERSION="1.0.14"
-EN_VERSION="${PV}"
-
-DESCRIPTION="Sounds for FreeSWITCH (Meta package)"
-HOMEPAGE="http://www.freeswitch.org/"
-SRC_URI=""
-
+EN_VERSION="1.0.18"
 
 DEPEND="
 	|| (
@@ -31,13 +28,6 @@ DEPEND="
 		  linguas_pt_BR? ( >=${CATEGORY}/${PN}-pt-${PT_VERSION} )
 		  linguas_ru? ( >=${CATEGORY}/${PN}-ru-${RU_VERSION} )
 		)
-		>=${CATEGORY}/${PN}-en-${EN_VERSION}
-	)"
-
-
-LICENSE="MPL-1.1"
-SLOT="0"
-
-KEYWORDS="~amd64 ~x86"
-
+	)
+"
 RDEPEND="net-voip/freeswitch"

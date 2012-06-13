@@ -1,6 +1,6 @@
-#
-# Copyright (C) 2008 Stefan Knoblich <s.knoblich@axsentis.de>
-#
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: This ebuild is from freeswitch overlay; Bumped by mva; $
 # Distributed under the terms of the GNU General Public License 2
 # see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt for
 # more information

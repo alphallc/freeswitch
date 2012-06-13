@@ -1,5 +1,5 @@
-DESCRIPTION=""
-HOMEPAGE="http://freeswitch.org/"
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 LICENSE="LGPL-2"
 
 FS_P='freeswitch-1.0.rc4'

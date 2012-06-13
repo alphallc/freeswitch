@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-<herd>no-herd</herd>
 <maintainer>
-  <email>s.knoblich@axsents.de</email>
+  <email>mva@mva.name</email>
 </maintainer>
 <upstream>
   <doc lang="en">http://wiki.freeswitch.org/</doc>
   <bugs-to>http://jira.freeswitch.org/</bugs-to>
 </upstream>
 <use>
-  <flag name="nosamples">Do not install sample configuration files</flag>
+  <flag name="samples">Install sample configuration files</flag>
   <flag name="resampler">Enable support for up-/downsampling of audio (e.g. 48KHz -> 8KHz)</flag>
   <flag name="sctp">Enable SCTP (Stream-Control-Transport-Protocol) support (mod_sofia, ...)</flag>
   <flag name="libpri">Build OpenZAP/FreeTDM with libpri module</flag>
@@ -24,6 +23,7 @@
   <flag name="esl-python">Python bindings for ESL</flag>
 
   <!-- FREESWITCH_MODULES -->
+  <flag name="fax">Fax receive/transmit application module inclusion (mod_spandsp)</flag>
   <flag name="freeswitch_modules_alsa">Alsa endpoint module (mod_alsa)</flag>
   <flag name="freeswitch_modules_amr">AMR-NB (Narrowband) pass-through codec module (mod_amr)</flag>
   <flag name="freeswitch_modules_amr_wb">AMR-WB (Wideband) pass-through codec module (mod_amrwb)</flag>
@@ -49,7 +49,6 @@
   <flag name="freeswitch_modules_event_multicast">Multicast event handler module (mod_event_multicast)</flag>
   <flag name="freeswitch_modules_event_socket">Socket event handler / remote control module (mod_event_socket)</flag>
   <flag name="freeswitch_modules_expr">Dialplan expressions (mod_expr)</flag>
-  <flag name="freeswitch_modules_fax">Fax receive/transmit application module (mod_fax)(DEPRECATED: see mod_spandsp)</flag>
   <flag name="freeswitch_modules_fifo">First-in-First-out call queue module (mod_fifo)</flag>
   <flag name="freeswitch_modules_file_string">Stream audio from a file(?) (mod_file_string)</flag>
   <flag name="freeswitch_modules_flite">Flite TTS (Text-to-Speech) module (mod_flite)</flag>

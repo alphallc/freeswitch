@@ -1,10 +1,8 @@
-#
-# Copyright (C) 2008 Stefan Knoblich <s.knoblich@axsentis.de>
-#
-# Distributed under the terms of the GNU General Public License 2
-# see http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt for
-# more information
-#
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: This ebuild is from freeswitch overlay; Bumped by mva; $
+
+EAPI="4"
 
 inherit git flag-o-matic
 
@@ -12,7 +10,6 @@ IUSE=""
 
 DESCRIPTION="SSH Console module for FreeSWITCH"
 HOMEPAGE="http://oss.axsentis.de/"
-#SRC_URI="http://oss.axsentis.de/"
 
 EGIT_REPO_URI="http://oss.axsentis.de/git/mod_ssh.git"
 EGIT_BOOTSTRAP="./bootstrap.sh"

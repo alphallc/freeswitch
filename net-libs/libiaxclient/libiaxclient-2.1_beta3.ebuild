@@ -1,5 +1,5 @@
-WANT_AUTOCONF='2.5'
-AT_M4DIR='m4'
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 inherit autotools
 inherit flag-o-matic
 

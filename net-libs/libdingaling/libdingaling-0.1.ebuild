@@ -1,5 +1,5 @@
-DESCRIPTION="Cross Platform Jingle (Google Talk) voip signaling library"
-HOMEPAGE="http://freeswitch.org/dingaling_docs/"
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
 LICENSE="MPL-1.1"
 
 FS_P='freeswitch-1.0.1'
