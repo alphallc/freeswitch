@@ -41,7 +41,7 @@ FREETDM_MODULES="
 	+libpri misdn r2 sng_isdn sng_ss7 wanpipe
 "
 
-ESL="ruby php perl python lua"
+ESL="ruby php perl python lua java managed"
 
 FM_APPLICATIONS="
 	abstraction avmd blacklist callcenter cidlookup cluechoo
@@ -142,6 +142,8 @@ RDEPEND="virtual/libc
 	esl_perl? ( dev-lang/perl )
 	esl_ruby? ( dev-lang/ruby )
 	esl_python? ( dev-lang/python:2.7 )
+	esl_java? ( >=virtual/jdk-1.5 )
+	esl_managed? ( >=dev-lang/mono-1.9 )
 	freeswitch_modules_alsa? ( media-libs/alsa-lib )
 	freeswitch_modules_radius_cdr? ( net-dialup/freeradius-client )
 	freeswitch_modules_xml_curl? ( net-misc/curl )
@@ -514,7 +516,6 @@ src_unpack() {
 	else
 		unpack ${A}
 	fi
-#	cd "${S}"
 	epatch_user
 }
 
@@ -538,35 +539,34 @@ src_configure() {
 	local java_opts config_opts
 	use freeswitch_modules_java && \
 		java_opts="--with-java=$(/usr/bin/java-config -O)"
-	use libpri && \
+	use freetdm_modules_libpri && \
 		config_opts="--with-libpri"
+	use freetdm_modules_misdn && \
+		config_opts="--with-misdn"
 
 	use debug || config_opts="${config_opts} --disable-debug"
 
-#	# breaks linking freeswitch core lib (missing libdl symbols)
-#	filter-ldflags -Wl,--as-needed
-#
 #	# breaks freetdm
 #	filter-flags -fvisibility-inlines-hidden
 	einfo "Configuring FreeSWITCH..."
 		touch noreg
-		FREESWITCH_HTDOCS="${FREESWITCH_HTDOCS:-${EPREFIX}/var/www/localhost/htdocs/${PN}}"
+		FREESWITCH_HTDOCS="${FREESWITCH_HTDOCS:-/var/www/localhost/htdocs/${PN}}"
 		econf \
 		--disable-option-checking \
 		${CTARGET:+--target=${CTARGET}} \
 		--enable-core-libedit-support \
-		--localstatedir="${EPREFIX}/var" \
-		--sysconfdir="${EPREFIX}/etc/${PN}" \
-		--with-modinstdir="${EPREFIX}/usr/$(get_libdir)/${PN}/mod" \
-		--with-rundir="${EPREFIX}/var/run/${PN}" \
-		--with-logfiledir="${EPREFIX}/var/log/${PN}" \
-		--with-dbdir="${EPREFIX}/var/lib/${PN}/db" \
-		--with-htdocsdir="${EPREFIX}/usr/share/${PN}/htdocs" \
-		--with-soundsdir="${EPREFIX}/usr/share/${PN}/sounds" \
-		--with-grammardir="${EPREFIX}/usr/share/${PN}/grammar" \
-		--with-scriptdir="${EPREFIX}/usr/share/${PN}/scripts" \
-		--with-recordingsdir="${EPREFIX}/var/lib/${PN}/recordings" \
-		--with-pkgconfigdir="${EPREFIX}/usr/$(get_libdir)/pkgconfig" \
+		--localstatedir="/var" \
+		--sysconfdir="/etc/${PN}" \
+		--with-modinstdir="/usr/$(get_libdir)/${PN}/mod" \
+		--with-rundir="/var/run/${PN}" \
+		--with-logfiledir="/var/log/${PN}" \
+		--with-dbdir="/var/lib/${PN}/db" \
+		--with-htdocsdir="/usr/share/${PN}/htdocs" \
+		--with-soundsdir="/usr/share/${PN}/sounds" \
+		--with-grammardir="/usr/share/${PN}/grammar" \
+		--with-scriptdir="/usr/share/${PN}/scripts" \
+		--with-recordingsdir="/var/lib/${PN}/recordings" \
+		--with-pkgconfigdir="/usr/$(get_libdir)/pkgconfig" \
 		$(use_enable sctp) \
 		$(use_enable zrtp) \
 		$(use_with freeswitch_modules_python python "$(PYTHON -a)") \
@@ -574,17 +574,6 @@ src_configure() {
 		$(use_enable odbc core-odbc-support) \
 		${java_opts} ${config_opts} || die "failed to configure FreeSWITCH"
 
-#		$(use_enable amd64 64) \
-#		$(fs_enable sctp) \
-#		$(fs_enable zrtp) \
-#		$(fs_enable amd64 64) \
-#		$(fs_with freeswitch_modules_python python "$(PYTHON -a)") \
-#		$(fs_enable resampler resample) \
-#		$(fs_enable odbc core-odbc-support) \
-
-	#
-	# 3. configure FreeTDM
-	#
 	if use freeswitch_modules_freetdm; then
 		cd "${S}/libs/freetdm"
 		einfo "Configuring FreeTDM..."
@@ -612,16 +601,14 @@ src_compile() {
 	for esl_lang in ${IUSE_ESL}; do
 		use ${esl_lang} || continue
 
-		esl_lang="${esl_lang#*-}"
+		esl_lang="${esl_lang#*_}"
 
 		einfo "Building esl module for ${esl_lang}..."
-		emake -C libs/esl "$(esl_modname "${esl_lang}")" || die "Failed to build esl module for language \"${esl_lang}\""
-#		 -j1?
+		emake -C libs/esl "$(esl_modname ${esl_lang})" || die "Failed to build esl module for language \"${esl_lang}\""
 	done
 	if use esl; then
 		einfo "Building libesl..."
 		emake -C libs/esl || die "Failed to build libesl"
-#		 -j1?
 	fi
 }
 
@@ -629,7 +616,6 @@ src_install() {
 	local esl_lang
 	einfo "Installing freeswitch core and modules..."
 	emake install DESTDIR="${D}" MONO_SHARED_DIR="${T}" || die "Installation of freeswitch core failed"
-#	# -j1?
 	einfo "Installing documentation and misc files..."
 	dodoc AUTHORS NEWS README ChangeLog INSTALL
 
@@ -652,30 +638,40 @@ src_install() {
 
 	find "${D}" \( -name "mod*.la" -or -name "mod*.a" -or -name "lib*.a" \) -exec rm -f "{}" \; || die "Failed to cleanup .a and .la files"
 
-	if use esl-ruby; then
+	if use esl_ruby; then
 		einfo "Installing esl module for ruby..."
 		esl_dorubymod libs/esl/ruby/ESL.so
 	fi
 
-	if use esl-python; then
+	if use esl_python; then
 		einfo "Installing esl module for python..."
 		esl_dopymod libs/esl/python/{_ESL.so,ESL.py}
 	fi
 
-	if use esl-lua; then
+	if use esl_lua; then
 		einfo "Installing esl module for lua..."
 		esl_doluamod libs/esl/lua/ESL.so
 	fi
 
-	if use esl-php; then
+	if use esl_php; then
 		einfo "Installing esl module for php..."
 		emake DESTDIR="${D}" -C libs/esl phpmod-install || die "Failed to install esl module for php"
 	fi
 
-	if use esl-perl; then
+	if use esl_perl; then
 		einfo "Installing esl module for perl..."
 		esl_doperlmod libs/esl/perl/{ESL,ESL.so,ESL.pm}
 	fi
+
+#	if use esl_java; then
+#		#einfo "Installing esl module for java..."
+#		# TODO
+#	fi
+
+#	if use esl_managed; then
+#		#einfo "Installing esl module for managed (mono, .NET)..."
+#		# TODO
+#	fi
 
 	if use esl; then
 		einfo "Installing libesl..."
@@ -683,12 +679,12 @@ src_install() {
 		doins libs/esl/libesl.a
 	fi
 
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "${EPREFIX}/etc/${PN}"
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "${EPREFIX}/usr/$(get_libdir)/${PN}"
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "${EPREFIX}/var/run/${PN}"
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "${EPREFIX}/var/log/${PN}"
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "${EPREFIX}/usr/share/${PN}"
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "${EPREFIX}/var/lib/${PN}"
+	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/etc/${PN}"
+	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/usr/$(get_libdir)/${PN}"
+	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/run/${PN}"
+	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/log/${PN}"
+	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/usr/share/${PN}"
+	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/lib/${PN}"
 }
 
 pkg_preinst() {
