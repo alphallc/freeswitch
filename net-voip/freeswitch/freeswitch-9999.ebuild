@@ -528,7 +528,7 @@ src_prepare() {
 	sed -i -e '/^LOCAL_LDFLAGS/s:^\(.*\):\1 -lpthread:' \
 		libs/esl/{ruby,python,perl,lua}/Makefile || die "failed to patch esl modules"
 
-	if use esl-python; then
+	if use esl_python; then
 		python_get_version && PYVER=$(python_get_version) || die "Failed to determine current python version"
 		sed -i -e "/^LOCAL_/{ s:python-2\.[0-9]:python-${PYVER}:g; s:python2\.[0-9]:python${PYVER}:g }" \
 			libs/esl/python/Makefile || die "failed to change python locations in esl python module"
