@@ -24,8 +24,13 @@ SRC_URI="${URI_BASE}-ca-june-8000-${MY_PV}.tar.gz
 DEPEND="net-voip/freeswitch"
 RDEPEND="${DEPEND}"
 
+S="${WORKDIR}"
+
+FREESWITCH_USER=${FREESWITCH_USER:-voip}
+FREESWITCH_GROUP=${FREESWITCH_GROUP:-voip}
+
 src_install() {
         dodir /usr/share/freeswitch/sounds
-        mv "${WORKDIR}"/* "${D}/usr/share/freeswitch/sounds/" || die "Failed to copy sound files"
-        fowners freeswitch:freeswitch "${D}/usr/share/freeswitch/sounds/"
+        mv "${S}"/* "${D}/usr/share/freeswitch/sounds/" || die "Failed to copy sound files"
+        fowners "${FREESWITCH_USER}":"${FREESWITCH_GROUP}" "${D}/usr/share/freeswitch/sounds/"
 }
