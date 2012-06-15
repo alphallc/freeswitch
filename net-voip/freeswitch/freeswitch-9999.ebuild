@@ -110,14 +110,12 @@ FM="
 "
 
 FM_BROKEN="
-	esl_php
 	freeswitch_modules_osp
 	freeswitch_modules_http_cache
 	freeswitch_modules_yaml
 "
 #- http_cache -> error in for declaration, ask for -std=c99
 #- osp -> undefined vars
-#- esl_php -> errors in esl_wrap.cpp
 #- yaml -> ?
 
 #? h323 -> want ptlib
