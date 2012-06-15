@@ -478,7 +478,7 @@ esl_dopymod() {
 
 esl_doluamod() {
 	(
-		insinto /usr/$(get_libdir)/lua/$(${LUA:-/usr/bin/lua} -e 'print(VERSION:match("%d.%d"))')
+		insinto /usr/$(get_libdir)/lua/$(${LUA:-/usr/bin/lua} -e 'print(_VERSION:match("%d.%d"))')
 		insopts -m755
 		doins "$@"
 	) || die "failed to install $@"
