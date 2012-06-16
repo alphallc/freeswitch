@@ -599,7 +599,7 @@ src_compile() {
 	einfo "Building FreeSWITCH... (this can take a long time)"
 	emake MONO_SHARED_DIR="${T}" || die "failed to build FreeSWITCH"
 	for esl_lang in ${ESL}; do
-		use ${esl_lang} || continue
+		use esl_${esl_lang} || continue
 
 		esl_lang="${esl_lang#*_}"
 

@@ -31,5 +31,5 @@ FREESWITCH_GROUP=${FREESWITCH_GROUP:-voip}
 src_install() {
 	dodir /usr/share/freeswitch/sounds
 	mv "${S}"/* "${D}/usr/share/freeswitch/sounds/" || die "Failed to copy sound files"
-	fowners "${FREESWITCH_USER}":"${FREESWITCH_GROUP}" "${D}/usr/share/freeswitch/sounds/"
+	fowners "${FREESWITCH_USER}":"${FREESWITCH_GROUP}" "/usr/share/freeswitch/sounds"
 }
