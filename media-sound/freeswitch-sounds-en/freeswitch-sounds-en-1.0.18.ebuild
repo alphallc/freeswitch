@@ -15,7 +15,7 @@ REQUIRED_USE=" || ( 16k 32k 48k ) "
 MY_PV="${PV/_/.}"
 URI_BASE="http://files.freeswitch.org/${PN}"
 
-SRC_URI="${URI_BASE}-en-us-callie-8000-${MY_PV}.tar.gz
+SRC_URI="${URI_BASE}-us-callie-8000-${MY_PV}.tar.gz
 	 16k? ( ${URI_BASE}-us-callie-16000-${MY_PV}.tar.gz )
 	 32k? ( ${URI_BASE}-us-callie-32000-${MY_PV}.tar.gz )
 	 48k? ( ${URI_BASE}-us-callie-48000-${MY_PV}.tar.gz )"
