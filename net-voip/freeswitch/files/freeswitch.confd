@@ -3,17 +3,14 @@
 #
 
 # freeswitch will be running with this userid
-FREESWITCH_USER="freeswitch"
-
+FREESWITCH_USER="voip"
 
 # optional: group the freeswitch process should be running with
 #
 # (note: without this option freeswitch will be using all groups
 #  the user in FREESWITCH_USER is a member of)
 #
-#FREESWITCH_GROUP="freeswitch"
-
-
+FREESWITCH_GROUP="voip"
 
 # optional: other options, e.g.
 #
