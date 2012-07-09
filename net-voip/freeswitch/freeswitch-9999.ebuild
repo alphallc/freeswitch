@@ -592,7 +592,7 @@ src_configure() {
 	fi
 
 	if use freeswitch_modules_ssh; then
-		cd "${S}/src/mod/applications/ssh"
+		cd "${S}/src/mod/applications/mod_ssh"
 		econf --disable-option-checking || die "failed to configure mod_ssh"
 	fi
 }
