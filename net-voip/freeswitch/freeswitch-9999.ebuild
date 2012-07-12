@@ -33,7 +33,7 @@ case ${PV} in
 		;;
 esac
 
-IUSE="esl odbc +resampler sctp zrtp debug"
+IUSE="esl odbc +resampler sctp +zrtp debug"
 
 LANGS="de en es fa fr he hr hu it ja nl pt ru th zh"
 
@@ -649,7 +649,7 @@ src_install() {
 		dodoc   "${S}/src/mod/endpoints/mod_skypopen/configs/"*
 	fi
 
-	find "${D}" \( -name "mod*.la" -or -name "mod*.a" -or -name "lib*.a" \) -exec rm -f "{}" \; || die "Failed to cleanup .a and .la files"
+#	find "${D}" \( -name "mod*.la" -or -name "mod*.a" -or -name "lib*.a" \) -exec rm -f "{}" \; || die "Failed to cleanup .a and .la files"
 
 	if use esl_ruby; then
 		einfo "Installing esl module for ruby..."
