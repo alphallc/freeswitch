@@ -408,7 +408,7 @@ setup_modules() {
 		rm -f "modules.conf" || die "Failed to remove existing modules.conf"
 	}
 	einfo "Optional modules:"
-	for x in ${IUSE_MODULES}; do
+	for x in ${FM}; do
 		mod="${x/+}"
 		action="enable"
 
