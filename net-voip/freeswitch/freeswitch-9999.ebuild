@@ -631,7 +631,7 @@ src_install() {
 		dodoc   "${S}/src/mod/endpoints/mod_skypopen/configs/"*
 	fi
 
-#	find "${D}" \( -name "mod*.la" -or -name "mod*.a" -or -name "lib*.a" \) -exec rm -f "{}" \; || die "Failed to cleanup .a and .la files"
+	find "${D}" -name "*.la" -delete || die "Failed to cleanup .a and .la files"
 
 	if use esl_ruby; then
 		einfo "Installing esl module for ruby..."
@@ -674,12 +674,12 @@ src_install() {
 		doins libs/esl/libesl.a
 	fi
 
-	fowners -r ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/etc/${PN}"
-	fowners -r ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/usr/$(get_libdir)/${PN}"
-	fowners -r ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/run/${PN}"
-	fowners -r ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/log/${PN}"
-	fowners -r ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/usr/share/${PN}"
-	fowners -r ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/lib/${PN}"
+	fowners -Rf ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/etc/${PN}"
+	fowners -Rf ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/usr/$(get_libdir)/${PN}"
+	fowners -Rf ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/run/${PN}"
+	fowners -Rf ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/log/${PN}"
+	fowners -Rf ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/usr/share/${PN}"
+	fowners -Rf ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/lib/${PN}"
 }
 
 pkg_preinst() {
