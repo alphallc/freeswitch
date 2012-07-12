@@ -413,18 +413,18 @@ setup_modules() {
 		action="enable"
 
 		[ -n "${mod}" ] && {
-			fs_use freeswitch_modules_${mod} || action="disable"
+			use freeswitch_modules_${mod} || action="disable"
 			fs_set_module "${action}" "mod_${mod}"
 		}
 	done
 
 	einfo "Language modules:"
-	for x in ${IUSE_LINGUAS}; do
+	for x in ${LANGS}; do
 		mod="${x/+}"
 		action="enable"
 
 		[ -n "${mod}" ] && {
-			fs_use linguas_${mod} || action="disable"
+			use linguas_${mod} || action="disable"
 			fs_set_module "${action}" "mod_say_${mod}"
 		}
 	done
