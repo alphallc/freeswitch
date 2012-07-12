@@ -385,12 +385,12 @@ fs_set_module() {
 	case $1 in
 	enable)
 		einfo "  ++ Enabling ${mod}"
-		echo "${category}/${mod}" >>"${config}"
+		echo "${category}/${mod}" >> "${config}"
 		;;
 
 	disable)
 		einfo "  -- Disabling ${mod}"
-		echo "#${category}/${mod}" >>"${config}"
+		echo "#${category}/${mod}" >> "${config}"
 		;;
 	*)
 		eerror "fs_set_module <enable|disable> <module_path>"
