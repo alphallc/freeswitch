@@ -4,15 +4,12 @@
 
 EAPI="4"
 
-#PYTHON_DEPEND="2"
-
 inherit eutils flag-o-matic python
-# autotools
 
 DESCRIPTION="FreeSWITCH telephony platform"
 HOMEPAGE="http://www.freeswitch.org/"
 
-KEYWORDS="~x86 ~amd64"
+KEYWORDS=""
 LICENSE="MPL-1.1"
 SLOT="0"
 
@@ -186,6 +183,7 @@ DEPEND="${RDEPEND}
 PDEPEND="media-sound/freeswitch-sounds
 	media-sound/freeswitch-sounds-music
 	freeswitch_modules_squirrelfish? ( net-voip/freeswitch-mod_squirrelfish )
+	freeswitch_modules_ssh? ( net-voip/freeswitch-mod_ssh )
 "
 
 for x in ${FM} ${FM_EXTERNAL}; do
@@ -515,13 +513,6 @@ src_unpack() {
 	else
 		unpack ${A}
 	fi
-	if use freeswitch_modules_ssh; then
-		EGIT_SOURCEDIR="${S}/src/mod/applications/mod_ssh";
-		EGIT_DIR="${EGIT_STORE_DIR}/freeswitch_mod_ssh.git"
-		EGIT_REPO_URI="http://oss.axsentis.de/git/mod_ssh.git"
-		EGIT_BOOTSTRAP="./bootstrap.sh"
-		git-2_src_unpack
-	fi
 	epatch_user
 }
 
@@ -539,8 +530,6 @@ src_prepare() {
 		sed -i -e "/^LOCAL_/{ s:python-2\.[0-9]:python-${PYVER}:g; s:python2\.[0-9]:python${PYVER}:g }" \
 			libs/esl/python/Makefile || die "failed to change python locations in esl python module"
 	fi
-
-	use freeswitch_modules_ssh && echo "applications/mod_ssh" >> "${S}/modules.conf"
 }
 
 src_configure() {
@@ -590,11 +579,6 @@ src_configure() {
 			--with-pkgconfigdir=/usr/$(get_libdir)/pkgconfig \
 			${config_opts} || die "failed to configure FreeTDM"
 	fi
-
-	if use freeswitch_modules_ssh; then
-		cd "${S}/src/mod/applications/mod_ssh"
-		econf --disable-option-checking || die "failed to configure mod_ssh"
-	fi
 }
 
 src_compile() {
@@ -603,11 +587,9 @@ src_compile() {
 
 	# breaks freetdm:
 	filter-flags -fvisibility-inlines-hidden
-	if use freeswitch_modules_freetdm
-	then
+	if use freeswitch_modules_freetdm; then
 		einfo "Building FreeTDM..."
 		emake -C libs/freetdm || die "failed to build FreeTDM"
-#		 -j1?
 	fi
 	einfo "Building FreeSWITCH... (this can take a long time)"
 	emake MONO_SHARED_DIR="${T}" || die "failed to build FreeSWITCH"

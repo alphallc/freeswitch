@@ -4,7 +4,7 @@
 
 EAPI="4"
 
-inherit git flag-o-matic
+inherit git-2 flag-o-matic
 
 IUSE=""
 
@@ -17,7 +17,7 @@ EGIT_BOOTSTRAP="./bootstrap.sh"
 SLOT="0"
 
 LICENSE="BSD"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS=""
 
 RDEPEND="virtual/libc
 	 dev-libs/openssl
@@ -29,13 +29,18 @@ DEPEND="${RDEPEND}
 
 #S="${WORKDIR}/${PN}-${MY_PV}"
 
-src_compile() {
-	# wrong order of libs in configure script
-	filter-ldflags -Wl,--as-needed
-
-	econf || die "econf failed"
-	emake || die "emake failed"
+src_prepare() {
+	default
+	epatch_user
 }
+
+#src_compile() {
+#	# wrong order of libs in configure script
+#	filter-ldflags -Wl,--as-needed
+#
+#	econf || die "econf failed"
+#	emake || die "emake failed"
+#}
 
 src_install() {
 	emake DESTDIR="${D}" install || die "make install failed"
