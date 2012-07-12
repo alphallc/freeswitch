@@ -2,6 +2,9 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  13 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name> libisdn-9999.ebuild:
+  bump!
+
   10 Jan 2012; Stefan Knoblich <stkn@openisdn.net> libisdn-9999.ebuild:
   libisdn: use EAPI=4 features, default enable pcap useflag, add PV
   -9999/release handling

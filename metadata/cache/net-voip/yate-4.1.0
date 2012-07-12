@@ -12,9 +12,9 @@ alsa dahdi debug doc gsm mysql postgres sctp speex ssl
 
 
 
-3
 
-compile configure install
+
+compile install
 
 
 

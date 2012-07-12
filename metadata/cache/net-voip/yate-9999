@@ -12,9 +12,9 @@ dahdi debug doc gsm mysql postgres sctp speex ssl h323 ilbc qt4 spandsp amr zapt
 
 
 
-3
 
-configure install preinst prepare unpack
+
+install preinst unpack
 
 
 

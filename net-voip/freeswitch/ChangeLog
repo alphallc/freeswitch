@@ -2,6 +2,85 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  09 Jul 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  files/freeswitch.confd:
+  fix init-script
+
+  09 Jul 2012; Vadim A. Misbakh-Soloviov <mva@mva.name> files/freeswitch.rc6:
+  fix init-script
+
+  09 Jul 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  fix mod_ssh
+
+  09 Jul 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  fix mod_ssh
+
+  18 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  moving freeswitch mod_ssh to main ebuild
+
+  16 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  freeswitch fix
+
+  15 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  freeswitch luamod fix
+
+  15 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  freeswitch ressurect broken php notice
+
+  15 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  freeswitch fix
+
+  15 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  freeswitch fix
+
+  14 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  freeswitch fix
+
+  13 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  freeswitch fix
+
+  13 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  fix freeswitch homedir
+
+  13 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild, metadata.xml:
+  bump!
+
+  26 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  deps fix
+
+  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
+
+  24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  some fixes
+
+  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
+
+  24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  some fixes
+
+  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
+
+  24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-9999.ebuild:
+  some fixes
+
+  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
+
   24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
   freeswitch-9999.ebuild:
   added spandsp dep

@@ -2,6 +2,9 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  13 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name> sofia-sip-9999.ebuild:
+  bump!
+
 *sofia-sip-9999 (24 Feb 2012)
 
   24 Feb 2012; Vadim A. Misbakh-Soloviev <mva@mva.name>

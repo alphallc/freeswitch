@@ -23,8 +23,8 @@ start() {
 		OPTS="${OPTS} ${FREESWITCH_OPTS}"
 
 	ebegin "Starting Freeswitch"
-	start-stop-daemon --start --quiet --exec ${FREESWITCH_BIN} \
-		--pidfile /var/run/freeswitch.pid -- -nc ${OPTS}
+	ulimit -s 240
+	${FREESWITCH_BIN} -nc ${OPTS}
 	eend $?
 }
 

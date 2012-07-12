@@ -1,4 +1,4 @@
->=media-libs/portaudio-19_alpha0 media-sound/gsm >=media-libs/speex-1.2_alpha0 ogg? ( >=media-libs/libogg-1.1.3 ) theora? ( >=media-libs/libtheora-1.0_alpha7 ) media-video/ffmpeg || ( >=sys-devel/automake-1.11.1 ) >=sys-devel/autoconf-2.68 sys-devel/libtool
+>=media-libs/portaudio-19_alpha0 media-sound/gsm >=media-libs/speex-1.2_alpha0 ogg? ( >=media-libs/libogg-1.1.3 ) theora? ( >=media-libs/libtheora-1.0_alpha7 ) media-video/ffmpeg || ( >=sys-devel/automake-1.11.1 >=sys-devel/automake-1.12 ) >=sys-devel/autoconf-2.68 sys-devel/libtool
 >=media-libs/portaudio-19_alpha0 media-sound/gsm >=media-libs/speex-1.2_alpha0 ogg? ( >=media-libs/libogg-1.1.3 ) theora? ( >=media-libs/libtheora-1.0_alpha7 ) media-video/ffmpeg
 0
 mirror://sourceforge/iaxclient/iaxclient-2.1beta3.tar.gz
@@ -7,7 +7,7 @@ http://iaxclient.wiki.sourceforge.net/
 GPL-2 LGPL-2
 an open source, multiplatform library for creating telephony solutions that interoperate with Asterisk, the Open Source PBX
 ~arm ~x86
-autotools eutils flag-o-matic libtool multilib toolchain-funcs user
+autotools eutils flag-o-matic libtool multilib multiprocessing toolchain-funcs user
 ogg theora
 
 

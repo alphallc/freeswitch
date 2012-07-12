@@ -12,9 +12,9 @@ eutils flag-o-matic git multilib toolchain-funcs user
 
 
 
+4
 
-
-compile install unpack
+compile install prepare unpack
 
 
 

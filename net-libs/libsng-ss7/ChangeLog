@@ -2,6 +2,12 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  13 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  libsng-ss7-2.0.0.ebuild, libsng-ss7-2.1.1.ebuild, libsng-ss7-2.3.3.ebuild,
+  libsng-ss7-3.0.0.ebuild, libsng-ss7-3.1.1.ebuild, libsng-ss7-4.0.0.ebuild,
+  libsng-ss7-4.1.1.ebuild:
+  bump!
+
 *libsng-ss7-4.1.1 (14 Jul 2011)
 
   14 Jul 2011; Stefan Knoblich <s.knoblich@axsentis.de>

@@ -692,12 +692,12 @@ src_install() {
 		doins libs/esl/libesl.a
 	fi
 
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/etc/${PN}"
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/usr/$(get_libdir)/${PN}"
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/run/${PN}"
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/log/${PN}"
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/usr/share/${PN}"
-	fowners ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/lib/${PN}"
+	chown -R ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/etc/${PN}"
+	chown -R ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/usr/$(get_libdir)/${PN}"
+	chown -R ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/run/${PN}"
+	chown -R ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/log/${PN}"
+	chown -R ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/usr/share/${PN}"
+	chown -R ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/var/lib/${PN}"
 }
 
 pkg_preinst() {

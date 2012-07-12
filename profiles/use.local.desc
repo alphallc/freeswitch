@@ -8,6 +8,7 @@ net-voip/freeswitch:esl-perl - Perl bindings for ESL
 net-voip/freeswitch:esl-php - PHP bindings for ESL
 net-voip/freeswitch:esl-python - Python bindings for ESL
 net-voip/freeswitch:esl-ruby - Ruby bindings for ESL
+net-voip/freeswitch:fax - Fax receive/transmit application module inclusion (mod_spandsp)
 net-voip/freeswitch:freeswitch_modules_alsa - Alsa endpoint module (mod_alsa)
 net-voip/freeswitch:freeswitch_modules_amr - AMR-NB (Narrowband) pass-through codec module (mod_amr)
 net-voip/freeswitch:freeswitch_modules_amr_wb - AMR-WB (Wideband) pass-through codec module (mod_amrwb)
@@ -32,7 +33,6 @@ net-voip/freeswitch:freeswitch_modules_erlang_event - Erlang event handler / rem
 net-voip/freeswitch:freeswitch_modules_event_multicast - Multicast event handler module (mod_event_multicast)
 net-voip/freeswitch:freeswitch_modules_event_socket - Socket event handler / remote control module (mod_event_socket)
 net-voip/freeswitch:freeswitch_modules_expr - Dialplan expressions (mod_expr)
-net-voip/freeswitch:freeswitch_modules_fax - Fax receive/transmit application module (mod_fax)(DEPRECATED: see mod_spandsp)
 net-voip/freeswitch:freeswitch_modules_fifo - First-in-First-out call queue module (mod_fifo)
 net-voip/freeswitch:freeswitch_modules_file_string - Stream audio from a file(?) (mod_file_string)
 net-voip/freeswitch:freeswitch_modules_flite - Flite TTS (Text-to-Speech) module (mod_flite)
@@ -110,6 +110,6 @@ net-voip/freeswitch:freeswitch_modules_xml_rpc - XML RPC module (mod_xml_rpc)
 net-voip/freeswitch:freeswitch_modules_yaml - YaML (Yet-another-Markup-Language) dialplan module (mod_yaml)
 net-voip/freeswitch:freeswitch_modules_zeroconf - Zeroconf event handler module (mod_zeroconf)
 net-voip/freeswitch:libpri - Build OpenZAP/FreeTDM with libpri module
-net-voip/freeswitch:nosamples - Do not install sample configuration files
 net-voip/freeswitch:resampler - Enable support for up-/downsampling of audio (e.g. 48KHz -> 8KHz)
+net-voip/freeswitch:samples - Install sample configuration files
 net-voip/freeswitch:sctp - Enable SCTP (Stream-Control-Transport-Protocol) support (mod_sofia, ...)

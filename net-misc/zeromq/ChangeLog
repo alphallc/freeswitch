@@ -2,6 +2,9 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  13 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name> zeromq-2.0.7.ebuild:
+  bump!
+
 *zeromq-2.0.7 (11 Aug 2010)
 
   11 Aug 2010; Stefan Knoblich <s.knoblich@axsentis.de> +zeromq-2.0.7.ebuild:

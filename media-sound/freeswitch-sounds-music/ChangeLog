@@ -1,18 +1,18 @@
-# ChangeLog for media-sound/freeswitch-music
+# ChangeLog for media-sound/freeswitch-sounds-music
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
-*freeswitch-music-1.0.8 (24 May 2012)
-*freeswitch-music-1.0.7 (24 May 2012)
-*freeswitch-music-1.0.6 (24 May 2012)
-*freeswitch-music-1.0.5 (24 May 2012)
-*freeswitch-music-1.0.3 (24 May 2012)
+  16 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-sounds-music-1.0.8.ebuild:
+  freeswitch fix
 
-  24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
-  +freeswitch-music-1.0.3.ebuild, +freeswitch-music-1.0.5.ebuild,
-  +freeswitch-music-1.0.6.ebuild, +freeswitch-music-1.0.7.ebuild,
-  +freeswitch-music-1.0.8.ebuild:
-  some fixes
+  15 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  freeswitch-sounds-music-1.0.8.ebuild:
+  EAPI4-related fixes
 
-  Signed-off-by: Vadim A. Misbakh-Soloviov <mva@mva.name>
+*freeswitch-sounds-music-1.0.8 (13 Jun 2012)
+
+  13 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  +freeswitch-sounds-music-1.0.8.ebuild:
+  bump!
 

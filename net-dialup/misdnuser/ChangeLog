@@ -2,6 +2,10 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  13 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  misdnuser-2.0.2.ebuild, misdnuser-2.0.13.ebuild:
+  bump!
+
 *misdnuser-2.0.13 (24 May 2012)
 
   24 May 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>

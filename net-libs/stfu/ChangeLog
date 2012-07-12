@@ -2,6 +2,10 @@
 # Copyright 1999-2012 Gentoo Foundation; Distributed under the GPL v2
 # $Header: $
 
+  13 Jun 2012; Vadim A. Misbakh-Soloviov <mva@mva.name>
+  stfu-0.0.1.0_rc3.ebuild:
+  bump!
+
 *stfu-0.0.1.0_rc3 (24 Feb 2012)
 
   24 Feb 2012; Vadim A. Misbakh-Soloviev <mva@mva.name>

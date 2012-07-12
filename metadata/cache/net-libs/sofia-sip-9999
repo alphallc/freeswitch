@@ -12,7 +12,7 @@ glib ipv6 ntlm sctp ssl +stun
 
 
 
-1
+4
 
 compile install unpack
 
