@@ -193,10 +193,14 @@ for x in ${FREETDM_MODULES}; do
 	IUSE="${IUSE} ${x//[^+]/}freetdm_modules_${x/+}"
 done
 for x in ${ESL}; do
+
 	IUSE="${IUSE} esl_${x}"
 done
 for x in ${LANGS}; do
 	IUSE="${IUSE} linguas_${x}"
+done
+for x in ${FM_BROKEN}; do
+	IUSE="${IUSE//${x}}"
 done
 
 FREESWITCH_USER=${FREESWITCH_USER:-voip}
