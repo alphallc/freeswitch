@@ -135,12 +135,9 @@ REQUIRED_USE="
 RDEPEND="virtual/libc
 	odbc? ( dev-db/unixODBC )
 	esl_lua? ( || ( dev-lang/lua dev-lang/luajit:2 ) )
-#	esl_php? ( dev-lang/php )
 	esl_perl? ( dev-lang/perl )
 	esl_ruby? ( dev-lang/ruby )
 	esl_python? ( dev-lang/python:2.7 )
-	esl_java? ( >=virtual/jdk-1.5 )
-	esl_managed? ( >=dev-lang/mono-1.9 )
 	freeswitch_modules_alsa? ( media-libs/alsa-lib )
 	freeswitch_modules_radius_cdr? ( net-dialup/freeradius-client )
 	freeswitch_modules_xml_curl? ( net-misc/curl )
@@ -157,7 +154,6 @@ RDEPEND="virtual/libc
 	freeswitch_modules_memcache? ( net-misc/memcached )
 	freeswitch_modules_erlang_event? ( dev-lang/erlang )
 	freeswitch_modules_shout? ( media-libs/libogg )
-#	freeswitch_modules_osp? ( >=net-libs/osptoolkit-3.5.0 )
 	freeswitch_modules_spandsp? ( virtual/jpeg )
 	freeswitch_modules_redis? ( dev-db/redis )
 	freeswitch_modules_mp4? ( media-libs/libmp4v2 )
@@ -174,6 +170,10 @@ RDEPEND="virtual/libc
 		freetdm_modules_r2? ( net-misc/openr2 )
 	)
 "
+#	esl_php? ( dev-lang/php )
+#	freeswitch_modules_osp? ( >=net-libs/osptoolkit-3.5.0 )
+#	esl_java? ( >=virtual/jdk-1.5 )
+#	esl_managed? ( >=dev-lang/mono-1.9 )
 
 DEPEND="${RDEPEND}
 	>=sys-devel/autoconf-2.60
