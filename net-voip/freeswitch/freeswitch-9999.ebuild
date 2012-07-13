@@ -135,7 +135,7 @@ REQUIRED_USE="
 RDEPEND="virtual/libc
 	odbc? ( dev-db/unixODBC )
 	esl_lua? ( || ( dev-lang/lua dev-lang/luajit:2 ) )
-	esl_php? ( dev-lang/php )
+#	esl_php? ( dev-lang/php )
 	esl_perl? ( dev-lang/perl )
 	esl_ruby? ( dev-lang/ruby )
 	esl_python? ( dev-lang/python:2.7 )
@@ -157,7 +157,7 @@ RDEPEND="virtual/libc
 	freeswitch_modules_memcache? ( net-misc/memcached )
 	freeswitch_modules_erlang_event? ( dev-lang/erlang )
 	freeswitch_modules_shout? ( media-libs/libogg )
-	freeswitch_modules_osp? ( >=net-libs/osptoolkit-3.5.0 )
+#	freeswitch_modules_osp? ( >=net-libs/osptoolkit-3.5.0 )
 	freeswitch_modules_spandsp? ( virtual/jpeg )
 	freeswitch_modules_redis? ( dev-db/redis )
 	freeswitch_modules_mp4? ( media-libs/libmp4v2 )
@@ -193,7 +193,6 @@ for x in ${FREETDM_MODULES}; do
 	IUSE="${IUSE} ${x//[^+]/}freetdm_modules_${x/+}"
 done
 for x in ${ESL}; do
-
 	IUSE="${IUSE} esl_${x}"
 done
 for x in ${LANGS}; do
@@ -653,10 +652,10 @@ src_install() {
 		esl_doluamod libs/esl/lua/ESL.so
 	fi
 
-	if use esl_php; then
-		einfo "Installing esl module for php..."
-		emake DESTDIR="${D}" -C libs/esl phpmod-install || die "Failed to install esl module for php"
-	fi
+#	if use esl_php; then
+#		einfo "Installing esl module for php..."
+#		emake DESTDIR="${D}" -C libs/esl phpmod-install || die "Failed to install esl module for php"
+#	fi
 
 	if use esl_perl; then
 		einfo "Installing esl module for perl..."
