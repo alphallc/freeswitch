@@ -76,7 +76,8 @@ src_prepare() {
 		rm -f samples/*/*.dsw
 	fi
 
-	sed -i -e "s:gsm/gsm/gsm.h:gsm/gsm.h:g" plugins/configure || die "patching of plugins configure failed"
+	# Temporary (?) fix of gsm/gsm/gsm.h in plugins/configure
+	sed -i -e "s:gsm/gsm.h:gsm.h:g" make/opal.m4 || die "failed to fix plugins"
 
 	# h224 really needs h323 ?
 	# TODO: get a confirmation in ml
