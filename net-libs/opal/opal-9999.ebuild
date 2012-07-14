@@ -15,14 +15,16 @@ LICENSE="MPL-1.0"
 SLOT="0"
 KEYWORDS=""
 IUSE="+audio capi celt debug doc dtmf examples fax ffmpeg h224 h281 h323 iax
-ilbc ipv6 ivr ixj java ldap lid +plugins sbc sip sipim srtp ssl static-libs
+ilbc ipv6 ivr java ldap lid +plugins sbc sip sipim srtp ssl static-libs
 stats swig theora +video vpb vxml wav x264 x264-static xml"
+#ixj
 
 REQUIRED_USE="x264-static? ( x264 )
 	h281? ( h224 )"
 
-RDEPEND=">=net-libs/ptlib-2.6.6[stun,debug=,audio?,dtmf?,ipv6?,ldap?,ssl?,video?,vxml?,wav?,xml?]
-	>=media-libs/speex-1.2_beta
+RDEPEND="net-libs/ptlib-9999[stun,debug=,audio?,dtmf?,ipv6?,ldap?,ssl?,video?,vxml?,wav?,xml?]
+	media-libs/speex
+	>=media-video/ffmpeg-0.4.7
 	fax? ( net-libs/ptlib[asn] )
 	h323? ( net-libs/ptlib[asn] )
 	ivr? ( net-libs/ptlib[http,xml,vxml] )
@@ -32,7 +34,6 @@ RDEPEND=">=net-libs/ptlib-2.6.6[stun,debug=,audio?,dtmf?,ipv6?,ldap?,ssl?,video?
 		capi? ( net-dialup/capi4k-utils )
 		celt? ( media-libs/celt )
 		ffmpeg? ( virtual/ffmpeg[encode] )
-		ixj? ( sys-kernel/linux-headers )
 		ilbc? ( dev-libs/ilbc-rfc3951 )
 		sbc? ( media-libs/libsamplerate )
 		theora? ( media-libs/libtheora )
@@ -40,6 +41,9 @@ RDEPEND=">=net-libs/ptlib-2.6.6[stun,debug=,audio?,dtmf?,ipv6?,ldap?,ssl?,video?
 			media-libs/x264 ) )
 	srtp? ( net-libs/libsrtp )
 	vxml? ( net-libs/ptlib[http,vxml] )"
+
+#		ixj? ( sys-kernel/linux-headers )
+
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
 	doc? ( app-doc/doxygen )
@@ -198,6 +202,7 @@ src_configure() {
 		--disable-spandsp \
 		--enable-g711plc \
 		--enable-rfc4103 \
+		--disable-ixj \
 		$(use_enable debug) \
 		$(use_enable capi) \
 		$(use_enable fax) \
@@ -210,7 +215,6 @@ src_configure() {
 		$(use_enable h323 h501) \
 		$(use_enable iax) \
 		$(use_enable ivr) \
-		$(use_enable ixj) \
 		$(use_enable java) \
 		$(use_enable lid) \
 		$(use_enable plugins) \
@@ -223,6 +227,7 @@ src_configure() {
 		$(use_enable x264 h264) \
 		$(use_enable x264-static x264-link-static) \
 		${forcedconf}
+#		$(use_enable ixj) \
 }
 
 src_compile() {
