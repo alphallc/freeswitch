@@ -15,9 +15,9 @@ LICENSE="MPL-1.0"
 SLOT="0"
 KEYWORDS=""
 IUSE="+audio capi celt debug doc dtmf examples fax ffmpeg h224 h281 h323 iax
-ilbc ipv6 ivr java ldap lid +plugins sbc sip sipim srtp ssl static-libs
+ilbc ipv6 ivr ixr java ldap lid +plugins sbc sip sipim srtp ssl static-libs
 stats swig theora +video vpb vxml wav x264 x264-static xml"
-#ixj
+
 
 REQUIRED_USE="x264-static? ( x264 )
 	h281? ( h224 )"
@@ -35,6 +35,7 @@ RDEPEND="net-libs/ptlib-9999[stun,debug=,audio?,dtmf?,ipv6?,ldap?,ssl?,video?,vx
 		celt? ( media-libs/celt )
 		ffmpeg? ( virtual/ffmpeg[encode] )
 		ilbc? ( dev-libs/ilbc-rfc3951 )
+		ixj? ( sys-kernel/linux-headers )
 		sbc? ( media-libs/libsamplerate )
 		theora? ( media-libs/libtheora )
 		x264? (	virtual/ffmpeg
@@ -42,7 +43,6 @@ RDEPEND="net-libs/ptlib-9999[stun,debug=,audio?,dtmf?,ipv6?,ldap?,ssl?,video?,vx
 	srtp? ( net-libs/libsrtp )
 	vxml? ( net-libs/ptlib[http,vxml] )"
 
-#		ixj? ( sys-kernel/linux-headers )
 
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
@@ -202,7 +202,6 @@ src_configure() {
 		--disable-spandsp \
 		--enable-g711plc \
 		--enable-rfc4103 \
-		--disable-ixj \
 		$(use_enable debug) \
 		$(use_enable capi) \
 		$(use_enable fax) \
@@ -215,6 +214,7 @@ src_configure() {
 		$(use_enable h323 h501) \
 		$(use_enable iax) \
 		$(use_enable ivr) \
+		$(use_enable ixj) \
 		$(use_enable java) \
 		$(use_enable lid) \
 		$(use_enable plugins) \
@@ -227,7 +227,6 @@ src_configure() {
 		$(use_enable x264 h264) \
 		$(use_enable x264-static x264-link-static) \
 		${forcedconf}
-#		$(use_enable ixj) \
 }
 
 src_compile() {
@@ -240,7 +239,7 @@ src_compile() {
 }
 
 src_install() {
-	emake PREFIX=/usr DESTDIR="${D}" install || die "emake install failed"
+	emake PREFIX=/usr INSTALL=install DESTDIR="${D}" install || die "emake install failed"
 
 	# Get rid of static libraries if not requested
 	# There seems to be no easy way to disable this in the build system
