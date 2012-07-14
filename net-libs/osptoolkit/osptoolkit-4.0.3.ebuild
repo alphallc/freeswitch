@@ -6,7 +6,7 @@ EAPI="2"
 
 inherit eutils multilib toolchain-funcs
 
-S_DATE="20090302"
+S_DATE="20120120"
 
 DESCRIPTION="Open Settlement Protocol development kit"
 HOMEPAGE="http://www.transnexus.com/OSP%20Toolkit/OSP%20Toolkit%20Documents/OSP%20Toolkit%20Documents.htm"
