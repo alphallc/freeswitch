@@ -44,7 +44,7 @@ FM_APPLICATIONS="
 	abstraction avmd blacklist callcenter cidlookup cluechoo
 	+commands +conference curl +db directory distributor +dptools
 	easyroute +enum +esf esl +expr +fifo fsk fsv +hash +httapi
-	http_cache ladspa lcr +limit memcache mongo mp4 nibblebill
+	http_cache ladspa lcr +limit memcache mongo nibblebill
 	osp rad_auth random redis rss skel +sms snapshot snipe_hunt
 	snom soundtouch +spandsp spy stress +valet_parking vmd
 	+voicemail voicemail_ivr
@@ -112,7 +112,6 @@ FM_BROKEN="
 	esl_java
 	esl_managed
 	freeswitch_modules_http_cache
-	freeswitch_modules_mp4
 "
 #- http_cache -> error in "for" declaration, ask for -std=c99
 #- esl_php -> #ESL-70
