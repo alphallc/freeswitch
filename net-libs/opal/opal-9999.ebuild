@@ -253,6 +253,8 @@ src_install() {
 		local sampledirs="`ls ${basedir} --hide=configure* \
 			--hide=opal_samples.mak.in`"
 
+		docompress -x "${exampledir}"
+
 		# first, install files
 		insinto ${exampledir}/
 		doins ${basedir}/{configure*,opal_samples*} \
