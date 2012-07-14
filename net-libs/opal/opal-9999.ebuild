@@ -76,6 +76,8 @@ src_prepare() {
 		rm -f samples/*/*.dsw
 	fi
 
+	sed -i -e "s:gsm/gsm/gsm.h:gsm/gsm.h:g" plugins/configure || die "patching of plugins configure failed"
+
 	# h224 really needs h323 ?
 	# TODO: get a confirmation in ml
 	sed -i -e "s:\(.*HAS_H224.*\), \[OPAL_H323\]:\1:" configure.ac \
