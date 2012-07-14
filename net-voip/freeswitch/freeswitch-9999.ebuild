@@ -38,7 +38,7 @@ FREETDM_MODULES="
 	+libpri misdn r2 sng_isdn sng_ss7 wanpipe
 "
 
-ESL="ruby php perl python lua java managed"
+ESL="ruby php perl python lua java managed tcl"
 
 FM_APPLICATIONS="
 	abstraction avmd blacklist callcenter cidlookup cluechoo
@@ -108,7 +108,8 @@ FM="
 
 FM_BROKEN=""
 
-#? mp4 -> want mp4.h
+#= esl_tcl — temporary broken, but stay "enabled" in hope to fast fix...
+#? mod_mp4 -> want mp4.h (which was in older versions of libmp4v2
 
 REQUIRED_USE="
 	|| ( linguas_de linguas_en linguas_es linguas_fa linguas_fr linguas_he linguas_hr linguas_hu linguas_it linguas_ja linguas_nl linguas_pt linguas_ru linguas_th linguas_zh )
@@ -124,13 +125,14 @@ REQUIRED_USE="
 
 RDEPEND="virtual/libc
 	odbc? ( dev-db/unixODBC )
+	esl_java? ( >=virtual/jdk-1.5 dev-lang/swig )
 	esl_lua? ( || ( =dev-lang/lua-5.1* dev-lang/luajit:2 ) dev-lang/swig )
+	esl_managed? ( >=dev-lang/mono-1.9 dev-lang/swig )
 	esl_perl? ( dev-lang/perl dev-lang/swig )
 	esl_php? ( dev-lang/php dev-lang/swig )
 	esl_python? ( dev-lang/python:2.7 dev-lang/swig )
 	esl_ruby? ( dev-lang/ruby dev-lang/swig )
-	esl_java? ( >=virtual/jdk-1.5 dev-lang/swig )
-	esl_managed? ( >=dev-lang/mono-1.9 dev-lang/swig )
+	esl_tcl? ( dev-lang/tcl dev-lang/swig )
 	freeswitch_modules_alsa? ( media-libs/alsa-lib )
 	freeswitch_modules_radius_cdr? ( net-dialup/freeradius-client )
 	freeswitch_modules_xml_curl? ( net-misc/curl )
@@ -548,8 +550,6 @@ src_configure() {
 
 	use debug || config_opts="${config_opts} --disable-debug"
 
-#	# breaks freetdm
-#	filter-flags -fvisibility-inlines-hidden
 	einfo "Configuring FreeSWITCH..."
 		touch noreg
 		FREESWITCH_HTDOCS="${FREESWITCH_HTDOCS:-/var/www/localhost/htdocs/${PN}}"
@@ -670,9 +670,15 @@ src_install() {
 		java-pkg_doso libs/esl/java/libesljni.so
 	fi
 
+	if use esl_tcl; then
+		einfo "Installing esl module for Tcl..."
+		insinto /usr/$(get_libdir)/tcl8/site-tcl
+		doins libs/esl/tcl/ESL.so
+	fi
+
 	if use esl_managed; then
-		einfo "Installing esl module for managed (mono, .NET)..."
-		insinto /usr/$(get_libdir)/ESL
+		einfo "Installing esl module for Mono..."
+		insinto "/usr/$(get_libdir)/${PN}/mod/managed"
 		doins libs/esl/managed/ESL.so
 	fi
 
