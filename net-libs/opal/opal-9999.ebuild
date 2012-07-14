@@ -15,7 +15,7 @@ LICENSE="MPL-1.0"
 SLOT="0"
 KEYWORDS=""
 IUSE="+audio capi celt debug doc dtmf examples fax ffmpeg h224 h281 h323 iax
-ilbc ipv6 ivr ixr java ldap lid +plugins sbc sip sipim srtp ssl static-libs
+ilbc ipv6 ivr ixj java ldap lid +plugins sbc sip sipim srtp ssl static-libs
 stats swig theora +video vpb vxml wav x264 x264-static xml"
 
 
