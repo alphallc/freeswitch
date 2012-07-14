@@ -22,7 +22,7 @@ stats swig theora +video vpb vxml wav x264 x264-static xml"
 REQUIRED_USE="x264-static? ( x264 )
 	h281? ( h224 )"
 
-RDEPEND="net-libs/ptlib-9999[stun,debug=,audio?,dtmf?,ipv6?,ldap?,ssl?,video?,vxml?,wav?,xml?]
+RDEPEND="=net-libs/ptlib-9999[stun,debug=,audio?,dtmf?,ipv6?,ldap?,ssl?,video?,vxml?,wav?,xml?]
 	media-libs/speex
 	>=media-video/ffmpeg-0.4.7
 	fax? ( net-libs/ptlib[asn] )
