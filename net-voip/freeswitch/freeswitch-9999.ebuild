@@ -108,17 +108,20 @@ FM="
 
 FM_BROKEN="
 	esl_php
-	freeswitch_modules_osp
+	esl_ruby
+	esl_java
+	esl_managed
 	freeswitch_modules_http_cache
-	freeswitch_modules_yaml
 "
 #- http_cache -> error in for declaration, ask for -std=c99
 #- osp -> undefined vars
-#- yaml -> ?
-#- esl_php -> errors in esl_wrap.cpp
+#- esl_php -> #ESL-70
+#- esl_ruby -> #ESL-71
+#- esl_managed -> TODO
+#- esl_java -> TODO
 
 #? h323 -> want ptlib
-#? mp4{,v} -> want mp4
+#? mp4 -> want mp4.h
 
 REQUIRED_USE="
 	|| ( linguas_de linguas_en linguas_es linguas_fa linguas_fr linguas_he linguas_hr linguas_hu linguas_it linguas_ja linguas_nl linguas_pt linguas_ru linguas_th linguas_zh )
