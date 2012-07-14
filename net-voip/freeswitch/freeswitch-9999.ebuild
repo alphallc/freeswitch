@@ -139,7 +139,6 @@ RDEPEND="virtual/libc
 	odbc? ( dev-db/unixODBC )
 	esl_lua? ( || ( dev-lang/lua dev-lang/luajit:2 ) )
 	esl_perl? ( dev-lang/perl )
-	esl_ruby? ( dev-lang/ruby )
 	esl_python? ( dev-lang/python:2.7 )
 	freeswitch_modules_alsa? ( media-libs/alsa-lib )
 	freeswitch_modules_radius_cdr? ( net-dialup/freeradius-client )
@@ -150,6 +149,7 @@ RDEPEND="virtual/libc
 	freeswitch_modules_h323? ( net-libs/ptlib )
 	freeswitch_modules_opal? ( >=net-libs/opal-9999[h323,iax]
 				   >=net-libs/ptlib-9999 )
+	freeswitch_modules_osp? ( >=net-libs/osptoolkit-4.0.3 )
 	freeswitch_modules_perl? ( dev-lang/perl[ithreads] )
 	freeswitch_modules_python? ( dev-lang/python:2.7[threads] )
 	freeswitch_modules_managed? ( >=dev-lang/mono-1.9 )
@@ -173,8 +173,8 @@ RDEPEND="virtual/libc
 		freetdm_modules_r2? ( net-misc/openr2 )
 	)
 "
+#	esl_ruby? ( dev-lang/ruby )
 #	esl_php? ( dev-lang/php )
-#	freeswitch_modules_osp? ( >=net-libs/osptoolkit-3.5.0 )
 #	esl_java? ( >=virtual/jdk-1.5 )
 #	esl_managed? ( >=dev-lang/mono-1.9 )
 
@@ -638,12 +638,12 @@ src_install() {
 		dodoc   "${S}/src/mod/endpoints/mod_skypopen/configs/"*
 	fi
 
-	find "${D}" -name "*.la" -delete || die "Failed to cleanup .a and .la files"
+	find "${ED}" -name "*.la" -delete || die "Failed to cleanup .la files"
 
-	if use esl_ruby; then
-		einfo "Installing esl module for ruby..."
-		esl_dorubymod libs/esl/ruby/ESL.so
-	fi
+#	if use esl_ruby; then
+#		einfo "Installing esl module for ruby..."
+#		esl_dorubymod libs/esl/ruby/ESL.so
+#	fi
 
 	if use esl_python; then
 		einfo "Installing esl module for python..."
