@@ -26,7 +26,7 @@ CDEPEND="
 	sasl? ( dev-libs/cyrus-sasl:2 )
 	sdl? ( media-libs/libsdl )
 	ssl? ( dev-libs/openssl )
-	video? ( ieee1394? ( media-libs/libdc1394:1
+	video? ( ieee1394? ( media-libs/libdc1394
 				media-libs/libdv
 				sys-libs/libavc1394
 				sys-libs/libraw1394 )
