@@ -247,9 +247,6 @@ src_install() {
 		rm -v "${D}"/usr/lib*/*.a || die
 	fi
 
-	# ChangeLog is not standard
-	dodoc ChangeLog-${PN}-v${PV//./_}.txt || die "dodoc failed"
-
 	if use examples; then
 		local exampledir="/usr/share/doc/${PF}/examples"
 		local basedir="samples"
