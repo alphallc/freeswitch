@@ -112,15 +112,14 @@ FM_BROKEN="
 	esl_java
 	esl_managed
 	freeswitch_modules_http_cache
+	freeswitch_modules_mp4
 "
-#- http_cache -> error in for declaration, ask for -std=c99
-#- osp -> undefined vars
+#- http_cache -> error in "for" declaration, ask for -std=c99
 #- esl_php -> #ESL-70
 #- esl_ruby -> #ESL-71
 #- esl_managed -> TODO
 #- esl_java -> TODO
 
-#? h323 -> want ptlib
 #? mp4 -> want mp4.h
 
 REQUIRED_USE="
@@ -146,7 +145,7 @@ RDEPEND="virtual/libc
 	freeswitch_modules_xml_ldap? ( net-nds/openldap )
 	freeswitch_modules_ldap? ( net-nds/openldap )
 	freeswitch_modules_java? ( >=virtual/jdk-1.5 )
-	freeswitch_modules_h323? ( net-libs/ptlib )
+	freeswitch_modules_h323? ( net-libs/openh323 )
 	freeswitch_modules_opal? ( >=net-libs/opal-9999[h323,iax]
 				   >=net-libs/ptlib-9999 )
 	freeswitch_modules_osp? ( >=net-libs/osptoolkit-4.0.3 )
@@ -159,7 +158,6 @@ RDEPEND="virtual/libc
 	freeswitch_modules_shout? ( media-libs/libogg )
 	freeswitch_modules_spandsp? ( virtual/jpeg )
 	freeswitch_modules_redis? ( dev-db/redis )
-	freeswitch_modules_mp4? ( media-libs/libmp4v2 )
 	freeswitch_modules_cdr_pg_csv? ( dev-db/postgresql-base )
 	freeswitch_modules_gsmopen? ( net-libs/ctb app-mobilephone/gsmlib )
 	freeswitch_modules_xml_ldap? ( net-nds/openldap[sasl] )
@@ -173,6 +171,7 @@ RDEPEND="virtual/libc
 		freetdm_modules_r2? ( net-misc/openr2 )
 	)
 "
+#	freeswitch_modules_mp4? ( media-libs/libmp4v2 )
 #	esl_ruby? ( dev-lang/ruby )
 #	esl_php? ( dev-lang/php )
 #	esl_java? ( >=virtual/jdk-1.5 )
@@ -209,6 +208,13 @@ FREESWITCH_USER=${FREESWITCH_USER:-voip}
 FREESWITCH_GROUP=${FREESWITCH_GROUP:-voip}
 QA_TEXTRELS="usr/lib/freeswitch/mod/mod_shout.so"
 
+pkg_pretend() {
+	if use freeswitch_modules_h323; then
+		ewarn "You're about to using mod_h323, which depends on "
+		ewarn "'dead' openh323 library. We're suggest you to use mod_opal instead."
+	fi
+}
+
 pkg_setup() {
 	if use freeswitch_modules_cepstral; then
 		SWIFT_HOME="${SWIFT_HOME:-/opt/swift}"
@@ -228,7 +234,8 @@ pkg_setup() {
 
 		export SWIFT_HOME
 	fi
-#	python_set_active_version 2
+
+	python_set_active_version 2
 	python_pkg_setup
 }
 
