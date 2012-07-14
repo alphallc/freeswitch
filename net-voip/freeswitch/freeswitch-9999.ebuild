@@ -144,7 +144,7 @@ RDEPEND="virtual/libc
 	freeswitch_modules_xml_ldap? ( net-nds/openldap )
 	freeswitch_modules_ldap? ( net-nds/openldap )
 	freeswitch_modules_java? ( >=virtual/jdk-1.5 )
-	freeswitch_modules_h323? ( net-libs/openh323 )
+	freeswitch_modules_h323? ( || ( net-libs/openh323 net-libs/ptlib ) )
 	freeswitch_modules_opal? ( >=net-libs/opal-9999[h323,iax]
 				   >=net-libs/ptlib-9999 )
 	freeswitch_modules_osp? ( >=net-libs/osptoolkit-4.0.3 )
@@ -211,6 +211,9 @@ pkg_pretend() {
 	if use freeswitch_modules_h323; then
 		ewarn "You're about to using mod_h323, which depends on "
 		ewarn "'dead' openh323 library. We're suggest you to use mod_opal instead."
+		if has_version net-libs/ptlib; then
+			die "Can't use mod_h323 with net-libs/ptlib. Please, use mod_opal instead."
+		fi
 	fi
 }
 
