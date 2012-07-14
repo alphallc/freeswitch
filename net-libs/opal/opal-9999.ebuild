@@ -14,7 +14,7 @@ ESVN_REPO_URI="https://opalvoip.svn.sourceforge.net/svnroot/opalvoip/opal/trunk"
 LICENSE="MPL-1.0"
 SLOT="0"
 KEYWORDS=""
-IUSE="+audio capi celt debug dtmf examples fax ffmpeg h224 h281 h323 iax
+IUSE="+audio capi celt debug doc dtmf examples fax ffmpeg h224 h281 h323 iax
 ilbc ipv6 ivr ixj java ldap lid +plugins sbc sip sipim srtp ssl static-libs
 stats swig theora +video vpb vxml wav x264 x264-static xml"
 
@@ -42,6 +42,7 @@ RDEPEND=">=net-libs/ptlib-2.6.6[stun,debug=,audio?,dtmf?,ipv6?,ldap?,ssl?,video?
 	vxml? ( net-libs/ptlib[http,vxml] )"
 DEPEND="${RDEPEND}
 	virtual/pkgconfig
+	doc? ( app-doc/doxygen )
 	>=sys-devel/gcc-3
 	java? ( swig? ( dev-lang/swig )
 		>=virtual/jdk-1.4 )"
@@ -57,6 +58,16 @@ DEPEND="${RDEPEND}
 # OPALDIR should not be used anymore but if a package still need it, create it
 
 pkg_setup() {
+	if use debug && ! built_with_use net-libs/ptlib debug; then
+		eerror "You need to build net-libs/ptlib with USE=debug enabled."
+		die "net-libs/ptlib has to be built with USE=debug"
+	fi
+
+	if ! use debug && built_with_use net-libs/ptlib debug; then
+		eerror "You need to build net-libs/ptlib without USE=debug."
+		die "net-libs/ptlib has not to be built with USE=debug"
+	fi
+
 	# need >=gcc-3
 	if [[ $(gcc-major-version) -lt 3 ]]; then
 		eerror "You need to use gcc-3 at least."
@@ -65,6 +76,14 @@ pkg_setup() {
 	fi
 
 	java-pkg-opt-2_pkg_setup
+}
+
+src_unpack() {
+	subversion_src_unpack
+	cd "${S}"
+
+	# recreate configure etc.
+	eautoreconf
 }
 
 src_prepare() {
@@ -76,8 +95,8 @@ src_prepare() {
 		rm -f samples/*/*.dsw
 	fi
 
-	# Temporary (?) fix of gsm/gsm/gsm.h in plugins/configure
-	sed -i -e "s:gsm/gsm.h:gsm.h:g" make/opal.m4 || die "failed to fix plugins"
+#	# Temporary (?) fix of gsm/gsm/gsm.h in plugins/configure
+#	sed -i -e "s:gsm/gsm.h:gsm.h:g" make/opal.m4 || die "failed to fix plugins"
 
 	# h224 really needs h323 ?
 	# TODO: get a confirmation in ml
@@ -212,10 +231,11 @@ src_compile() {
 	use debug && makeopts="debug"
 
 	emake ${makeopts} || die "emake failed"
+	use doc && emake doc
 }
 
 src_install() {
-	emake DESTDIR="${D}" install || die "emake install failed"
+	emake PREFIX=/usr DESTDIR="${D}" install || die "emake install failed"
 
 	# Get rid of static libraries if not requested
 	# There seems to be no easy way to disable this in the build system
@@ -246,6 +266,10 @@ src_install() {
 		# some examples need version.h
 		insinto "/usr/share/doc/${PF}/"
 		doins version.h || die "doins failed"
+	fi
+
+	if use doc; then
+		dohtml -r html/* docs/* || die "documentation installation failed"
 	fi
 }
 

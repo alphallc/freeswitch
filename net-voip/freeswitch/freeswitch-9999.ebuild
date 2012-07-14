@@ -4,7 +4,7 @@
 
 EAPI="4"
 
-inherit eutils flag-o-matic python
+inherit eutils flag-o-matic python java-utils-2
 
 DESCRIPTION="FreeSWITCH telephony platform"
 HOMEPAGE="http://www.freeswitch.org/"
@@ -106,18 +106,7 @@ FM="
 	${FM_XML}
 "
 
-FM_BROKEN="
-	esl_php
-	esl_ruby
-	esl_java
-	esl_managed
-	freeswitch_modules_http_cache
-"
-#- http_cache -> error in "for" declaration, ask for -std=c99
-#- esl_php -> #ESL-70
-#- esl_ruby -> #ESL-71
-#- esl_managed -> TODO
-#- esl_java -> TODO
+FM_BROKEN=""
 
 #? mp4 -> want mp4.h
 
@@ -135,9 +124,13 @@ REQUIRED_USE="
 
 RDEPEND="virtual/libc
 	odbc? ( dev-db/unixODBC )
-	esl_lua? ( || ( dev-lang/lua dev-lang/luajit:2 ) )
-	esl_perl? ( dev-lang/perl )
-	esl_python? ( dev-lang/python:2.7 )
+	esl_lua? ( || ( =dev-lang/lua-5.1* dev-lang/luajit:2 ) dev-lang/swig )
+	esl_perl? ( dev-lang/perl dev-lang/swig )
+	esl_php? ( dev-lang/php dev-lang/swig )
+	esl_python? ( dev-lang/python:2.7 dev-lang/swig )
+	esl_ruby? ( dev-lang/ruby dev-lang/swig )
+	esl_java? ( >=virtual/jdk-1.5 dev-lang/swig )
+	esl_managed? ( >=dev-lang/mono-1.9 dev-lang/swig )
 	freeswitch_modules_alsa? ( media-libs/alsa-lib )
 	freeswitch_modules_radius_cdr? ( net-dialup/freeradius-client )
 	freeswitch_modules_xml_curl? ( net-misc/curl )
@@ -171,15 +164,12 @@ RDEPEND="virtual/libc
 	)
 "
 #	freeswitch_modules_mp4? ( media-libs/libmp4v2 )
-#	esl_ruby? ( dev-lang/ruby )
-#	esl_php? ( dev-lang/php )
-#	esl_java? ( >=virtual/jdk-1.5 )
-#	esl_managed? ( >=dev-lang/mono-1.9 )
 
 DEPEND="${RDEPEND}
 	>=sys-devel/autoconf-2.60
 	>=sys-devel/automake-1.10
-	sctp? ( kernel_linux? ( net-misc/lksctp-tools ) )"
+	sctp? ( kernel_linux? ( net-misc/lksctp-tools ) )
+	virtual/pkgconfig"
 
 PDEPEND="media-sound/freeswitch-sounds
 	media-sound/freeswitch-sounds-music
@@ -490,7 +480,7 @@ esl_dopymod() {
 
 esl_doluamod() {
 	(
-		insinto /usr/$(get_libdir)/lua/$(${LUA:-/usr/bin/lua} -e 'print(_VERSION:match("%d.%d"))')
+		insinto $(pkg-config lua --variable INSTALL_CMOD)
 		insopts -m755
 		doins "$@"
 	) || die "failed to install $@"
@@ -599,11 +589,10 @@ src_configure() {
 
 src_compile() {
 	local esl_lang
-#	filter-ldflags -Wl,--as-needed
 
-	# breaks freetdm:
-	filter-flags -fvisibility-inlines-hidden
 	if use freeswitch_modules_freetdm; then
+#	# breaks freetdm:
+#	filter-flags -fvisibility-inlines-hidden
 		einfo "Building FreeTDM..."
 		emake -C libs/freetdm || die "failed to build FreeTDM"
 	fi
@@ -615,6 +604,7 @@ src_compile() {
 		esl_lang="${esl_lang#*_}"
 
 		einfo "Building esl module for ${esl_lang}..."
+		emake -C libs/esl/"${esl_lang}" reswig || die "Failed to reswig esl module for language \"${esl_lang}\""
 		emake -C libs/esl "$(esl_modname ${esl_lang})" || die "Failed to build esl module for language \"${esl_lang}\""
 	done
 	if use esl; then
@@ -649,10 +639,10 @@ src_install() {
 
 	find "${ED}" -name "*.la" -delete || die "Failed to cleanup .la files"
 
-#	if use esl_ruby; then
-#		einfo "Installing esl module for ruby..."
-#		esl_dorubymod libs/esl/ruby/ESL.so
-#	fi
+	if use esl_ruby; then
+		einfo "Installing esl module for ruby..."
+		esl_dorubymod libs/esl/ruby/ESL.so
+	fi
 
 	if use esl_python; then
 		einfo "Installing esl module for python..."
@@ -664,25 +654,27 @@ src_install() {
 		esl_doluamod libs/esl/lua/ESL.so
 	fi
 
-#	if use esl_php; then
-#		einfo "Installing esl module for php..."
-#		emake DESTDIR="${D}" -C libs/esl phpmod-install || die "Failed to install esl module for php"
-#	fi
+	if use esl_php; then
+		einfo "Installing esl module for php..."
+		emake DESTDIR="${D}" -C libs/esl phpmod-install || die "Failed to install esl module for php"
+	fi
 
 	if use esl_perl; then
 		einfo "Installing esl module for perl..."
 		esl_doperlmod libs/esl/perl/{ESL,ESL.so,ESL.pm}
 	fi
 
-#	if use esl_java; then
-#		#einfo "Installing esl module for java..."
-#		# TODO
-#	fi
+	if use esl_java; then
+		einfo "Installing esl module for java..."
+		java-pkg_dojar libs/esl/java/esl.jar
+		java-pkg_doso libs/esl/java/libesljni.so
+	fi
 
-#	if use esl_managed; then
-#		#einfo "Installing esl module for managed (mono, .NET)..."
-#		# TODO
-#	fi
+	if use esl_managed; then
+		einfo "Installing esl module for managed (mono, .NET)..."
+		insinto /usr/$(get_libdir)/ESL
+		doins libs/esl/managed/ESL.so
+	fi
 
 	if use esl; then
 		einfo "Installing libesl..."
