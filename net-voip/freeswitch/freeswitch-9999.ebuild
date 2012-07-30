@@ -4,7 +4,7 @@
 
 EAPI="4"
 
-inherit eutils flag-o-matic python java-utils-2
+inherit autotools eutils flag-o-matic python java-utils-2
 
 DESCRIPTION="FreeSWITCH telephony platform"
 HOMEPAGE="http://www.freeswitch.org/"
@@ -231,6 +231,9 @@ pkg_setup() {
 
 	python_set_active_version 2
 	python_pkg_setup
+
+	enewgroup "${FREESWITCH_GROUP}"
+	enewuser "${FREESWITCH_USER}" -1 -1 "/var/lib/${PN}" "${FREESWITCH_GROUP}"
 }
 
 fs_abi_generate_symbols_array() {
@@ -537,6 +540,9 @@ src_prepare() {
 		sed -i -e "/^LOCAL_/{ s:python-2\.[0-9]:python-${PYVER}:g; s:python2\.[0-9]:python${PYVER}:g }" \
 			libs/esl/python/Makefile || die "failed to change python locations in esl python module"
 	fi
+	# disable -Werror
+	sed -ie '/^.*-Werror.*$/d' configure.in
+	eautoreconf
 }
 
 src_configure() {
@@ -705,9 +711,6 @@ pkg_preinst() {
 }
 
 pkg_postinst() {
-	enewgroup "${FREESWITCH_GROUP}"
-	enewuser "${FREESWITCH_USER}" -1 -1 "/var/lib/${PN}" "${FREESWITCH_GROUP}"
-
 	einfo
 	einfo "FreeSWITCH has been successfully emerged!"
 	einfo
