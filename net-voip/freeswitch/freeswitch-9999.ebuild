@@ -35,7 +35,7 @@ IUSE="esl odbc +resampler sctp +zrtp debug"
 LANGS="de en es fa fr he hr hu it ja nl pt ru th zh"
 
 FREETDM_MODULES="
-	+libpri misdn r2 sng_isdn sng_ss7 wanpipe
+	libpri misdn r2 sng_isdn sng_ss7 wanpipe
 "
 
 ESL="ruby php perl python lua java managed tcl"
@@ -121,6 +121,13 @@ REQUIRED_USE="
 	freeswitch_modules_lcr? ( odbc )
 	freeswitch_modules_gsmopen? ( freeswitch_modules_spandsp )
 	freeswitch_modules_portaudio_stream? ( freeswitch_modules_portaudio )
+	freeswitch_modules_freetdm? ( freetdm_modules_libpri )
+	freetdm_modules_libpri? ( freeswitch_modules_freetdm )
+	freetdm_modules_misdn? ( freeswitch_modules_freetdm )
+	freetdm_modules_r2? ( freetdm )
+	freetdm_modules_sng_isdn? ( freeswitch_modules_freetdm )
+	freetdm_modules_sng_ss7? ( freeswitch_modules_freetdm )
+	freetdm_modules_wanpipe? ( freeswitch_modules_freetdm )
 "
 
 RDEPEND="virtual/libc
