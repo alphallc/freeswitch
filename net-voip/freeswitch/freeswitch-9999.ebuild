@@ -124,7 +124,7 @@ REQUIRED_USE="
 	freeswitch_modules_freetdm? ( freetdm_modules_libpri )
 	freetdm_modules_libpri? ( freeswitch_modules_freetdm )
 	freetdm_modules_misdn? ( freeswitch_modules_freetdm )
-	freetdm_modules_r2? ( freetdm )
+	freetdm_modules_r2? ( freeswitch_modules_freetdm )
 	freetdm_modules_sng_isdn? ( freeswitch_modules_freetdm )
 	freetdm_modules_sng_ss7? ( freeswitch_modules_freetdm )
 	freetdm_modules_wanpipe? ( freeswitch_modules_freetdm )
