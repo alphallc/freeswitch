@@ -6,7 +6,7 @@ EAPI="4"
 
 IUSE=""
 
-inherit eutils autotools git
+inherit eutils autotools git-r3
 
 #MY_P="mISDNuser-${PV//./_}"
 
@@ -16,7 +16,6 @@ HOMEPAGE="http://www.mISDN.org/"
 
 EGIT_REPO_URI="git://git.misdn.org/mISDNuser.git"
 EGIT_COMMIT="8d01cd531d4422b1368ecc76f7852bb40317a1a0"
-EGIT_BOOTSTRAP="eautoreconf"
 EGIT_BRANCH="socket"
 
 LICENSE="GPL-2"
@@ -26,7 +25,9 @@ KEYWORDS="~amd64 ~x86"
 RDEPEND="sys-libs/ncurses"
 DEPEND="${RDEPEND}"
 
-S="${WORKDIR}/mISDNuser"
+src_prepare() {
+	eautoreconf
+}
 
 src_configure() {
 	# install example applications too, contains some useful stuff like misdntestlayer1
