@@ -38,5 +38,5 @@ src_configure() {
 src_install() {
 	emake DESTDIR="${D}" install || die "emake install failed"
 
-	dodoc AUTHORS COPYING.LIB LICENSE NEWS README
+	dodoc AUTHORS COPYING.LIB NEWS README
 }
