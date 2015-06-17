@@ -1,6 +1,6 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: This ebuild is from freeswitch overlay; Bumped by mva; $
+# $Header: $
 
 EAPI="5"
 
