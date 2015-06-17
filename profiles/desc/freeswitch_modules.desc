@@ -57,6 +57,7 @@ mp4v - MPEG4 / H.264 Video ES (Elementary Stream) pass-through codec module (mod
 nibblebill - Real-time debit module (mod_nibblebill)
 opal - H.323 endpoint module based on the Opal library (experimental) (mod_opal)
 openmrcp - OpenMRCP module (mod_openmrcp)
+opus - Opus codec module (mod_opus)
 osp - Open Settlement Protocol (OSP) module (mod_osp)
 perl - Perl language module (mod_perl)
 pocketsphinx - Pocketsphinx ASR (Speech-recognition) module (mod_pocketsphinx)
