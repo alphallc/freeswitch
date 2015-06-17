@@ -23,7 +23,7 @@ FREETDM_MODULES="
 	libpri misdn r2 sng_isdn sng_ss7 wanpipe
 "
 
-ESL="ruby php perl python lua java managed tcl"
+ESL="php perl python lua java managed tcl"
 
 FM_APPLICATIONS="
 	abstraction avmd blacklist callcenter cidlookup cluechoo
@@ -125,7 +125,6 @@ RDEPEND="virtual/libc
 	esl_perl? ( dev-lang/perl dev-lang/swig:1 )
 	esl_php? ( dev-lang/php dev-lang/swig )
 	esl_python? ( dev-lang/python:2.7 dev-lang/swig:1 )
-	esl_ruby? ( dev-lang/ruby dev-lang/swig )
 	esl_tcl? ( dev-lang/tcl dev-lang/swig )
 	freeswitch_modules_alsa? ( media-libs/alsa-lib )
 	freeswitch_modules_radius_cdr? ( net-dialup/freeradius-client )
@@ -308,14 +307,6 @@ esl_modname() {
 	return 0
 }
 
-esl_dorubymod() {
-	(
-		insinto $(${RUBY:-/usr/bin/ruby} -r rbconfig -e 'print Config::CONFIG["sitearchdir"]')
-		insopts -m755
-		doins "$@"
-	) || die "failed to install $@"
-}
-
 esl_dopymod() {
 	(
 		insinto $(python_get_sitedir)
@@ -482,11 +473,6 @@ src_install() {
 	fi
 
 	find "${ED}" -name "*.la" -delete || die "Failed to cleanup .la files"
-
-	if use esl_ruby; then
-		einfo "Installing esl module for ruby..."
-		esl_dorubymod libs/esl/ruby/ESL.so
-	fi
 
 	if use esl_python; then
 		einfo "Installing esl module for python..."
