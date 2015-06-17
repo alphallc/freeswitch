@@ -17,9 +17,7 @@
   <!-- ESL -->
   <flag name="esl">Event-Socket Library</flag>
   <flag name="esl-lua">LUA bindings for ESL</flag>
-  <flag name="esl-php">PHP bindings for ESL</flag>
   <flag name="esl-perl">Perl bindings for ESL</flag>
-  <flag name="esl-ruby">Ruby bindings for ESL</flag>
   <flag name="esl-python">Python bindings for ESL</flag>
 
   <!-- FREESWITCH_MODULES -->
