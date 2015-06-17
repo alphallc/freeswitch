@@ -118,7 +118,7 @@ REQUIRED_USE="
 RDEPEND="virtual/libc
 	>=media-libs/speex-1.2_rc1
 	odbc? ( dev-db/unixODBC )
-	esl_java? ( >=virtual/jdk-1.5 dev-lang/swig:1 )
+	esl_java? ( virtual/jdk:1.5 dev-lang/swig:1 )
 	esl_lua? ( || ( =dev-lang/lua-5.1* dev-lang/luajit:2 ) dev-lang/swig:1 )
 	esl_managed? ( >=dev-lang/mono-1.9 dev-lang/swig:2 )
 	esl_perl? ( dev-lang/perl dev-lang/swig:1 )
@@ -129,7 +129,7 @@ RDEPEND="virtual/libc
 	freeswitch_modules_enum? ( >=net-libs/ldns-1.6.6 )
 	freeswitch_modules_xml_ldap? ( net-nds/openldap )
 	freeswitch_modules_ldap? ( net-nds/openldap )
-	freeswitch_modules_java? ( >=virtual/jdk-1.5 )
+	freeswitch_modules_java? ( virtual/jdk:1.5 )
 	freeswitch_modules_h323? ( || ( net-libs/openh323 net-libs/ptlib ) )
 	freeswitch_modules_opal? ( >=net-libs/opal-9999[h323,iax]
 				   >=net-libs/ptlib-9999 )
