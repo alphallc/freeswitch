@@ -102,12 +102,6 @@
   <flag name="freeswitch_modules_sofia">SIP (Session-Initiation-Protocol) endpoint module (mod_sofia)</flag>
   <flag name="freeswitch_modules_spandsp">SpanDSP fax applications and VoIP codecs (mod_spandsp)</flag>
   <flag name="freeswitch_modules_speex">Speex codec module (mod_speex)</flag>
-  <flag name="freeswitch_modules_spidermonkey">Spidermonkey javascript language module (mod_spidermonkey)</flag>
-  <flag name="freeswitch_modules_spidermonkey_curl">Spidermonkey curl extension (mod_spidermonkey_curl)</flag>
-  <flag name="freeswitch_modules_spidermonkey_core_db">Spidermonkey db extension (mod_spidermonkey_core_db)</flag>
-  <flag name="freeswitch_modules_spidermonkey_odbc">Spidermonkey ODBC extension (mod_spidermonkey_odbc)</flag>
-  <flag name="freeswitch_modules_spidermonkey_socket">Spidermonkey socket extension (mod_spidermonkey_socket)</flag>
-  <flag name="freeswitch_modules_spidermonkey_teletone">Spidermonkey tone detection/generation extension (mod_spidermonkey_teletone)</flag>
   <flag name="freeswitch_modules_spy">Spy on a user constantly (mod_spy)</flag>
   <flag name="freeswitch_modules_syslog">Syslog logger module (mod_syslog)</flag>
   <flag name="freeswitch_modules_tone_stream">(Scriptable) Tone generator module (mod_tone_stream)</flag>
