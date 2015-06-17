@@ -119,12 +119,12 @@ REQUIRED_USE="
 RDEPEND="virtual/libc
 	>=media-libs/speex-1.2_rc1
 	odbc? ( dev-db/unixODBC )
-	esl_java? ( >=virtual/jdk-1.5 dev-lang/swig )
-	esl_lua? ( || ( =dev-lang/lua-5.1* dev-lang/luajit:2 ) dev-lang/swig )
-	esl_managed? ( >=dev-lang/mono-1.9 dev-lang/swig )
-	esl_perl? ( dev-lang/perl dev-lang/swig )
+	esl_java? ( >=virtual/jdk-1.5 dev-lang/swig:1 )
+	esl_lua? ( || ( =dev-lang/lua-5.1* dev-lang/luajit:2 ) dev-lang/swig:1 )
+	esl_managed? ( >=dev-lang/mono-1.9 dev-lang/swig:2 )
+	esl_perl? ( dev-lang/perl dev-lang/swig:1 )
 	esl_php? ( dev-lang/php dev-lang/swig )
-	esl_python? ( dev-lang/python:2.7 dev-lang/swig )
+	esl_python? ( dev-lang/python:2.7 dev-lang/swig:1 )
 	esl_ruby? ( dev-lang/ruby dev-lang/swig )
 	esl_tcl? ( dev-lang/tcl dev-lang/swig )
 	freeswitch_modules_alsa? ( media-libs/alsa-lib )
