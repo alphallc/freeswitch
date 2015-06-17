@@ -131,8 +131,7 @@ RDEPEND="virtual/libc
 	freeswitch_modules_ldap? ( net-nds/openldap )
 	freeswitch_modules_java? ( virtual/jdk:1.5 )
 	freeswitch_modules_h323? ( || ( net-libs/openh323 net-libs/ptlib ) )
-	freeswitch_modules_opal? ( >=net-libs/opal-9999[h323,iax]
-				   >=net-libs/ptlib-9999 )
+	freeswitch_modules_opal? ( net-libs/opal[h323,iax] )
 	freeswitch_modules_osp? ( >=net-libs/osptoolkit-4.0.3 )
 	freeswitch_modules_perl? ( dev-lang/perl[ithreads] )
 	freeswitch_modules_python? ( dev-lang/python:2.7[threads] )
