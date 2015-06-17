@@ -4,7 +4,7 @@
 
 EAPI="5"
 
-inherit autotools eutils flag-o-matic python java-utils-2 user
+inherit autotools eutils flag-o-matic python user
 
 DESCRIPTION="FreeSWITCH telephony platform"
 HOMEPAGE="http://www.freeswitch.org/"
@@ -560,4 +560,3 @@ pkg_postinst() {
 		einfo
 	fi
 }
-
