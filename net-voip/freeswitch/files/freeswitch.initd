@@ -1,0 +1,21 @@
+#!/sbin/runscript
+# Copyright 1999-2015 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+depend() {
+        need net
+	after mysql postgresql
+}
+
+start() {
+        ebegin "Starting FreeSWITCH"
+        start-stop-daemon --background --make-pidfile --user ${FREESWITCH_USER:-freeswitch} --group ${FREESWITCH_GROUP:-freeswitch} --pidfile "${FREESWITCH_PIDFILE:-/var/run/freeswitch.pid}" --start /usr/bin/freeswitch ${FREESWITCH_OPTS:--nc}
+        eend $?
+}
+
+stop() {
+        ebegin "Stopping FreeSWITCH"
+        start-stop-daemon --pidfile "${FREESWITCH_PIDFILE:-/var/run/freeswitch.pid}" --stop "/usr/bin/freeswitch"
+        eend $?
+}
