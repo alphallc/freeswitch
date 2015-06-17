@@ -74,7 +74,7 @@ FM_XML="
 	xml_cdr xml_curl xml_ldap xml_rpc xml_scgi
 "
 FM_EXTERNAL="
-	squirrelfish ssh
+	ssh
 "
 FM="
 	${FM_APPLICATIONS}
@@ -165,7 +165,6 @@ DEPEND="${RDEPEND}
 
 PDEPEND="media-sound/freeswitch-sounds
 	media-sound/freeswitch-sounds-music
-	freeswitch_modules_squirrelfish? ( net-voip/freeswitch-mod_squirrelfish )
 	freeswitch_modules_ssh? ( net-voip/freeswitch-mod_ssh )
 "
 
