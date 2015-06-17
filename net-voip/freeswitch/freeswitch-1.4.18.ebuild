@@ -23,7 +23,7 @@ FREETDM_MODULES="
 	libpri misdn r2 sng_isdn sng_ss7 wanpipe
 "
 
-ESL="perl python lua java managed tcl"
+ESL="perl python lua java managed"
 
 FM_APPLICATIONS="
 	abstraction avmd blacklist callcenter cidlookup cluechoo
@@ -93,7 +93,6 @@ FM="
 
 FM_BROKEN=""
 
-#= esl_tcl â€” temporary broken, but stay "enabled" in hope to fast fix...
 #? mod_mp4 -> want mp4.h (which was in older versions of libmp4v2
 
 REQUIRED_USE="
@@ -124,7 +123,6 @@ RDEPEND="virtual/libc
 	esl_managed? ( >=dev-lang/mono-1.9 dev-lang/swig:2 )
 	esl_perl? ( dev-lang/perl dev-lang/swig:1 )
 	esl_python? ( dev-lang/python:2.7 dev-lang/swig:1 )
-	esl_tcl? ( dev-lang/tcl dev-lang/swig )
 	freeswitch_modules_alsa? ( media-libs/alsa-lib )
 	freeswitch_modules_radius_cdr? ( net-dialup/freeradius-client )
 	freeswitch_modules_xml_curl? ( net-misc/curl )
@@ -492,12 +490,6 @@ src_install() {
 		einfo "Installing esl module for java..."
 		java-pkg_dojar libs/esl/java/esl.jar
 		java-pkg_doso libs/esl/java/libesljni.so
-	fi
-
-	if use esl_tcl; then
-		einfo "Installing esl module for Tcl..."
-		insinto /usr/$(get_libdir)/tcl8/site-tcl
-		doins libs/esl/tcl/ESL.so
 	fi
 
 	if use esl_managed; then
