@@ -23,7 +23,7 @@ FREETDM_MODULES="
 	libpri misdn r2 sng_isdn sng_ss7 wanpipe
 "
 
-ESL="php perl python lua java managed tcl"
+ESL="perl python lua java managed tcl"
 
 FM_APPLICATIONS="
 	abstraction avmd blacklist callcenter cidlookup cluechoo
@@ -123,7 +123,6 @@ RDEPEND="virtual/libc
 	esl_lua? ( || ( =dev-lang/lua-5.1* dev-lang/luajit:2 ) dev-lang/swig:1 )
 	esl_managed? ( >=dev-lang/mono-1.9 dev-lang/swig:2 )
 	esl_perl? ( dev-lang/perl dev-lang/swig:1 )
-	esl_php? ( dev-lang/php dev-lang/swig )
 	esl_python? ( dev-lang/python:2.7 dev-lang/swig:1 )
 	esl_tcl? ( dev-lang/tcl dev-lang/swig )
 	freeswitch_modules_alsa? ( media-libs/alsa-lib )
@@ -482,11 +481,6 @@ src_install() {
 	if use esl_lua; then
 		einfo "Installing esl module for lua..."
 		esl_doluamod libs/esl/lua/ESL.so
-	fi
-
-	if use esl_php; then
-		einfo "Installing esl module for php..."
-		emake DESTDIR="${D}" -C libs/esl phpmod-install || die "Failed to install esl module for php"
 	fi
 
 	if use esl_perl; then
