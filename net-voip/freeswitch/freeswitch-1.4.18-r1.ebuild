@@ -118,11 +118,11 @@ REQUIRED_USE="
 RDEPEND="virtual/libc
 	>=media-libs/speex-1.2_rc1
 	odbc? ( dev-db/unixODBC )
-	esl_java? ( =virtual/jre-1.5 dev-lang/swig:1 )
-	esl_lua? ( || ( =dev-lang/lua-5.1* dev-lang/luajit:2 ) dev-lang/swig:1 )
-	esl_managed? ( >=dev-lang/mono-1.9 dev-lang/swig:2 )
-	esl_perl? ( dev-lang/perl dev-lang/swig:1 )
-	esl_python? ( dev-lang/python:2.7 dev-lang/swig:1 )
+	esl_java? ( =virtual/jre-1.5 )
+	esl_lua? ( || ( =dev-lang/lua-5.1* dev-lang/luajit:2 ) )
+	esl_managed? ( >=dev-lang/mono-1.9 )
+	esl_perl? ( dev-lang/perl )
+	esl_python? ( dev-lang/python:2.7 )
 	freeswitch_modules_alsa? ( media-libs/alsa-lib )
 	freeswitch_modules_radius_cdr? ( net-dialup/freeradius-client )
 	freeswitch_modules_xml_curl? ( net-misc/curl )
@@ -162,7 +162,11 @@ DEPEND="${RDEPEND}
 	>=sys-devel/automake-1.10
 	virtual/pkgconfig
 	sctp? ( kernel_linux? ( net-misc/lksctp-tools ) )
-	esl_java? ( >=virtual/jdk-1.5 )
+	esl_java? ( >=virtual/jdk-1.5 dev-lang/swig:1 )
+	esl_lua? ( dev-lang/swig:1 )
+	esl_managed? ( dev-lang/swig:2 )
+	esl_perl? ( dev-lang/swig:1 )
+	esl_python? ( dev-lang/swig:1 )
 	freeswitch_modules_java? ( >=virtual/jdk-1.5 )
 "
 
