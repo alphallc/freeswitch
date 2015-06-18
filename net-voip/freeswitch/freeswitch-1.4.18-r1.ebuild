@@ -118,7 +118,7 @@ REQUIRED_USE="
 RDEPEND="virtual/libc
 	>=media-libs/speex-1.2_rc1
 	odbc? ( dev-db/unixODBC )
-	esl_java? ( =virtual/jre-1.5 )
+	esl_java? ( >=virtual/jre-1.5 )
 	esl_lua? ( || ( =dev-lang/lua-5.1* dev-lang/luajit:2 ) )
 	esl_managed? ( >=dev-lang/mono-1.9 )
 	esl_perl? ( dev-lang/perl )
