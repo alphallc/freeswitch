@@ -4,7 +4,7 @@
 
 EAPI="5"
 
-inherit autotools eutils flag-o-matic python user
+inherit autotools eutils flag-o-matic python user java-pkg-opt-2
 
 DESCRIPTION="FreeSWITCH telephony platform"
 HOMEPAGE="http://www.freeswitch.org/"
@@ -118,7 +118,7 @@ REQUIRED_USE="
 RDEPEND="virtual/libc
 	>=media-libs/speex-1.2_rc1
 	odbc? ( dev-db/unixODBC )
-	esl_java? ( virtual/jdk:1.5 dev-lang/swig:1 )
+	esl_java? ( =virtual/jre-1.5 dev-lang/swig:1 )
 	esl_lua? ( || ( =dev-lang/lua-5.1* dev-lang/luajit:2 ) dev-lang/swig:1 )
 	esl_managed? ( >=dev-lang/mono-1.9 dev-lang/swig:2 )
 	esl_perl? ( dev-lang/perl dev-lang/swig:1 )
@@ -129,7 +129,7 @@ RDEPEND="virtual/libc
 	freeswitch_modules_enum? ( >=net-libs/ldns-1.6.6 )
 	freeswitch_modules_xml_ldap? ( net-nds/openldap )
 	freeswitch_modules_ldap? ( net-nds/openldap )
-	freeswitch_modules_java? ( virtual/jdk:1.5 )
+	freeswitch_modules_java? ( >=virtual/jre-1.5 )
 	freeswitch_modules_h323? ( || ( net-libs/openh323 net-libs/ptlib ) )
 	freeswitch_modules_opal? ( net-libs/opal[h323,iax] )
 	freeswitch_modules_osp? ( >=net-libs/osptoolkit-4.0.3 )
@@ -160,8 +160,11 @@ RDEPEND="virtual/libc
 DEPEND="${RDEPEND}
 	>=sys-devel/autoconf-2.60
 	>=sys-devel/automake-1.10
+	virtual/pkgconfig
 	sctp? ( kernel_linux? ( net-misc/lksctp-tools ) )
-	virtual/pkgconfig"
+	esl_java? ( >=virtual/jdk-1.5 )
+	freeswitch_modules_java? ( >=virtual/jdk-1.5 )
+"
 
 PDEPEND="media-sound/freeswitch-sounds
 	media-sound/freeswitch-sounds-music
