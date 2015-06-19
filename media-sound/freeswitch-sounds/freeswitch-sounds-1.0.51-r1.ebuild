@@ -65,6 +65,6 @@ DEPEND=""
 RDEPEND=""
 
 src_install() {
-        dodir /usr/share/freeswitch/sounds
-        cp -R "${S}/"* "${D}/usr/share/freeswitch/sounds" || die "Installation failed"
+	dodir /usr/share/freeswitch/sounds
+	cp -R "${S}/"* "${D}/usr/share/freeswitch/sounds" || die "Installation failed"
 }
