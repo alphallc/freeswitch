@@ -15,7 +15,7 @@ bert - Analyzes a generated tone to detect audio gaps and load-test equipment (m
 blacklist - Maintains a list to block inbound calls (mod_blacklist)
 bv - Broadvoice HD (Wideband) codec (mod_bv)
 callcenter - Rule-based distribution of inbound calls to agents (mod_callcenter)
-cdr_csv - CSV (Comma-Separated-Value) CDR (Call-Detail-Record) module
+cdr_csv - Stores Call Detail Records (CDR) in a CSV text file (mod_cdr_csv)
 cdr_mongodb - Stores Call Detail Records (CDR) in a MongoDB database (mod_cdr_mongodb)
 celt - CELT ultra-low delay wideband codec module (mod_celt)
 cepstral - Cepstral SWIFT TTS (Text-To-Speech) engine module (mod_cepstral)
