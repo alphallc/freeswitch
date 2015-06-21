@@ -25,6 +25,7 @@ FREETDM_MODULES="
 
 ESL="perl python lua java managed"
 
+# TODO: Add support for mod_bert
 FM_APPLICATIONS="
 	abstraction avmd blacklist callcenter cidlookup cluechoo
 	+commands +conference curl +db directory distributor +dptools
