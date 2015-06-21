@@ -17,7 +17,7 @@ SRC_URI="http://files.freeswitch.org/releases/freeswitch/${P}.tar.xz"
 # No idea what USE=libedit is actually good for
 IUSE="esl libedit odbc +resampler sctp +zrtp debug"
 
-LANGS="de en es fa fr he hr hu it ja nl pt ru th zh"
+LANGS="de en es es_ar fa fr he hr hu it ja nl pl pt ru sv th zh"
 
 FREETDM_MODULES="
 	libpri misdn r2 sng_isdn sng_ss7 wanpipe
