@@ -11,6 +11,7 @@ alsa - Alsa endpoint module (mod_alsa)
 amr - AMR-NB (Narrowband) pass-through codec module (mod_amr)
 amr_wb - AMR-WB (Wideband) pass-through codec module (mod_amrwb)
 avmd - Advanced voicemail detection application module (mod_avmd)
+blacklist - Maintains a list to block inbound calls (mod_blacklist)
 bv - Broadvoice HD (Wideband) codec (mod_bv)
 cdr_csv - CSV (Comma-Separated-Value) CDR (Call-Detail-Record) module
 celt - CELT ultra-low delay wideband codec module (mod_celt)
