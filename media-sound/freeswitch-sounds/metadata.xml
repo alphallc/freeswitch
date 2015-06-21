@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer>
+  <email>mva@mva.name</email>
+</maintainer>
+<upstream>
+  <doc lang="en">http://wiki.freeswitch.org/</doc>
+  <bugs-to>http://jira.freeswitch.org/</bugs-to>
+</upstream>
+<use>
+  <flag name="8k">Install sound files with 8000 Hz sampling rate</flag>
+  <flag name="16k">Install sound files with 16000 Hz sampling rate</flag>
+  <flag name="32k">Install sound files with 32000 Hz sampling rate</flag>
+  <flag name="48k">Install sound files with 48000 Hz sampling rate</flag>
+</use>
+</pkgmetadata>
