@@ -20,7 +20,7 @@ SRC_URI="
 	48k? ( ${URI_BASE}-48000-${PV}.tar.gz )
         "
 
-DEPEND="net-voip/freeswitch"
+DEPEND=""
 RDEPEND="${DEPEND}"
 
 S="${WORKDIR}"
