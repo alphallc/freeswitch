@@ -16,6 +16,7 @@ blacklist - Maintains a list to block inbound calls (mod_blacklist)
 bv - Broadvoice HD (Wideband) codec (mod_bv)
 callcenter - Rule-based distribution of inbound calls to agents (mod_callcenter)
 cdr_csv - CSV (Comma-Separated-Value) CDR (Call-Detail-Record) module
+cdr_mongodb - Stores Call Detail Records (CDR) in a MongoDB database (mod_cdr_mongodb)
 celt - CELT ultra-low delay wideband codec module (mod_celt)
 cepstral - Cepstral SWIFT TTS (Text-To-Speech) engine module (mod_cepstral)
 cidlookup - API commands to query CallerID lookup services (mod_cidlookup)
