@@ -22,6 +22,7 @@ cdr_sqlite - Stores Call Detail Records (CDR) in an SQLite database (mod_cdr_sql
 celt - CELT ultra-low delay wideband codec module (mod_celt)
 cepstral - Cepstral SWIFT TTS (Text-To-Speech) engine module (mod_cepstral)
 cidlookup - API commands to query CallerID lookup services (mod_cidlookup)
+cluechoo - Runs an ASCII train across the terminal when typing sl instead of ls (mod_cluechoo)
 conference - Conferencing application (mod_conference)
 console - Console logger module (mod_console)
 curl - Curl-based HTTP client api command, replacing mod_http  (mod_curl)
