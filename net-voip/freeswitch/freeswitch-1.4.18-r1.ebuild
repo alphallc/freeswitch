@@ -144,7 +144,7 @@ RDEPEND="virtual/libc
 	freeswitch_modules_spandsp? ( virtual/jpeg )
 	freeswitch_modules_redis? ( dev-db/redis )
 	freeswitch_modules_cdr_pg_csv? ( dev-db/postgresql )
-	freeswitch_modules_gsmopen? ( net-libs/ctb app-mobilephone/gsmlib )
+	freeswitch_modules_gsmopen? ( net-libs/ctb[-gpib] app-mobilephone/gsmlib )
 	freeswitch_modules_xml_ldap? ( net-nds/openldap[sasl] )
 	freeswitch_modules_ladspa? ( media-libs/ladspa-sdk )
 	freeswitch_modules_freetdm? (
