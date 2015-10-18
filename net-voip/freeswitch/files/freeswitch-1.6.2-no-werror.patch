@@ -1,0 +1,16 @@
+--- configure.ac	2015-03-26 15:23:59.000000000 +0100
++++ configure.ac	2015-05-24 16:17:28.055757601 +0200
+@@ -375,13 +375,9 @@
+ elif test "x${ax_cv_c_compiler_vendor}" = "xclang" ; then
+     APR_ADDTO(SWITCH_AM_CFLAGS, -fPIC)
+     APR_ADDTO(SWITCH_AM_CXXFLAGS, -fPIC)
+-    APR_ADDTO(SWITCH_AM_CFLAGS, -Werror)
+ elif test "x${ax_cv_c_compiler_vendor}" = "xgnu" ; then
+     APR_ADDTO(SWITCH_AM_CFLAGS, -fPIC)
+     APR_ADDTO(SWITCH_AM_CXXFLAGS, -fPIC)
+-    if test "$ac_cv_gcc_supports_w_no_unused_result" = yes; then
+-      APR_ADDTO(SWITCH_AM_CFLAGS, -Werror)
+-    fi
+     if test "${enable_64}" = "yes"; then
+ 	case "$host" in
+              *darwin*)
