@@ -133,6 +133,7 @@ RDEPEND="virtual/libc
 	freeswitch_modules_java? ( >=virtual/jre-1.5:* )
 	freeswitch_modules_h323? ( || ( net-libs/openh323 net-libs/ptlib ) )
 	freeswitch_modules_opal? ( net-libs/opal[h323,iax] )
+	freeswitch_modules_opus? ( media-libs/opus )
 	freeswitch_modules_osp? ( >=net-libs/osptoolkit-4.0.3 )
 	freeswitch_modules_perl? ( dev-lang/perl[ithreads] )
 	freeswitch_modules_python? ( dev-lang/python:2.7[threads] )
