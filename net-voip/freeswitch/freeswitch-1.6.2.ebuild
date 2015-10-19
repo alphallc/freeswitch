@@ -138,7 +138,7 @@ RDEPEND="virtual/libc
 	freeswitch_modules_perl? ( dev-lang/perl[ithreads] )
 	freeswitch_modules_python? ( dev-lang/python:2.7[threads] )
 	freeswitch_modules_managed? ( >=dev-lang/mono-1.9 )
-	freeswitch_modules_sndfile ( media-libs/libsndfile )
+	freeswitch_modules_sndfile? ( media-libs/libsndfile )
 	freeswitch_modules_skypopen? ( x11-base/xorg-server x11-apps/xhost net-im/skype media-fonts/font-misc-misc media-fonts/font-cursor-misc )
 	freeswitch_modules_memcache? ( net-misc/memcached )
 	freeswitch_modules_erlang_event? ( dev-lang/erlang )
