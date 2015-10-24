@@ -401,7 +401,7 @@ src_configure() {
 		${CTARGET:+--target=${CTARGET}} \
 		$(use_enable libedit core-libedit-support) \
 		--localstatedir="/var" \
-		--sysconfdir="/etc/${PN}" \
+		--sysconfdir="/etc" \
 		--with-modinstdir="/usr/$(get_libdir)/${PN}/mod" \
 		--with-rundir="/var/run/${PN}" \
 		--with-logfiledir="/var/log/${PN}" \
