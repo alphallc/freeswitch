@@ -59,7 +59,7 @@ FM_EVENT_HANDLERS="
 	radius_cdr snmp
 "
 FM_FORMATS="
-	+local_stream +native_file portaudio_stream shell_stream
+	+local_stream +native_file png portaudio_stream shell_stream
 	shout +sndfile +tone_stream vlc
 "
 FM_LANGUAGES="
