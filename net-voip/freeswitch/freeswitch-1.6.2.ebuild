@@ -51,7 +51,7 @@ FM_DIRECTORIES="
 "
 FM_ENDPOINTS="
 	alsa dingaling freetdm gsmopen h323 khomp +loopback opal
-	portaudio reference rtc rtmp skinny skypopen +sofia unicall
+	portaudio reference rtc rtmp skinny skypopen +sofia unicall verto
 "
 FM_EVENT_HANDLERS="
 	+cdr_csv cdr_mongodb cdr_pg_csv cdr_sqlite erlang_event
@@ -107,6 +107,7 @@ REQUIRED_USE="
 	freeswitch_modules_gsmopen? ( freeswitch_modules_spandsp )
 	freeswitch_modules_portaudio_stream? ( freeswitch_modules_portaudio )
 	freeswitch_modules_freetdm? ( freetdm_modules_libpri )
+	freeswitch_modules_verto? ( freeswitch_modules_rtc )
 	freetdm_modules_libpri? ( freeswitch_modules_freetdm )
 	freetdm_modules_misdn? ( freeswitch_modules_freetdm )
 	freetdm_modules_r2? ( freeswitch_modules_freetdm )
