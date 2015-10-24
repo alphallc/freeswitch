@@ -51,7 +51,7 @@ FM_DIRECTORIES="
 "
 FM_ENDPOINTS="
 	alsa dingaling freetdm gsmopen h323 khomp +loopback opal
-	portaudio reference rtmp skinny skypopen +sofia unicall
+	portaudio reference rtc rtmp skinny skypopen +sofia unicall
 "
 FM_EVENT_HANDLERS="
 	+cdr_csv cdr_mongodb cdr_pg_csv cdr_sqlite erlang_event
