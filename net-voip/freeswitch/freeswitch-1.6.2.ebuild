@@ -119,6 +119,7 @@ REQUIRED_USE="
 # Though speex is obsolete (see https://wiki.freeswitch.org/wiki/Mod_speex), configure fails without it
 RDEPEND="virtual/libc
 	>=media-libs/speex-1.2_rc1
+	libedit? ( dev-libs/libedit )
 	odbc? ( dev-db/unixODBC )
 	esl_java? ( >=virtual/jre-1.5:* )
 	esl_lua? ( || ( dev-lang/lua:5.1 dev-lang/luajit:2 ) )
