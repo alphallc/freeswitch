@@ -1,4 +1,3 @@
 #FREESWITCH_OPTS="-nc"
 #FREESWITCH_USER=freeswitch
 #FREESWITCH_GROUP=freeswitch
-#FREESWITCH_PIDFILE="/var/run/freeswitch.pid"
