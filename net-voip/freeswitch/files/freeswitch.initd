@@ -10,7 +10,7 @@ depend() {
 
 start() {
         ebegin "Starting FreeSWITCH"
-        start-stop-daemon --background --make-pidfile --user ${FREESWITCH_USER:-freeswitch} --group ${FREESWITCH_GROUP:-freeswitch} --pidfile "${FREESWITCH_PIDFILE:-/var/run/freeswitch.pid}" --start /usr/bin/freeswitch -- ${FREESWITCH_OPTS:--nc}
+        start-stop-daemon --user ${FREESWITCH_USER:-freeswitch} --group ${FREESWITCH_GROUP:-freeswitch} --pidfile "${FREESWITCH_PIDFILE:-/var/run/freeswitch.pid}" --start /usr/bin/freeswitch -- ${FREESWITCH_OPTS:--nc}
         eend $?
 }
 
