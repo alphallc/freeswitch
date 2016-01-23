@@ -150,7 +150,7 @@ RDEPEND="
 	freeswitch_modules_python? ( dev-lang/python:2.7[threads] )
 	freeswitch_modules_shout? ( media-libs/libogg )
 	freeswitch_modules_skypopen? ( x11-base/xorg-server x11-apps/xhost net-im/skype media-fonts/font-misc-misc media-fonts/font-cursor-misc )
-	freeswitch_modules_sndfile? ( media-libs/libsndfile )
+	freeswitch_modules_sndfile? ( >=media-libs/libsndfile-1.0.20 )
 	freeswitch_modules_spandsp? ( virtual/jpeg )
 	freeswitch_modules_radius_cdr? ( net-dialup/freeradius-client )
 	freeswitch_modules_redis? ( dev-db/redis )
