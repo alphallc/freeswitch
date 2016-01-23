@@ -120,6 +120,7 @@ REQUIRED_USE="
 RDEPEND="
 	virtual/libc
 	>=dev-db/sqlite-3.6.20
+	>=dev-libs/libpcre-7.8
 	>=media-libs/speex-1.2_rc1
 	>=net-misc/curl-7.19
 	libedit? ( dev-libs/libedit )
