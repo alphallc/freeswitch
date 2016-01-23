@@ -121,6 +121,7 @@ RDEPEND="
 	virtual/libc
 	>=dev-db/sqlite-3.6.20
 	>=media-libs/speex-1.2_rc1
+	>=net-misc/curl-7.19
 	libedit? ( dev-libs/libedit )
 	odbc? ( dev-db/unixODBC )
 	esl_java? ( >=virtual/jre-1.5:* )
