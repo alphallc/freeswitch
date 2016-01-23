@@ -117,7 +117,9 @@ REQUIRED_USE="
 "
 
 # Though speex is obsolete (see https://wiki.freeswitch.org/wiki/Mod_speex), configure fails without it
-RDEPEND="virtual/libc
+RDEPEND="
+	virtual/libc
+	>=dev-db/sqlite-3.6.20
 	>=media-libs/speex-1.2_rc1
 	libedit? ( dev-libs/libedit )
 	odbc? ( dev-db/unixODBC )
