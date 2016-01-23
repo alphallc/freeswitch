@@ -157,6 +157,7 @@ RDEPEND="
 	freeswitch_modules_xml_curl? ( net-misc/curl )
 	freeswitch_modules_xml_ldap? ( net-nds/openldap )
 	freeswitch_modules_xml_ldap? ( net-nds/openldap[sasl] )
+	freeswitch_modules_yaml? ( >=dev-libs/libyaml-0.1.4 )
 
 	freeswitch_modules_freetdm? (
 		freetdm_modules_libpri? ( >=net-libs/libpri-1.4.0 )
