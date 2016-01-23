@@ -144,7 +144,7 @@ RDEPEND="
 	freeswitch_modules_managed? ( >=dev-lang/mono-1.9 )
 	freeswitch_modules_memcache? ( net-misc/memcached )
 	freeswitch_modules_opal? ( net-libs/opal[h323,iax] )
-	freeswitch_modules_opus? ( media-libs/opus )
+	freeswitch_modules_opus? ( >=media-libs/opus-1.1 )
 	freeswitch_modules_osp? ( >=net-libs/osptoolkit-4.0.3 )
 	freeswitch_modules_perl? ( dev-lang/perl[ithreads] )
 	freeswitch_modules_python? ( dev-lang/python:2.7[threads] )
