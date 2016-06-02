@@ -72,7 +72,7 @@ FM_TIMERS="
 	posix_timer timerfd
 "
 FM_XML="
-	xml_cdr xml_curl xml_ldap xml_rpc xml_scgi
+	xml_cdr xml_curl xml_ldap xml_radius xml_rpc xml_scgi
 "
 FM_EXTERNAL="
 	ssh

@@ -114,6 +114,7 @@ voipcodecs - Collection of most-used codecs (G.711, G.722, G.726, GSM, LPC10) (m
 xml_cdr - XML CDR (Call-Detail-Record) module (mod_xml_cdr)
 xml_curl - CURL XML Gateway module (mod_xml_curl)
 xml_ldap - LDAP XML Gateway module (mod_xml_ldap)
+xml_radius - Provides RADIUS authentication (mod_xml_radius)
 xml_rpc - XML RPC module (mod_xml_rpc)
 yaml - YaML (Yet-another-Markup-Language) dialplan module (mod_yaml)
 zeroconf - Zeroconf event handler module (mod_zeroconf)
