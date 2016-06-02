@@ -8,6 +8,7 @@
 
 abstraction - Redirects API function calls using a regular expression parser (mod_abstraction)
 alsa - Alsa endpoint module (mod_alsa)
+amqp - Allows to send events to an amqp server such as RabbitMQ (mod_amqp)
 amr - AMR-NB (Narrowband) pass-through codec module (mod_amr)
 amr_wb - AMR-WB (Wideband) pass-through codec module (mod_amrwb)
 avmd - Advanced voicemail detection application module (mod_avmd)
