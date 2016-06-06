@@ -1,21 +1,21 @@
 #!/sbin/runscript
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 depend() {
-        need net
+	need net
 	after mysql postgresql
 }
 
 start() {
-        ebegin "Starting FreeSWITCH"
-        start-stop-daemon --user ${FREESWITCH_USER:-freeswitch} --group ${FREESWITCH_GROUP:-freeswitch} --start /usr/bin/freeswitch -- ${FREESWITCH_OPTS:--nc}
-        eend $?
+	ebegin "Starting FreeSWITCH"
+	start-stop-daemon --user ${FREESWITCH_USER:-freeswitch} --group ${FREESWITCH_GROUP:-freeswitch} --start /usr/bin/freeswitch -- ${FREESWITCH_OPTS:--nc}
+	eend $?
 }
 
 stop() {
-        ebegin "Stopping FreeSWITCH"
-        start-stop-daemon --stop "/usr/bin/freeswitch"
-        eend $?
+	ebegin "Stopping FreeSWITCH"
+	start-stop-daemon --stop "/usr/bin/freeswitch"
+	eend $?
 }
