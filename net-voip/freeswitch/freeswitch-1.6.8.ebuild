@@ -14,8 +14,7 @@ LICENSE="MPL-1.1"
 SLOT="0"
 
 SRC_URI="http://files.freeswitch.org/releases/freeswitch/${P}.tar.xz"
-# No idea what USE=libedit is actually good for
-IUSE="esl libedit odbc postgres +resampler +zrtp debug"
+IUSE="esl +libedit odbc postgres +resampler +zrtp debug"
 
 LANGS="de en es es_ar fa fr he hr hu it ja nl pl pt ru sv th zh"
 
