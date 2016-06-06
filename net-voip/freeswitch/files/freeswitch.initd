@@ -10,7 +10,7 @@ depend() {
 
 start() {
 	ebegin "Starting FreeSWITCH"
-	start-stop-daemon --user ${FREESWITCH_USER:-freeswitch} --group ${FREESWITCH_GROUP:-freeswitch} --start /usr/bin/freeswitch -- ${FREESWITCH_OPTS:--nc}
+	start-stop-daemon --user ${FREESWITCH_USER:-freeswitch} --group ${FREESWITCH_GROUP:-freeswitch} --start /usr/bin/freeswitch -- ${FREESWITCH_OPTS:--ncwait}
 	eend $?
 }
 
