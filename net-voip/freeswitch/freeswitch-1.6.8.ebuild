@@ -99,6 +99,7 @@ FM_BROKEN=""
 REQUIRED_USE="
 	|| ( linguas_de linguas_en linguas_es linguas_fa linguas_fr linguas_he linguas_hr linguas_hu linguas_it linguas_ja linguas_nl linguas_pt linguas_ru linguas_th linguas_zh )
 	esl? ( freeswitch_modules_esl )
+	freeswitch_modules_cdr_pg_csv? ( postgres )
 	freeswitch_modules_esl? ( esl )
 	freeswitch_modules_limit? ( freeswitch_modules_db freeswitch_modules_hash )
 	freeswitch_modules_nibblebill? ( odbc )
