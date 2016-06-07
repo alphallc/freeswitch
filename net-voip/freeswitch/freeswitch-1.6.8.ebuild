@@ -38,7 +38,7 @@ FM_TTS="
 	cepstral flite pocketsphinx tts_commandline unimrcp
 "
 FM_CODECS="
-	+amr amrwb +bv codec2 com_g729 dahdi_codec +g723_1 +g729
+	+amr amrwb bv codec2 com_g729 dahdi_codec +g723_1 +g729
 	+h26x +ilbc isac mp4v +opus sangoma_codec silk siren skel_codec
 	theora
 "
