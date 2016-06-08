@@ -139,7 +139,7 @@ RDEPEND="
 	freeswitch_modules_erlang_event? ( dev-lang/erlang )
 	freeswitch_modules_gsmopen? ( net-libs/ctb[-gpib] app-mobilephone/gsmlib )
 	freeswitch_modules_h323? ( || ( net-libs/openh323 net-libs/ptlib ) )
-	freeswitch_modules_ilbc? ( >=media-libs/libilbc-0.0.1 )
+	freeswitch_modules_ilbc? ( >=media-libs/ilbc-freeswitch-0.0.1 )
 	freeswitch_modules_java? ( >=virtual/jre-1.5:* )
 	freeswitch_modules_ladspa? ( media-libs/ladspa-sdk )
 	freeswitch_modules_ldap? ( net-nds/openldap )
