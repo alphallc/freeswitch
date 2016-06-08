@@ -371,7 +371,6 @@ esl_doperlmod() {
 }
 
 src_prepare() {
-	epatch "${FILESDIR}/${P}-libilbc.patch"
 	# disable -Werror
 	epatch "${FILESDIR}/${P}-no-werror.patch"
 	# Fix broken libtool?
