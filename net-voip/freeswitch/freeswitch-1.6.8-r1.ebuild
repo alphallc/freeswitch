@@ -367,6 +367,11 @@ src_prepare() {
 	sed -i "1i export to_tool_file_cmd=func_convert_file_noop" "${S}/libs/apr/Makefile.in"
 	sed -i "1i export to_tool_file_cmd=func_convert_file_noop" "${S}/libs/apr-util/Makefile.in"
 
+	# Change invocations of "swig2.0" to "swig"
+	for file in ${S}/libs/esl/*/Makefile*; do
+		sed -i "s/swig2.0/swig/" "${file}"
+	done
+
 	if use freeswitch_modules_freetdm
 	then
 		( cd "${S}/libs/freetdm" ; ./bootstrap ; ) || die "Failed to bootstrap FreeTDM"
