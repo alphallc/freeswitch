@@ -410,7 +410,7 @@ src_configure() {
 		--with-pkgconfigdir="/usr/$(get_libdir)/pkgconfig" \
 		$(use_enable postgres core-pgsql-support) \
 		$(use_enable zrtp) \
-		$(use_with freeswitch_modules_python python "$(PYTHON -a)") \
+		$(use_with freeswitch_modules_python python "${PYTHON}") \
 		$(use_enable resampler resample) \
 		$(use_enable odbc core-odbc-support) \
 		${java_opts} ${config_opts} || die "failed to configure FreeSWITCH"
