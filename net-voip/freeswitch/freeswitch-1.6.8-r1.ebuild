@@ -242,9 +242,7 @@ pkg_setup() {
 		export SWIFT_HOME
 	fi
 
-	if [ use freeswitch_modules_python ] || [ use esl_python ]; then
-		python-single-r1_pkg_setup
-	fi
+	use freeswitch_modules_python || use esl_python && python-single-r1_pkg_setup
 
 	enewgroup "${FREESWITCH_GROUP}"
 	enewuser "${FREESWITCH_USER}" -1 -1 "/var/lib/${PN}" "${FREESWITCH_GROUP}"
