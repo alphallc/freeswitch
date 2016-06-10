@@ -181,11 +181,11 @@ DEPEND="${RDEPEND}
 	>=sys-devel/autoconf-2.60
 	>=sys-devel/automake-1.10
 	virtual/pkgconfig
-	esl_java? ( >=virtual/jdk-1.5:* >=dev-lang/swig-1.3.6:1 )
-	esl_lua? ( >=dev-lang/swig-1.3.26:1 )
-	esl_managed? ( =dev-lang/swig-2*:0 )
-	esl_perl? ( >=dev-lang/swig-1.1:1 )
-	esl_python? ( >=dev-lang/swig-1.1:1 )
+	esl_java? ( >=virtual/jdk-1.5:* >=dev-lang/swig-2.0 )
+	esl_lua? ( >=dev-lang/swig-2.0 )
+	esl_managed? ( >=dev-lang/swig-2.0 )
+	esl_perl? ( >=dev-lang/swig-2.0 )
+	esl_python? ( >=dev-lang/swig-2.0 )
 	freeswitch_modules_java? ( >=virtual/jdk-1.5:* )
 "
 
