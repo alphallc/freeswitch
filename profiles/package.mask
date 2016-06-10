@@ -3,10 +3,6 @@
 =media-libs/codec2-0.5
 
 # Michael Seifert <mseifert@error-reports.org> (02 Jun 2016)
-# Masked as the ebuild is currently work in progress
-=net-voip/freeswitch-1.6.8
-
-# Michael Seifert <mseifert@error-reports.org> (02 Jun 2016)
 # Masked for removal in 30 days.
 # Freeswitch 1.4 has reached its end of life.
 =net-voip/freeswitch-1.4.18
