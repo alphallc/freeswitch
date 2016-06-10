@@ -515,7 +515,7 @@ src_install() {
 	if use esl; then
 		einfo "Installing libesl..."
 		insinto "/usr/$(get_libdir)"
-		doins libs/esl/libesl.a
+		doins libs/esl/.libs/libesl.a
 	fi
 
 	fowners -Rf ${FREESWITCH_USER}:${FREESWITCH_GROUP} "/etc/${PN}"
