@@ -368,7 +368,8 @@ src_prepare() {
 	sed -i "1i export to_tool_file_cmd=func_convert_file_noop" "${S}/libs/apr-util/Makefile.in"
 
 	# Change invocations of "swig2.0" to "swig"
-	for file in ${S}/libs/esl/*/Makefile*; do
+	local potentially_affected_makefiles=$(find "${S}/libs/esl/" "${S}/src/mod/languages/" -name "Makefile*")
+	for file in $potentially_affected_makefiles; do
 		sed -i "s/swig2.0/swig/" "${file}"
 	done
 
