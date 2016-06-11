@@ -409,7 +409,7 @@ src_configure() {
 		--with-htdocsdir="/usr/share/${PN}/htdocs" \
 		--with-soundsdir="/usr/share/${PN}/sounds" \
 		--with-grammardir="/usr/share/${PN}/grammar" \
-		--with-scriptdir="/usr/share/${PN}/scripts" \
+		--with-scriptdir="/var/lib/${PN}/scripts" \
 		--with-recordingsdir="/var/lib/${PN}/recordings" \
 		--with-pkgconfigdir="/usr/$(get_libdir)/pkgconfig" \
 		$(use_enable postgres core-pgsql-support) \
