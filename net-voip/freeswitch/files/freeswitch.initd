@@ -14,7 +14,7 @@ start() {
 	local freeswitch_user=${FREESWITCH_USER:-freeswitch}
 	local freeswitch_group=${FREESWITCH_GROUP:-freeswitch}
 
-	checkpath -quiet -directory -owner ${freeswitch_user}:${freeswitch_group} -mode 0770 "/var/run/freeswitch/" || {
+	checkpath --quiet --directory --owner ${freeswitch_user}:${freeswitch_group} --mode 0770 "/var/run/freeswitch/" || {
 		eerror "Failed to create PID directory /var/run/freeswitch/"
 		eend 1
 		return 1
