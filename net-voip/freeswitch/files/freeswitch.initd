@@ -10,7 +10,17 @@ depend() {
 
 start() {
 	ebegin "Starting FreeSWITCH"
-	start-stop-daemon --user ${FREESWITCH_USER:-freeswitch} --group ${FREESWITCH_GROUP:-freeswitch} --start /usr/bin/freeswitch -- ${FREESWITCH_OPTS:--ncwait}
+
+	local freeswitch_user=${FREESWITCH_USER:-freeswitch}
+	local freeswitch_group=${FREESWITCH_GROUP:-freeswitch}
+
+	checkpath -quiet -directory -owner ${freeswitch_user}:${freeswitch_group} -mode 0770 "/var/run/freeswitch/" || {
+		eerror "Failed to create PID directory /var/run/freeswitch/"
+		eend 1
+		return 1
+	}
+
+	start-stop-daemon --user ${freeswitch_user} --group ${freeswitch_group} --start /usr/bin/freeswitch -- ${FREESWITCH_OPTS:--ncwait}
 	eend $?
 }
 
