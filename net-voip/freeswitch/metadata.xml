@@ -5,7 +5,7 @@
   <email>mva@mva.name</email>
 </maintainer>
 <upstream>
-  <doc lang="en">http://wiki.freeswitch.org/</doc>
+  <doc lang="en">https://confluence.freeswitch.org/</doc>
   <bugs-to>http://jira.freeswitch.org/</bugs-to>
 </upstream>
 <use>
