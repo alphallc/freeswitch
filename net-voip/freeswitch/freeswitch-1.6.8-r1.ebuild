@@ -99,7 +99,7 @@ FM_BROKEN=""
 #? mod_mp4 -> want mp4.h (which was in older versions of libmp4v2
 
 REQUIRED_USE="
-	|| ( linguas_de linguas_en linguas_es linguas_fa linguas_fr linguas_he linguas_hr linguas_hu linguas_it linguas_ja linguas_nl linguas_pt linguas_ru linguas_th linguas_zh )
+	|| ( l10n_de l10n_en l10n_es l10n_fa l10n_fr l10n_he l10n_hr l10n_hu l10n_it l10n_ja l10n_nl l10n_pt l10n_ru l10n_th l10n_zh )
 	esl? ( freeswitch_modules_esl )
 	esl_python? ( ${PYTHON_REQUIRED_USE} )
 	freeswitch_modules_cdr_pg_csv? ( postgres )
@@ -203,7 +203,7 @@ for x in ${ESL}; do
 	IUSE="${IUSE} esl_${x}"
 done
 for x in ${LANGS}; do
-	IUSE="${IUSE} linguas_${x}"
+	IUSE="${IUSE} l10n_${x}"
 done
 for x in ${FM_BROKEN}; do
 	IUSE="${IUSE//${x}}"
@@ -307,7 +307,7 @@ setup_modules() {
 		action="enable"
 
 		[ -n "${mod}" ] && {
-			use linguas_${mod} || action="disable"
+			use l10n_${mod} || action="disable"
 			fs_set_module "${action}" "mod_say_${mod}"
 		}
 	done
