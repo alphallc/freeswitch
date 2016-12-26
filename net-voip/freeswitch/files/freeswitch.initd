@@ -20,7 +20,7 @@ start() {
 		return 1
 	}
 
-	start-stop-daemon --user ${freeswitch_user} --group ${freeswitch_group} --start /usr/bin/freeswitch -- ${FREESWITCH_OPTS:--ncwait}
+	start-stop-daemon --background --user ${freeswitch_user} --group ${freeswitch_group} --start /usr/bin/freeswitch -- ${FREESWITCH_OPTS:--ncwait}
 	eend $?
 }
 
