@@ -1,3 +1,7 @@
 # Michael Seifert <mseifert@error-reports.org> (19 Dec 2015)
 # Masked as the ebuild is currently work in progress
 =media-libs/codec2-0.5
+
+# Michael Seifert <mseifert@error-reports.org> (30 Sep 2017)
+# Masked as the ebuild is currently work in progress
+=net-voip/freeswitch-1.6.19
