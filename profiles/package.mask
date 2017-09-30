@@ -5,3 +5,7 @@
 # Michael Seifert <mseifert@error-reports.org> (30 Sep 2017)
 # Masked as the ebuild is currently work in progress
 =net-voip/freeswitch-1.6.19
+
+# Michael Seifert <mseifert@error-reports.org> (30 Sep 2017)
+# Scheduled for removal in 30 days. Please update to a newer version of freeswitch.
+=net-voip/freeswitch-1.6.2
