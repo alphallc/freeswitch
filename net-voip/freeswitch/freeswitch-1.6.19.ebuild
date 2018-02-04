@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -125,7 +125,7 @@ RDEPEND="
 	virtual/libc
 	>=dev-db/sqlite-3.6.20
 	>=dev-libs/libpcre-7.8
-	>=media-libs/speex-1.2_rc1
+	|| ( =media-libs/speex-1.2_rc1 ( >=media-libs/speex-1.2_rc2 >=media-libs/speexdsp-1.2_rc2 ) )
 	>=net-misc/curl-7.19
 	libedit? ( dev-libs/libedit )
 	odbc? ( dev-db/unixODBC )
