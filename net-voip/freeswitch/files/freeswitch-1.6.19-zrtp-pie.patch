@@ -1,0 +1,40 @@
+Common subdirectories: libs/libzrtp/third_party/bnlib.orig/autom4te.cache and libs/libzrtp/third_party/bnlib/autom4te.cache
+Common subdirectories: libs/libzrtp/third_party/bnlib.orig/bignum-ARM and libs/libzrtp/third_party/bnlib/bignum-ARM
+diff --text --unified libs/libzrtp/third_party/bnlib.orig/configure libs/libzrtp/third_party/bnlib/configure
+--- libs/libzrtp/third_party/bnlib.orig/configure	2018-02-03 22:23:01.998379406 -0700
++++ libs/libzrtp/third_party/bnlib/configure	2018-02-03 22:23:14.123683398 -0700
+@@ -1878,8 +1878,8 @@
+   # GCC's support library (-lgcc).  Do a link, to relocatable object form,
+   # with just -lgcc.  If it's not GCC, do the normal -c thing.
+   # These substitutions are used in the Makefile to force that behaviour.
+-  GCCMAGIC1='-Wl,-r -nostdlib'
+-  GCCMAGIC2=-lgcc
++  GCCMAGIC1=-c
++  GCCMAGIC2=
+ else
+   GCCMAGIC1=-c
+   GCCMAGIC2=
+diff --text --unified libs/libzrtp/third_party/bnlib.orig/configure.ac libs/libzrtp/third_party/bnlib/configure.ac
+--- libs/libzrtp/third_party/bnlib.orig/configure.ac	2018-02-03 22:22:58.337287620 -0700
++++ libs/libzrtp/third_party/bnlib/configure.ac	2018-02-03 22:23:23.244912075 -0700
+@@ -93,8 +93,8 @@
+   # GCC's support library (-lgcc).  Do a link, to relocatable object form,
+   # with just -lgcc.  If it's not GCC, do the normal -c thing.
+   # These substitutions are used in the Makefile to force that behaviour.
+-  GCCMAGIC1='-Wl,-r -nostdlib'
+-  GCCMAGIC2=-lgcc
++  GCCMAGIC1=-c
++  GCCMAGIC2=
+ else
+   GCCMAGIC1=-c
+   GCCMAGIC2=
+@@ -194,7 +194,7 @@
+ fi
+ AC_MSG_CHECKING(for useful warning options (\$WARN))
+ AC_MSG_RESULT(${WARN-none})
+-fi 
++fi
+ # ^^ End of "$(CFLAGS+set)" != set condition
+ AC_SUBST(TUNE)
+ AC_SUBST(WARN)
+Common subdirectories: libs/libzrtp/third_party/bnlib.orig/test and libs/libzrtp/third_party/bnlib/test
