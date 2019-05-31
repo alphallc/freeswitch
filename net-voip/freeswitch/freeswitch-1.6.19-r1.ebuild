@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="5"
@@ -121,10 +121,12 @@ REQUIRED_USE="
 "
 
 # Though speex is obsolete (see https://wiki.freeswitch.org/wiki/Mod_speex), configure fails without it
+# Freeswitch does not depend directly on openssl, but its bundled libs do
 RDEPEND="
 	virtual/libc
 	>=dev-db/sqlite-3.6.20
 	>=dev-libs/libpcre-7.8
+	dev-libs/openssl:=
 	|| ( =media-libs/speex-1.2_rc1 ( >=media-libs/speex-1.2_rc2 >=media-libs/speexdsp-1.2_rc2 ) )
 	>=net-misc/curl-7.19
 	libedit? ( dev-libs/libedit )
